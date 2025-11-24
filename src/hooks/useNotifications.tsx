@@ -162,7 +162,7 @@ export function useNotifications({
     triggerTestNotification: async () => {
       if (!userId) return;
 
-      const testNotification: Partial<Notification> = {
+      const testNotification = {
         user_id: userId,
         type: "match",
         title: "🎉 New Match!",

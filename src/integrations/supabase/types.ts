@@ -282,6 +282,7 @@ export type Database = {
       profiles: {
         Row: {
           age: number | null
+          banned: boolean | null
           bio: string | null
           boost_count: number | null
           boost_expires_at: string | null
@@ -307,6 +308,7 @@ export type Database = {
         }
         Insert: {
           age?: number | null
+          banned?: boolean | null
           bio?: string | null
           boost_count?: number | null
           boost_expires_at?: string | null
@@ -332,6 +334,7 @@ export type Database = {
         }
         Update: {
           age?: number | null
+          banned?: boolean | null
           bio?: string | null
           boost_count?: number | null
           boost_expires_at?: string | null

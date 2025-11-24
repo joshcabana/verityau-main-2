@@ -101,7 +101,7 @@ export default function Profile() {
 
       if (prefs) {
         setPreferences({
-          age_range: prefs.age_range || "[18,99)",
+          age_range: (prefs.age_range as string) || "[18,99)",
           distance_km: prefs.distance_km || 50,
           gender_prefs: prefs.gender_prefs || [],
         });
