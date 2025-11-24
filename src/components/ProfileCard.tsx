@@ -9,6 +9,7 @@ import { ReportDialog } from "./ReportDialog";
 import { MutualConnections } from "./MutualConnections";
 import { formatDistanceToNow } from "date-fns";
 import { useAuth } from "@/hooks/useAuth";
+import { getOptimizedImageUrl } from "@/utils/imageOptimization";
 
 interface ProfileCardProps {
   profile: {
@@ -153,9 +154,10 @@ export const ProfileCard = ({ profile, onLike, onPass }: ProfileCardProps) => {
               <CarouselItem key={index}>
                 <div className="relative w-full h-full">
                   <img
-                    src={photo}
+                    src={getOptimizedImageUrl(photo, { width: 800, quality: 85 })}
                     alt={`${profile.name} - Photo ${index + 1}`}
                     className="w-full h-full object-cover"
+                    loading={index === 0 ? "eager" : "lazy"}
                   />
                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-foreground/80 to-transparent p-6">
                     <div className="flex items-center gap-2 mb-2">

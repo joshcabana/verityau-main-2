@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { User, Session } from "@supabase/supabase-js";
 import { toast } from "sonner";
+import { setSentryUser } from "@/lib/sentry";
 
 export const useAuth = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -17,6 +18,16 @@ export const useAuth = () => {
         setSession(session);
         setUser(session?.user ?? null);
         
+        // Update Sentry user context
+        if (session?.user) {
+          setSentryUser({
+            id: session.user.id,
+            email: session.user.email,
+          });
+        } else {
+          setSentryUser(null);
+        }
+        
         // Handle auth events
         if (event === "SIGNED_IN") {
           toast.success("Successfully signed in!");
@@ -30,6 +41,15 @@ export const useAuth = () => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
+      
+      // Update Sentry user context for existing session
+      if (session?.user) {
+        setSentryUser({
+          id: session.user.id,
+          email: session.user.email,
+        });
+      }
+      
       setLoading(false);
     });
 

@@ -1,4 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
+import { getAllBlockedUserIds } from "./blockingHelpers";
 
 export interface Match {
   id: string;
@@ -30,6 +31,9 @@ export interface Match {
 
 export const fetchUserMatches = async (userId: string): Promise<Match[]> => {
   try {
+    // Get blocked users first
+    const blockedUserIds = await getAllBlockedUserIds();
+
     // Fetch matches where user is either user1 or user2
     const { data: matches, error } = await supabase
       .from("matches")
@@ -54,9 +58,21 @@ export const fetchUserMatches = async (userId: string): Promise<Match[]> => {
     if (error) throw error;
     if (!matches) return [];
 
+    // Filter out matches with blocked users
+    const filteredMatches = matches.filter((match) => {
+      const matchedUserId = match.user1 === userId ? match.user2 : match.user1;
+      return !blockedUserIds.includes(matchedUserId);
+    });
+
+    // Filter out matches with blocked users
+    const filteredMatches = matches.filter((match) => {
+      const matchedUserId = match.user1 === userId ? match.user2 : match.user1;
+      return !blockedUserIds.includes(matchedUserId);
+    });
+
     // Fetch profile data for each match
     const enrichedMatches = await Promise.all(
-      matches.map(async (match) => {
+      filteredMatches.map(async (match) => {
         // Determine which user is the matched user (not the current user)
         const matchedUserId = match.user1 === userId ? match.user2 : match.user1;
 

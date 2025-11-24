@@ -1,6 +1,7 @@
 import { supabase } from "@/integrations/supabase/client";
 import { retryAsync, isOnline } from "./retryUtils";
 import { checkRateLimit, clientSideRateLimit } from "./rateLimit";
+import { getAllBlockedUserIds } from "./blockingHelpers";
 
 export interface Profile {
   id: string;
@@ -71,6 +72,10 @@ export const fetchMatchingProfiles = async (
 
       const excludedUserIds = alreadySeen?.map((seen) => seen.seen_user_id) || [];
       excludedUserIds.push(userId); // Exclude self
+
+      // Exclude blocked users (both ways - users I blocked and users who blocked me)
+      const blockedUserIds = await getAllBlockedUserIds();
+      excludedUserIds.push(...blockedUserIds);
 
       // Use PostGIS RPC function for distance-based filtering
       const { data: profiles, error } = await supabase.rpc("nearby_profiles", {

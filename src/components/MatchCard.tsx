@@ -6,6 +6,7 @@ import { MessageCircle, Video, X, Lock, MapPin, Clock } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { Match } from "@/utils/matchHelpers";
 import { VerifiedBadge } from "./VerifiedBadge";
+import { getAvatarUrl } from "@/utils/imageOptimization";
 
 interface MatchCardProps {
   match: Match;
@@ -49,7 +50,7 @@ export const MatchCard = ({
         {/* Avatar */}
         <Avatar className="w-16 h-16 border-2 border-primary/20">
           <AvatarImage 
-            src={profile.photos?.[0]} 
+            src={profile.photos?.[0] ? getAvatarUrl(profile.photos[0]) : undefined} 
             alt={profile.name}
           />
           <AvatarFallback className="bg-primary/10 text-primary text-lg font-semibold">

@@ -10,6 +10,7 @@ import { useAuth } from "@/hooks/useAuth";
 import type { RealtimeChannel } from "@supabase/supabase-js";
 import { checkRateLimit, clientSideRateLimit } from "@/utils/rateLimit";
 import { toast } from "sonner";
+import { BlockButton } from "@/components/BlockButton";
 
 interface Message {
   id: string;
@@ -31,6 +32,7 @@ interface MatchInfo {
   user2: string;
   profile_name: string;
   profile_photo: string;
+  other_user_id: string;
 }
 
 export default function Chat() {
@@ -97,6 +99,7 @@ export default function Chat() {
         user2: match.user2,
         profile_name: profile.name,
         profile_photo: profile.photos?.[0] || "",
+        other_user_id: otherUserId,
       });
     } catch (error) {
       console.error("Error loading match info:", error);
@@ -261,22 +264,39 @@ export default function Chat() {
     <div className="flex flex-col h-screen bg-background">
       {/* Header */}
       <div className="border-b border-border p-4 flex-shrink-0 bg-card">
-        <div className="flex items-center gap-3 max-w-4xl mx-auto">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => navigate("/matches")}
-            className="mr-2"
-          >
-            <ArrowLeft className="w-4 h-4" />
-          </Button>
-          <Avatar className="w-10 h-10">
-            <AvatarImage src={matchInfo?.profile_photo} alt={matchInfo?.profile_name} />
-            <AvatarFallback className="bg-primary/10 text-primary">
-              {matchInfo?.profile_name?.charAt(0) || "?"}
-            </AvatarFallback>
-          </Avatar>
-          <h1 className="text-lg font-semibold">{matchInfo?.profile_name}</h1>
+        <div className="flex items-center justify-between gap-3 max-w-4xl mx-auto">
+          <div className="flex items-center gap-3">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => navigate("/matches")}
+              className="mr-2"
+            >
+              <ArrowLeft className="w-4 h-4" />
+            </Button>
+            <Avatar className="w-10 h-10">
+              <AvatarImage src={matchInfo?.profile_photo} alt={matchInfo?.profile_name} />
+              <AvatarFallback className="bg-primary/10 text-primary">
+                {matchInfo?.profile_name?.charAt(0) || "?"}
+              </AvatarFallback>
+            </Avatar>
+            <h1 className="text-lg font-semibold">{matchInfo?.profile_name}</h1>
+          </div>
+          {matchInfo && (
+            <BlockButton
+              userId={matchInfo.other_user_id}
+              userName={matchInfo.profile_name}
+              variant="ghost"
+              size="sm"
+              onBlockChange={(blocked) => {
+                if (blocked) {
+                  // Navigate away when user is blocked
+                  toast.success("User blocked. Returning to matches.");
+                  navigate("/matches");
+                }
+              }}
+            />
+          )}
         </div>
       </div>
 
