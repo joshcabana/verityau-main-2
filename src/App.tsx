@@ -22,10 +22,13 @@ import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import NotFound from "./pages/NotFound";
 import ProfileEdit from "./pages/ProfileEdit";
+import Profile from "./pages/Profile";
 import VerityDateWaiting from "./pages/VerityDateWaiting";
 import VerityDateCall from "./pages/VerityDateCall";
 import VerityDateFeedback from "./pages/VerityDateFeedback";
 import AdminVerification from "./pages/AdminVerification";
+import Admin from "./pages/Admin";
+import Chat from "./pages/Chat";
 
 const queryClient = new QueryClient();
 
@@ -51,6 +54,7 @@ const App = () => (
           <Route path="/match-success" element={<ProtectedRoute><MatchSuccess /></ProtectedRoute>} />
           <Route path="/matches" element={<ProtectedRoute><Matches /></ProtectedRoute>} />
           <Route path="/match/:matchId" element={<ProtectedRoute><MatchProfile /></ProtectedRoute>} />
+          <Route path="/chat/:id" element={<ProtectedRoute><Chat /></ProtectedRoute>} />
           <Route path="/who-liked-you" element={<ProtectedRoute><WhoLikedYou /></ProtectedRoute>} />
           <Route path="/upgrade" element={<ProtectedRoute><VerityPlus /></ProtectedRoute>} />
           <Route path="/verity-plus" element={<ProtectedRoute><VerityPlus /></ProtectedRoute>} />
@@ -59,7 +63,9 @@ const App = () => (
           <Route path="/verity-date/call" element={<ProtectedRoute><VerityDateCall /></ProtectedRoute>} />
           <Route path="/verity-date/feedback" element={<ProtectedRoute><VerityDateFeedback /></ProtectedRoute>} />
           <Route path="/profile/edit" element={<ProtectedRoute><ProfileEdit /></ProtectedRoute>} />
+          <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
           <Route path="/admin/verification" element={<ProtectedRoute><AdminVerification /></ProtectedRoute>} />
+          <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

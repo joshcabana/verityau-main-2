@@ -6,6 +6,7 @@ import { Heart, ArrowLeft, Sparkles } from "lucide-react";
 import { MatchCard } from "@/components/MatchCard";
 import { Chat } from "@/components/Chat";
 import { useAuth } from "@/hooks/useAuth";
+import { useNotifications } from "@/hooks/useNotifications";
 import { useToast } from "@/hooks/use-toast";
 import { 
   fetchUserMatches, 
@@ -35,6 +36,35 @@ const Matches = () => {
   const [chatOpen, setChatOpen] = useState(false);
   const [unmatchDialogOpen, setUnmatchDialogOpen] = useState(false);
   const [matchToUnmatch, setMatchToUnmatch] = useState<Match | null>(null);
+
+  // Function to reload matches
+  const reloadMatches = async () => {
+    if (!user) return;
+    try {
+      const userMatches = await fetchUserMatches(user.id);
+      setMatches(userMatches);
+    } catch (error) {
+      console.error("Error reloading matches:", error);
+    }
+  };
+
+  // Realtime notifications with match refresh
+  useNotifications({
+    userId: user?.id,
+    enabled: !!user,
+    onMatch: () => {
+      // Reload matches when new match occurs
+      reloadMatches();
+    },
+    onDateRequest: () => {
+      // Reload to show updated date request status
+      reloadMatches();
+    },
+    onMessage: () => {
+      // Could update unread message indicators
+      reloadMatches();
+    },
+  });
 
   // Load matches
   useEffect(() => {

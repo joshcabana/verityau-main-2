@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSwipeable } from "react-swipeable";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Heart, Sparkles, Shield, Loader2, RotateCcw, Crown, SlidersHorizontal, Bell, BellOff } from "lucide-react";
@@ -9,6 +10,7 @@ import { VerityDateNotification } from "@/components/VerityDateNotification";
 import { useAuth } from "@/hooks/useAuth";
 import { useSubscription } from "@/hooks/useSubscription";
 import { usePushNotifications } from "@/hooks/usePushNotifications";
+import { useNotifications } from "@/hooks/useNotifications";
 import { useToast } from "@/hooks/use-toast";
 import { fetchMatchingProfiles, likeProfile, passProfile, undoLastPass, boostProfile, Profile } from "@/utils/matchmaking";
 import { trackEvent, trackPageView } from "@/utils/analytics";
@@ -21,6 +23,28 @@ const Main = () => {
   const { isSupported, subscription, subscribeToPush, unsubscribeFromPush } = usePushNotifications(user?.id);
   const { toast } = useToast();
   const navigate = useNavigate();
+
+  // Realtime notifications with toast integration
+  useNotifications({
+    userId: user?.id,
+    enabled: !!user,
+    onMatch: () => {
+      // Refresh matches when new match occurs
+      trackEvent("match_notification_received");
+    },
+    onLike: () => {
+      // Could show special animation or refresh like count
+      trackEvent("like_notification_received");
+    },
+    onDateRequest: () => {
+      // Refresh to show date request notification
+      trackEvent("date_request_notification_received");
+    },
+    onMessage: () => {
+      // Update unread message count
+      trackEvent("message_notification_received");
+    },
+  });
   
   const [profiles, setProfiles] = useState<Profile[]>([]);
   const [currentProfileIndex, setCurrentProfileIndex] = useState(0);
@@ -31,6 +55,7 @@ const Main = () => {
   const [canUndo, setCanUndo] = useState(false);
   const [isUndoing, setIsUndoing] = useState(false);
   const [preferencesOpen, setPreferencesOpen] = useState(false);
+  const [swipeDirection, setSwipeDirection] = useState<"left" | "right" | null>(null);
   const [filters, setFilters] = useState<{
     verifiedOnly: boolean;
     activeRecently: boolean;
@@ -292,6 +317,31 @@ const Main = () => {
   const currentProfile = profiles[currentProfileIndex];
   const hasMoreProfiles = currentProfileIndex < profiles.length;
 
+  // Swipeable handlers for touch gestures
+  const swipeHandlers = useSwipeable({
+    onSwipedLeft: () => {
+      if (!isProcessingAction && currentProfile) {
+        setSwipeDirection("left");
+        setTimeout(() => {
+          handlePass();
+          setSwipeDirection(null);
+        }, 300);
+      }
+    },
+    onSwipedRight: () => {
+      if (!isProcessingAction && currentProfile) {
+        setSwipeDirection("right");
+        setTimeout(() => {
+          handleLike();
+          setSwipeDirection(null);
+        }, 300);
+      }
+    },
+    preventScrollOnSwipe: true,
+    trackMouse: true,
+    trackTouch: true,
+  });
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-background to-secondary flex items-center justify-center px-4">
@@ -410,17 +460,44 @@ const Main = () => {
       {/* Profile Feed */}
       <div className="flex-1 flex items-center justify-center px-4 py-8">
         {currentProfile ? (
-          <div className="w-full">
-            <ProfileCard
-              profile={currentProfile}
-              onLike={handleLike}
-              onPass={handlePass}
-            />
+          <div className="w-full" {...swipeHandlers}>
+            <div
+              className={`transition-transform duration-300 ${
+                swipeDirection === "right"
+                  ? "translate-x-8 rotate-6"
+                  : swipeDirection === "left"
+                  ? "-translate-x-8 -rotate-6"
+                  : ""
+              }`}
+            >
+              <ProfileCard
+                profile={currentProfile}
+                onLike={handleLike}
+                onPass={handlePass}
+              />
+            </div>
+            
+            {/* Swipe hints */}
+            {swipeDirection === "right" && (
+              <div className="absolute top-20 left-8 bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-xl rotate-12 shadow-lg">
+                LIKE 💚
+              </div>
+            )}
+            {swipeDirection === "left" && (
+              <div className="absolute top-20 right-8 bg-red-500 text-white px-4 py-2 rounded-lg font-bold text-xl -rotate-12 shadow-lg">
+                PASS ❌
+              </div>
+            )}
             
             {/* Profile counter */}
             <div className="text-center mt-4 text-sm text-muted-foreground">
               {currentProfileIndex + 1} of {profiles.length}
               {isLoadingMore && " • Loading more..."}
+            </div>
+            
+            {/* Swipe instruction */}
+            <div className="text-center mt-2 text-xs text-muted-foreground">
+              👉 Swipe right to like, left to pass
             </div>
           </div>
         ) : (

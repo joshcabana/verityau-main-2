@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -23,18 +23,21 @@ interface TypingStatus {
   user_name: string;
 }
 
-interface ChatStubProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  matchId: string;
-  matchName: string;
-  matchPhoto?: string;
+interface MatchInfo {
+  id: string;
+  user1: string;
+  user2: string;
+  profile_name: string;
+  profile_photo: string;
 }
 
-export const ChatStub = ({ open, onOpenChange, matchId, matchName, matchPhoto }: ChatStubProps) => {
+export default function Chat() {
+  const { id: matchId } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const { user } = useAuth();
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
+  const [matchInfo, setMatchInfo] = useState<MatchInfo | null>(null);
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
   const [typingUsers, setTypingUsers] = useState<TypingStatus[]>([]);
@@ -43,8 +46,9 @@ export const ChatStub = ({ open, onOpenChange, matchId, matchName, matchPhoto }:
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    if (!open || !matchId || !user) return;
+    if (!matchId || !user) return;
 
+    loadMatchInfo();
     loadMessages();
     setupRealtimeSubscription();
 
@@ -57,11 +61,45 @@ export const ChatStub = ({ open, onOpenChange, matchId, matchName, matchPhoto }:
         clearTimeout(typingTimeoutRef.current);
       }
     };
-  }, [open, matchId, user]);
+  }, [matchId, user]);
 
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  const loadMatchInfo = async () => {
+    if (!user || !matchId) return;
+
+    try {
+      const { data: match, error: matchError } = await supabase
+        .from("matches")
+        .select("id, user1, user2")
+        .eq("id", matchId)
+        .single();
+
+      if (matchError) throw matchError;
+
+      // Get the other user's profile
+      const otherUserId = match.user1 === user.id ? match.user2 : match.user1;
+      const { data: profile, error: profileError } = await supabase
+        .from("profiles")
+        .select("name, photos")
+        .eq("user_id", otherUserId)
+        .single();
+
+      if (profileError) throw profileError;
+
+      setMatchInfo({
+        id: match.id,
+        user1: match.user1,
+        user2: match.user2,
+        profile_name: profile.name,
+        profile_photo: profile.photos?.[0] || "",
+      });
+    } catch (error) {
+      console.error("Error loading match info:", error);
+    }
+  };
 
   const loadMessages = async () => {
     try {
@@ -197,103 +235,103 @@ export const ChatStub = ({ open, onOpenChange, matchId, matchName, matchPhoto }:
     return date.toLocaleDateString();
   };
 
-  return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl h-[600px] p-0 flex flex-col">
-        {/* Header */}
-        <DialogHeader className="border-b border-border p-4 flex-shrink-0">
-          <div className="flex items-center gap-3">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => onOpenChange(false)}
-              className="mr-2"
-            >
-              <ArrowLeft className="w-4 h-4" />
-            </Button>
-            <Avatar className="w-10 h-10">
-              <AvatarImage src={matchPhoto} alt={matchName} />
-              <AvatarFallback className="bg-primary/10 text-primary">
-                {matchName?.charAt(0) || "?"}
-              </AvatarFallback>
-            </Avatar>
-            <DialogTitle>{matchName}</DialogTitle>
-          </div>
-        </DialogHeader>
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-background">
+        <p className="text-muted-foreground">Loading chat...</p>
+      </div>
+    );
+  }
 
-        {/* Messages */}
-        <ScrollArea className="flex-1 p-4">
-          {loading ? (
-            <div className="flex items-center justify-center h-full">
-              <p className="text-muted-foreground">Loading messages...</p>
+  return (
+    <div className="flex flex-col h-screen bg-background">
+      {/* Header */}
+      <div className="border-b border-border p-4 flex-shrink-0 bg-card">
+        <div className="flex items-center gap-3 max-w-4xl mx-auto">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => navigate("/matches")}
+            className="mr-2"
+          >
+            <ArrowLeft className="w-4 h-4" />
+          </Button>
+          <Avatar className="w-10 h-10">
+            <AvatarImage src={matchInfo?.profile_photo} alt={matchInfo?.profile_name} />
+            <AvatarFallback className="bg-primary/10 text-primary">
+              {matchInfo?.profile_name?.charAt(0) || "?"}
+            </AvatarFallback>
+          </Avatar>
+          <h1 className="text-lg font-semibold">{matchInfo?.profile_name}</h1>
+        </div>
+      </div>
+
+      {/* Messages */}
+      <ScrollArea className="flex-1 p-4">
+        <div className="max-w-4xl mx-auto space-y-4">
+          {messages.length === 0 ? (
+            <div className="flex items-center justify-center h-full pt-20">
+              <p className="text-muted-foreground">No messages yet. Say hi! 👋</p>
             </div>
           ) : (
-            <div className="space-y-4">
-              {messages.length === 0 ? (
-                <div className="flex items-center justify-center h-full">
-                  <p className="text-muted-foreground">No messages yet. Say hi! 👋</p>
+            messages.map((msg) => {
+              const isOwnMessage = msg.sender_id === user?.id;
+              return (
+                <div
+                  key={msg.id}
+                  className={`flex ${isOwnMessage ? "justify-end" : "justify-start"}`}
+                >
+                  <div
+                    className={`max-w-[70%] rounded-2xl px-4 py-2 ${
+                      isOwnMessage
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-secondary text-secondary-foreground"
+                    }`}
+                  >
+                    <p className="text-sm break-words">{msg.content}</p>
+                    <p className="text-xs mt-1 opacity-70">
+                      {formatTimestamp(msg.created_at)}
+                    </p>
+                  </div>
                 </div>
-              ) : (
-                messages.map((msg) => {
-                  const isOwnMessage = msg.sender_id === user?.id;
-                  return (
-                    <div
-                      key={msg.id}
-                      className={`flex ${isOwnMessage ? "justify-end" : "justify-start"}`}
-                    >
-                      <div
-                        className={`max-w-[70%] rounded-2xl px-4 py-2 ${
-                          isOwnMessage
-                            ? "bg-primary text-primary-foreground"
-                            : "bg-secondary text-secondary-foreground"
-                        }`}
-                      >
-                        <p className="text-sm break-words">{msg.content}</p>
-                        <p className="text-xs mt-1 opacity-70">
-                          {formatTimestamp(msg.created_at)}
-                        </p>
-                      </div>
-                    </div>
-                  );
-                })
-              )}
-              <div ref={messagesEndRef} />
-            </div>
+              );
+            })
           )}
-        </ScrollArea>
-
-        {/* Typing Indicator */}
-        {typingUsers.length > 0 && (
-          <div className="px-4 py-2 text-sm text-muted-foreground italic">
-            {typingUsers[0].user_name} is typing...
-          </div>
-        )}
-
-        {/* Input */}
-        <div className="border-t border-border p-4 flex-shrink-0">
-          <form onSubmit={handleSend} className="flex items-center gap-2">
-            <Input
-              placeholder="Type a message..."
-              value={message}
-              onChange={(e) => {
-                setMessage(e.target.value);
-                handleTyping();
-              }}
-              onKeyPress={(e) => e.key === "Enter" && !e.shiftKey && handleSend()}
-              className="flex-1"
-              disabled={sending}
-            />
-            <Button
-              type="submit"
-              size="icon"
-              disabled={!message.trim() || sending}
-              className="btn-premium"
-            >
-              <Send className="w-4 h-4" />
-            </Button>
-          </form>
+          <div ref={messagesEndRef} />
         </div>
-      </DialogContent>
-    </Dialog>
+      </ScrollArea>
+
+      {/* Typing Indicator */}
+      {typingUsers.length > 0 && (
+        <div className="px-4 py-2 text-sm text-muted-foreground italic max-w-4xl mx-auto w-full">
+          {typingUsers[0].user_name} is typing...
+        </div>
+      )}
+
+      {/* Input */}
+      <div className="border-t border-border p-4 flex-shrink-0 bg-card">
+        <form onSubmit={handleSend} className="flex items-center gap-2 max-w-4xl mx-auto">
+          <Input
+            placeholder="Type a message..."
+            value={message}
+            onChange={(e) => {
+              setMessage(e.target.value);
+              handleTyping();
+            }}
+            onKeyPress={(e) => e.key === "Enter" && !e.shiftKey && handleSend()}
+            className="flex-1"
+            disabled={sending}
+          />
+          <Button
+            type="submit"
+            size="icon"
+            disabled={!message.trim() || sending}
+            className="btn-premium"
+          >
+            <Send className="w-4 h-4" />
+          </Button>
+        </form>
+      </div>
+    </div>
   );
-};
+}

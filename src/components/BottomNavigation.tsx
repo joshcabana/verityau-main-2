@@ -61,14 +61,14 @@ export function BottomNavigation() {
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => navigate("/profile/edit")}
+            onClick={() => navigate("/profile")}
             className={cn(
               "flex-col h-auto py-2 px-3 gap-1",
-              isActive("/profile/edit") && "text-primary"
+              (isActive("/profile") || isActive("/profile/edit")) && "text-primary"
             )}
           >
             <Settings className="h-5 w-5" />
-            <span className="text-xs">Settings</span>
+            <span className="text-xs">Profile</span>
           </Button>
         </div>
       </div>

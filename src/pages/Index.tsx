@@ -649,6 +649,10 @@ const Index = () => {
                 Terms
               </a>
               <span className="text-white/40">·</span>
+              <a href="/admin" className="hover:text-primary transition-colors">
+                Admin
+              </a>
+              <span className="text-white/40">·</span>
               <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
                 Instagram
               </a>
