@@ -52,6 +52,13 @@ export const useAuth = () => {
       return { error };
     }
 
+    // Check if email confirmation is required
+    if (data.user && !data.user.email_confirmed_at) {
+      toast.success("Account created! Please verify your email.");
+      setTimeout(() => navigate("/verify-email"), 500);
+      return { data, error: null };
+    }
+
     toast.success("Account created! Redirecting to onboarding...");
     setTimeout(() => navigate("/onboarding"), 500);
     return { data, error: null };
@@ -66,6 +73,13 @@ export const useAuth = () => {
     if (error) {
       toast.error(error.message);
       return { error };
+    }
+
+    // Check if email is verified
+    if (!data.user.email_confirmed_at) {
+      toast.error("Please verify your email before signing in.");
+      navigate("/verify-email");
+      return { data, error: null };
     }
 
     // Check if user has completed onboarding

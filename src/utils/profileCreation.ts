@@ -2,6 +2,32 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { geocodeCity, coordinatesToPostGIS } from "./geocoding";
 
+/**
+ * Moderate photo using AWS Rekognition via edge function
+ */
+async function moderatePhoto(imageUrl: string): Promise<{appropriate: boolean; message: string}> {
+  try {
+    const { data, error } = await supabase.functions.invoke('moderate-photo', {
+      body: { imageUrl },
+    });
+
+    if (error) {
+      console.error('Moderation error:', error);
+      // Fail open for beta - allow image if moderation fails
+      return { appropriate: true, message: 'Moderation unavailable' };
+    }
+
+    return {
+      appropriate: data.appropriate,
+      message: data.message || 'Image moderated',
+    };
+  } catch (error) {
+    console.error('Photo moderation failed:', error);
+    // Fail open for beta
+    return { appropriate: true, message: 'Moderation unavailable' };
+  }
+}
+
 export interface OnboardingData {
   dateOfBirth?: Date;
   name: string;
@@ -41,6 +67,18 @@ export async function uploadFile(
     const { data: { publicUrl } } = supabase.storage
       .from(bucket)
       .getPublicUrl(fileName);
+
+    // Moderate photo if it's an image
+    if (bucket === 'photos') {
+      const moderation = await moderatePhoto(publicUrl);
+      
+      if (!moderation.appropriate) {
+        // Delete the inappropriate image
+        await supabase.storage.from(bucket).remove([fileName]);
+        
+        throw new Error('Photo contains inappropriate content and was rejected. Please upload a different image.');
+      }
+    }
 
     return publicUrl;
   } catch (error) {

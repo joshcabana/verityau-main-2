@@ -1,5 +1,6 @@
 import { supabase } from "@/integrations/supabase/client";
 import { retryAsync, isOnline } from "./retryUtils";
+import { checkRateLimit, clientSideRateLimit } from "./rateLimit";
 
 export interface Profile {
   id: string;
@@ -154,9 +155,19 @@ export const fetchMatchingProfiles = async (
 export const likeProfile = async (
   fromUserId: string,
   toUserId: string
-): Promise<{ isMatch: boolean; matchId?: string }> => {
+): Promise<{ isMatch: boolean; matchId?: string; error?: string }> => {
   if (!isOnline()) {
     throw new Error("You are offline. Please check your internet connection.");
+  }
+
+  // Check rate limit (both client-side and server-side)
+  if (!clientSideRateLimit('like', 5)) {
+    throw new Error("You're liking too fast! Please wait a minute.");
+  }
+
+  const rateLimitCheck = await checkRateLimit('like');
+  if (!rateLimitCheck.allowed) {
+    throw new Error(rateLimitCheck.error || "Rate limit exceeded");
   }
 
   return await retryAsync(

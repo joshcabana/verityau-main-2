@@ -31,7 +31,7 @@ import conversationIllustration from "@/assets/conversation-illustration.png";
 
 const SocialShareButtons = ({ variant = "default" }: { variant?: "default" | "success" }) => {
   const shareText = "Finally a dating app that forces a 10-minute video date first. Joining Verity before it blows up";
-  const shareUrl = "https://verityau.lovable.app";
+  const shareUrl = "https://getverity.com.au";
   const { toast } = useToast();
 
   const handleTwitterShare = () => {

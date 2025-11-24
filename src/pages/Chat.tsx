@@ -8,6 +8,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import type { RealtimeChannel } from "@supabase/supabase-js";
+import { checkRateLimit, clientSideRateLimit } from "@/utils/rateLimit";
+import { toast } from "sonner";
 
 interface Message {
   id: string;
@@ -162,6 +164,18 @@ export default function Chat() {
   const handleSend = async (e?: React.FormEvent) => {
     e?.preventDefault();
     if (!message.trim() || !user || sending) return;
+
+    // Check rate limit
+    if (!clientSideRateLimit('message', 5)) {
+      toast.error("You're sending messages too fast! Please wait a minute.");
+      return;
+    }
+
+    const rateLimitCheck = await checkRateLimit('message');
+    if (!rateLimitCheck.allowed) {
+      toast.error(rateLimitCheck.error || "Rate limit exceeded");
+      return;
+    }
 
     setSending(true);
     const messageText = message.trim();

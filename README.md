@@ -1,39 +1,41 @@
-# Welcome to your Lovable project
+# Verity - AI-Facilitated Video Dating
 
-## Project info
+## Project Info
 
-**URL**: https://lovable.dev/projects/aab47ad7-3045-495f-8a7d-c339a1a7a7f5
+**Live URL**: https://getverity.com.au
+**Built with**: React, TypeScript, Supabase (in Canberra, Australia)
 
-## How can I edit this code?
+## About Verity
 
-There are several ways of editing your application.
+Verity is a revolutionary dating app that prioritizes authentic connections through AI-facilitated 10-minute video dates before unlocking chat. No endless swiping, no ghosting - just real conversations with real people.
 
-**Use Lovable**
+## Local Development
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/aab47ad7-3045-495f-8a7d-c339a1a7a7f5) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+Clone the repository and start developing:
 
 The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
 
-Follow these steps:
-
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+# Clone the repository
+git clone https://github.com/joshcabana/verityau-main-2.git
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+# Navigate to the project directory
+cd verityau-main-2
 
-# Step 3: Install the necessary dependencies.
-npm i
+# Install dependencies
+npm install
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start the development server
 npm run dev
+```
+
+## Environment Variables
+
+Create a `.env` file with:
+
+```env
+VITE_SUPABASE_URL=your_supabase_url
+VITE_SUPABASE_ANON_KEY=your_anon_key
 ```
 
 **Edit a file directly in GitHub**
@@ -50,24 +52,37 @@ npm run dev
 - Click on "New codespace" to launch a new Codespace environment.
 - Edit files directly within the Codespace and commit and push your changes once you're done.
 
-## What technologies are used for this project?
+## Tech Stack
 
-This project is built with:
+- **Frontend**: React 18, TypeScript, Vite
+- **UI**: Tailwind CSS, shadcn/ui components
+- **Backend**: Supabase (PostgreSQL, Auth, Realtime, Storage)
+- **Video**: Daily.co API for video calls
+- **Moderation**: AWS Rekognition for photo safety
+- **Payments**: Stripe (premium features)
+- **Deployment**: Vercel
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## Deployment
 
-## How can I deploy this project?
+Verity is deployed on Vercel with automatic deployments from the main branch.
 
-Simply open [Lovable](https://lovable.dev/projects/aab47ad7-3045-495f-8a7d-c339a1a7a7f5) and click on Share -> Publish.
+```sh
+# Deploy to production
+vercel --prod
+```
 
-## Can I connect a custom domain to my Lovable project?
+## Features
 
-Yes, you can!
+- ✅ Email verification required
+- ✅ AI-facilitated 10-minute video dates
+- ✅ Real-time chat (unlocked after successful date)
+- ✅ Photo moderation with AWS Rekognition
+- ✅ Rate limiting (5 likes/messages per minute)
+- ✅ Admin panel for content moderation
+- ✅ Swipeable profile cards with animations
+- ✅ Real-time notifications
+- ✅ Location-based matching (PostGIS)
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## License
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+© 2025 Verity Australia. All rights reserved.

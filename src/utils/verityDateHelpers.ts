@@ -140,3 +140,26 @@ export async function getPendingVerityDates(userId: string) {
     return [];
   }
 }
+
+/**
+ * Accept a Verity Date and create the Daily.co room
+ */
+export async function acceptVerityDate(verityDateId: string): Promise<{ room_url?: string; error?: string }> {
+  try {
+    // Call edge function to create Daily.co room
+    const { data, error } = await supabase.functions.invoke('create-daily-room', {
+      body: { verityDateId },
+    });
+
+    if (error) {
+      console.error('Error creating Daily room:', error);
+      return { error: 'Failed to create video room' };
+    }
+
+    return { room_url: data.room_url };
+  } catch (error) {
+    console.error('Error in acceptVerityDate:', error);
+    return { error: error instanceof Error ? error.message : 'Unknown error' };
+  }
+}
+
