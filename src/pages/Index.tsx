@@ -1,5 +1,4 @@
 import { Suspense, lazy, useState } from "react";
-import { useAuth } from "@/hooks/useAuth";
 import {
   Dialog,
   DialogContent,
@@ -10,7 +9,6 @@ import {
 
 // Import critical above-the-fold components immediately
 import { HeroSection } from "@/components/landing";
-import { AuthCTASection } from "@/components/landing";
 import { SectionErrorBoundary } from "@/components/landing/ErrorBoundary";
 
 // Lazy load below-the-fold sections for better performance
@@ -33,7 +31,6 @@ function SectionLoader() {
 
 const Index = () => {
   const [showSuccess, setShowSuccess] = useState(false);
-  const { user, loading } = useAuth();
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -53,9 +50,6 @@ const Index = () => {
 
       {/* Hero Section - Above the fold */}
       <HeroSection />
-
-      {/* Auth CTA Section - Show when not logged in */}
-      {!loading && !user && <AuthCTASection />}
 
       {/* Lazy-loaded sections below the fold */}
       <Suspense fallback={<SectionLoader />}>

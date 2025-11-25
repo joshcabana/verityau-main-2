@@ -16,7 +16,7 @@ export const HeroSection = () => {
         {/* Headline */}
         <StaggerItem>
           <h1 className="hero-text text-7xl md:text-9xl mb-6 text-white">
-            Dating,
+            Real People.
             <br />
             <motion.span
               className="bg-gradient-to-r from-[hsl(var(--gold-light))] to-[hsl(var(--gold))] bg-clip-text text-transparent inline-block"
@@ -24,7 +24,7 @@ export const HeroSection = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.6, ease: "easeOut" }}
             >
-              Face First.
+              Real Time.
             </motion.span>
           </h1>
         </StaggerItem>
@@ -32,9 +32,7 @@ export const HeroSection = () => {
         {/* Subtext */}
         <StaggerItem>
           <p className="body-large text-white/70 mb-12 max-w-3xl mx-auto">
-            No more guessing. No more wasted weeks.
-            <br />
-            <span className="font-semibold text-white">Match. Video date. Decide together.</span>
+            A dating experience built on presence, not profiles.
           </p>
         </StaggerItem>
 
