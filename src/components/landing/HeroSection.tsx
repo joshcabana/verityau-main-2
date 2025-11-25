@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import { StaggerContainer, StaggerItem } from "@/components/motion";
 import { SignupCTA } from "./SignupCTA";
-import { AnimatedCounter } from "./AnimatedCounter";
 
 export const HeroSection = () => {
   return (
@@ -14,20 +13,6 @@ export const HeroSection = () => {
 
       {/* Content box */}
       <StaggerContainer className="relative z-10 max-w-4xl mx-auto text-center px-6 py-20">
-        {/* Badge with counter */}
-        <StaggerItem>
-          <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white/5 border border-white/10 shadow-sm mb-8">
-            <motion.div
-              className="w-2 h-2 bg-accent rounded-full"
-              animate={{ scale: [1, 1.2, 1], opacity: [1, 0.7, 1] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            />
-            <span className="text-sm font-medium text-white/80">
-              <AnimatedCounter target={18274} /> Australians choosing real connection
-            </span>
-          </div>
-        </StaggerItem>
-
         {/* Headline */}
         <StaggerItem>
           <h1 className="hero-text text-7xl md:text-9xl mb-6 text-white">
