@@ -15,7 +15,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ArrowLeft, Save, Loader2, Upload, X, Plus } from "lucide-react";
+import { ArrowLeft, Save, Loader2, Upload, X, Plus, AlertTriangle } from "lucide-react";
+import { DeleteAccountDialog } from "@/components/DeleteAccountDialog";
 import { toast } from "sonner";
 import { geocodeCity } from "@/utils/geocoding";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/motion";
@@ -45,6 +46,7 @@ export default function Profile() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   const [profileData, setProfileData] = useState<ProfileData>({
     name: "",
@@ -610,7 +612,35 @@ export default function Profile() {
           </CardContent>
         </Card>
         </StaggerItem>
+
+        {/* Danger Zone */}
+        <StaggerItem>
+          <Card className="border-destructive/30">
+            <CardHeader>
+              <CardTitle className="text-destructive flex items-center gap-2">
+                <AlertTriangle className="h-5 w-5" />
+                Danger Zone
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground mb-4">
+                Once you delete your account, there is no going back. Please be certain.
+              </p>
+              <Button
+                variant="destructive"
+                onClick={() => setDeleteDialogOpen(true)}
+              >
+                Delete Account
+              </Button>
+            </CardContent>
+          </Card>
+        </StaggerItem>
       </StaggerContainer>
+
+      <DeleteAccountDialog
+        open={deleteDialogOpen}
+        onOpenChange={setDeleteDialogOpen}
+      />
     </FadeIn>
   );
 }

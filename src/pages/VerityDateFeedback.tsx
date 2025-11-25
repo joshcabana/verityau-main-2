@@ -1,16 +1,21 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Heart, Meh, X, Sparkles, AlertCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import confetti from "canvas-confetti";
 import { ReportDialog } from "@/components/ReportDialog";
+import { FadeIn, StaggerContainer, StaggerItem } from "@/components/motion";
+import { spring, duration, easing } from "@/lib/motion";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 const VerityDateFeedback = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const prefersReducedMotion = useReducedMotion();
   const verityDateId = searchParams.get("id");
   const [submitting, setSubmitting] = useState(false);
   const [partnerName, setPartnerName] = useState<string>("");

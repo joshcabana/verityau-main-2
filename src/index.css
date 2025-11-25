@@ -550,8 +550,44 @@ All colors MUST be HSL.
     display: none;
   }
   
+  /* Safe area padding for mobile devices */
   .safe-area-bottom {
-    padding-bottom: env(safe-area-inset-bottom);
+    padding-bottom: env(safe-area-inset-bottom, 16px);
+  }
+  
+  .safe-area-top {
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+  
+  .pb-safe {
+    padding-bottom: max(env(safe-area-inset-bottom, 0px), 16px);
+  }
+  
+  .pt-safe {
+    padding-top: max(env(safe-area-inset-top, 0px), 16px);
+  }
+  
+  /* Keyboard-aware input for mobile */
+  .keyboard-aware {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: hsl(var(--card));
+    border-top: 1px solid hsl(var(--border));
+    padding: 1rem;
+    padding-bottom: max(env(safe-area-inset-bottom, 0px), 1rem);
+  }
+  
+  /* Touch target sizing - ensure minimum 44px */
+  .touch-target {
+    min-width: 44px;
+    min-height: 44px;
+  }
+  
+  .touch-target-lg {
+    min-width: 48px;
+    min-height: 48px;
   }
   
   /* Smooth scroll */

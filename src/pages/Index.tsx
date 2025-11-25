@@ -771,7 +771,7 @@ const Index = () => {
         
         <ScrollReveal className="relative max-w-5xl mx-auto text-center">
           {/* Massive Headline */}
-          <h2 className="hero-text text-5xl md:text-[80px] text-ink mb-16">
+          <h2 className="hero-text text-3xl sm:text-4xl md:text-5xl lg:text-[80px] text-ink mb-8 sm:mb-12 md:mb-16">
             Be the first in Canberra to date someone real.
           </h2>
 

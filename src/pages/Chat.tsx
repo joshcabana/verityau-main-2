@@ -378,7 +378,7 @@ export default function Chat() {
 
       {/* Input */}
       <motion.div 
-        className="border-t border-border p-4 flex-shrink-0 bg-card"
+        className="border-t border-border p-4 pb-safe flex-shrink-0 bg-card"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={prefersReducedMotion ? { duration: 0.05 } : { duration: duration.normal, ease: easing.easeOut, delay: 0.1 }}

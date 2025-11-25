@@ -168,7 +168,7 @@ const VerityDateCall = () => {
 
       {/* Icebreaker prompt overlay with fade transitions */}
       <div 
-        className={`absolute top-20 left-1/2 -translate-x-1/2 z-50 max-w-md w-full mx-4 bg-gradient-to-br from-primary/90 to-secondary/90 backdrop-blur-md border border-primary/30 rounded-2xl p-6 shadow-2xl transition-all duration-500 ${
+        className={`absolute top-20 sm:top-20 left-4 right-4 sm:left-1/2 sm:right-auto sm:-translate-x-1/2 z-50 max-w-md sm:w-full bg-gradient-to-br from-primary/90 to-secondary/90 backdrop-blur-md border border-primary/30 rounded-2xl p-4 sm:p-6 shadow-2xl transition-all duration-500 ${
           icebreakerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'
         }`}
       >
