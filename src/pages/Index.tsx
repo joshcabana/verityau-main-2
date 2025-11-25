@@ -1,11 +1,4 @@
-import { Suspense, lazy, useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Suspense, lazy } from "react";
 
 // Import critical above-the-fold components immediately
 import { HeroSection } from "@/components/landing";
@@ -30,24 +23,8 @@ function SectionLoader() {
 }
 
 const Index = () => {
-  const [showSuccess, setShowSuccess] = useState(false);
-
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* Success Dialog */}
-      <Dialog open={showSuccess} onOpenChange={setShowSuccess}>
-        <DialogContent className="max-w-3xl text-center border-none bg-card shadow-elegant">
-          <DialogHeader className="space-y-6">
-            <DialogTitle className="hero-text text-3xl md:text-6xl mb-4">
-              You're in! Lifetime unlimited Verity Dates locked for you.
-            </DialogTitle>
-            <DialogDescription className="body-large text-muted-foreground leading-relaxed">
-              Tell every single friend right now — spots are going fast.
-            </DialogDescription>
-          </DialogHeader>
-        </DialogContent>
-      </Dialog>
-
       {/* Hero Section - Above the fold */}
       <HeroSection />
 

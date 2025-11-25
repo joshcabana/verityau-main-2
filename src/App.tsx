@@ -29,6 +29,7 @@ const Checkout = lazy(() => import("./pages/Checkout"));
 const Privacy = lazy(() => import("./pages/Privacy"));
 const Terms = lazy(() => import("./pages/Terms"));
 const Safety = lazy(() => import("./pages/Safety"));
+const Vision = lazy(() => import("./pages/Vision"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const ProfileEdit = lazy(() => import("./pages/ProfileEdit"));
 const Profile = lazy(() => import("./pages/Profile"));
@@ -77,6 +78,7 @@ function AnimatedRoutes() {
           <Route path="/privacy" element={<PageTransition><Privacy /></PageTransition>} />
           <Route path="/terms" element={<PageTransition><Terms /></PageTransition>} />
           <Route path="/safety" element={<PageTransition><Safety /></PageTransition>} />
+          <Route path="/vision" element={<PageTransition><Vision /></PageTransition>} />
           
           {/* Protected Routes */}
           <Route path="/onboarding" element={<ProtectedRoute><PageTransition><Onboarding /></PageTransition></ProtectedRoute>} />
@@ -134,10 +136,10 @@ const App = () => (
         <BrowserRouter>
           <ErrorBoundary>
             <AnimatedRoutes />
-          </ErrorBoundary>
-        </BrowserRouter>
-      </TooltipProvider>
-    </QueryClientProvider>
+        </ErrorBoundary>
+      </BrowserRouter>
+    </TooltipProvider>
+  </QueryClientProvider>
   </Sentry.ErrorBoundary>
 );
 

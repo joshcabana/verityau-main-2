@@ -16,6 +16,10 @@ export const Footer = () => {
 
           {/* Center: Links */}
           <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6 text-primary-foreground/60 text-sm md:text-base">
+            <Link to="/vision" className="gold-underline hover:text-accent transition-smooth">
+              Our Vision
+            </Link>
+            <span className="text-primary-foreground/40">·</span>
             <Link to="/safety" className="gold-underline hover:text-accent transition-smooth">
               Safety
             </Link>

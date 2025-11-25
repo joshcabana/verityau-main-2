@@ -198,8 +198,8 @@ const Privacy = () => {
                   privacy@getverity.com.au
                 </a>
               </p>
-              <p><strong className="text-white">Postal Address:</strong> Verity Australia Pty Ltd, Canberra, ACT, Australia</p>
-              <p className="mt-4">
+              <p className="text-white/70"><strong className="text-white">Postal Address:</strong> Verity Australia Pty Ltd, Canberra, ACT, Australia</p>
+              <p className="mt-4 text-white/70">
                 If you are not satisfied with our response, you may lodge a complaint with the Office of the Australian Information Commissioner (OAIC) at{" "}
                 <a href="https://www.oaic.gov.au" target="_blank" rel="noopener noreferrer" className="text-accent hover:text-accent/80 underline transition-smooth">
                   www.oaic.gov.au
