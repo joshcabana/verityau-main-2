@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -17,6 +18,9 @@ import {
 import { ArrowLeft, Save, Loader2, Upload, X, Plus } from "lucide-react";
 import { toast } from "sonner";
 import { geocodeCity } from "@/utils/geocoding";
+import { FadeIn, StaggerContainer, StaggerItem } from "@/components/motion";
+import { spring, duration, easing } from "@/lib/motion";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 interface ProfileData {
   name: string;
@@ -37,6 +41,7 @@ interface PreferencesData {
 export default function Profile() {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const prefersReducedMotion = useReducedMotion();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -302,65 +307,92 @@ export default function Profile() {
   const ageRange = parseAgeRange();
 
   return (
-    <div className="min-h-screen bg-background">
+    <FadeIn className="min-h-screen bg-background">
       {/* Header */}
-      <header className="sticky top-0 z-10 bg-card border-b border-border">
+      <motion.header 
+        className="sticky top-0 z-10 bg-card border-b border-border"
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={prefersReducedMotion ? { duration: 0.05 } : { duration: duration.normal, ease: easing.easeOut }}
+      >
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => navigate(-1)}
+          <motion.div
+            whileHover={prefersReducedMotion ? {} : { scale: 1.1 }}
+            whileTap={prefersReducedMotion ? {} : { scale: 0.95 }}
           >
-            <ArrowLeft className="h-5 w-5" />
-          </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => navigate(-1)}
+            >
+              <ArrowLeft className="h-5 w-5" />
+            </Button>
+          </motion.div>
           <h1 className="text-xl font-semibold">Edit Profile</h1>
-          <Button
-            onClick={handleSave}
-            disabled={saving}
-            className="btn-premium"
+          <motion.div
+            whileHover={prefersReducedMotion ? {} : { scale: 1.02 }}
+            whileTap={prefersReducedMotion ? {} : { scale: 0.98 }}
+            transition={spring.default}
           >
-            {saving ? (
-              <Loader2 className="h-5 w-5 animate-spin" />
-            ) : (
-              <>
-                <Save className="h-4 w-4 mr-2" />
-                Save
-              </>
-            )}
-          </Button>
+            <Button
+              onClick={handleSave}
+              disabled={saving}
+              className="btn-premium"
+            >
+              {saving ? (
+                <Loader2 className="h-5 w-5 animate-spin" />
+              ) : (
+                <>
+                  <Save className="h-4 w-4 mr-2" />
+                  Save
+                </>
+              )}
+            </Button>
+          </motion.div>
         </div>
-      </header>
+      </motion.header>
 
-      <main className="container mx-auto px-4 py-6 max-w-3xl space-y-6">
+      <StaggerContainer className="container mx-auto px-4 py-6 max-w-3xl space-y-6" staggerDelay="fast" initialDelay={0.1}>
         {/* Photos Section */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Photos</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-3 gap-4">
-              {profileData.photos.map((photo, index) => (
-                <div key={`photo-${index}-${photo.slice(-20)}`} className="relative aspect-square">
-                  <img
-                    src={photo}
-                    alt={`Photo ${index + 1}`}
-                    className="w-full h-full object-cover rounded-lg"
-                  />
-                  <Button
-                    variant="destructive"
-                    size="icon"
-                    className="absolute top-2 right-2 h-8 w-8"
-                    onClick={() => handleDeletePhoto(photo, index)}
+        <StaggerItem>
+          <Card>
+            <CardHeader>
+              <CardTitle>Photos</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-3 gap-4">
+                {profileData.photos.map((photo, index) => (
+                  <motion.div 
+                    key={`photo-${index}-${photo.slice(-20)}`} 
+                    className="relative aspect-square"
+                    whileHover={prefersReducedMotion ? {} : { scale: 1.03 }}
+                    transition={spring.gentle}
                   >
-                    <X className="h-4 w-4" />
-                  </Button>
-                  {index === 0 && (
-                    <div className="absolute bottom-2 left-2 bg-primary text-primary-foreground text-xs px-2 py-1 rounded">
-                      Primary
-                    </div>
-                  )}
-                </div>
-              ))}
+                    <img
+                      src={photo}
+                      alt={`Photo ${index + 1}`}
+                      className="w-full h-full object-cover rounded-lg"
+                    />
+                    <motion.div
+                      whileHover={prefersReducedMotion ? {} : { scale: 1.1 }}
+                      whileTap={prefersReducedMotion ? {} : { scale: 0.9 }}
+                    >
+                      <Button
+                        variant="destructive"
+                        size="icon"
+                        className="absolute top-2 right-2 h-8 w-8"
+                        onClick={() => handleDeletePhoto(photo, index)}
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </motion.div>
+                    {index === 0 && (
+                      <div className="absolute bottom-2 left-2 bg-primary text-primary-foreground text-xs px-2 py-1 rounded">
+                        Primary
+                      </div>
+                    )}
+                  </motion.div>
+                ))}
 
               {profileData.photos.length < 6 && (
                 <label className="aspect-square border-2 border-dashed border-border rounded-lg flex flex-col items-center justify-center cursor-pointer hover:bg-secondary/50 transition-colors">
@@ -387,8 +419,10 @@ export default function Profile() {
             </p>
           </CardContent>
         </Card>
+        </StaggerItem>
 
         {/* Basic Information */}
+        <StaggerItem>
         <Card>
           <CardHeader>
             <CardTitle>Basic Information</CardTitle>
@@ -493,8 +527,10 @@ export default function Profile() {
             </div>
           </CardContent>
         </Card>
+        </StaggerItem>
 
         {/* Preferences */}
+        <StaggerItem>
         <Card>
           <CardHeader>
             <CardTitle>Match Preferences</CardTitle>
@@ -573,7 +609,8 @@ export default function Profile() {
             </div>
           </CardContent>
         </Card>
-      </main>
-    </div>
+        </StaggerItem>
+      </StaggerContainer>
+    </FadeIn>
   );
 }

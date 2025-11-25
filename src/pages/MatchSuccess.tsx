@@ -27,8 +27,8 @@ const MatchSuccess = () => {
 
   useEffect(() => {
     // Trigger confetti animation
-    const duration = 3000;
-    const animationEnd = Date.now() + duration;
+    const confettiDuration = 3000;
+    const animationEnd = Date.now() + confettiDuration;
     const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
 
     function randomInRange(min: number, max: number) {
@@ -42,7 +42,7 @@ const MatchSuccess = () => {
         return clearInterval(interval);
       }
 
-      const particleCount = 50 * (timeLeft / duration);
+      const particleCount = 50 * (timeLeft / confettiDuration);
 
       confetti({
         ...defaults,

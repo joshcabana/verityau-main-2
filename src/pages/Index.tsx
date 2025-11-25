@@ -648,27 +648,36 @@ const Index = () => {
                 Detailed features section coming soon. We're building something special.
               </p>
               <div className="grid md:grid-cols-3 gap-8 mt-16">
-                <div className="bg-white/5 border border-white/10 rounded-2xl p-8 hover:border-accent/30 transition-smooth">
+                <motion.div 
+                  className="bg-white/5 border border-white/10 rounded-2xl p-8 hover:border-accent/30 transition-smooth"
+                  whileHover={{ scale: 1.02, transition: spring.gentle }}
+                >
                   <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center mb-4 mx-auto">
                     <Heart className="w-6 h-6 text-accent" />
                   </div>
-                  <h3 className="text-xl font-semibold text-white mb-3">Feature One</h3>
-                  <p className="text-white/60">Coming soon</p>
-                </div>
-                <div className="bg-white/5 border border-white/10 rounded-2xl p-8 hover:border-accent/30 transition-smooth">
+                  <h3 className="text-xl font-semibold text-white mb-3">Video-First Matching</h3>
+                  <p className="text-white/60">See the real person before you invest your time and emotions.</p>
+                </motion.div>
+                <motion.div 
+                  className="bg-white/5 border border-white/10 rounded-2xl p-8 hover:border-accent/30 transition-smooth"
+                  whileHover={{ scale: 1.02, transition: spring.gentle }}
+                >
                   <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center mb-4 mx-auto">
                     <Video className="w-6 h-6 text-accent" />
                   </div>
-                  <h3 className="text-xl font-semibold text-white mb-3">Feature Two</h3>
-                  <p className="text-white/60">Coming soon</p>
-                </div>
-                <div className="bg-white/5 border border-white/10 rounded-2xl p-8 hover:border-accent/30 transition-smooth">
+                  <h3 className="text-xl font-semibold text-white mb-3">10-Minute Dates</h3>
+                  <p className="text-white/60">Quick video calls to find real chemistry without wasting hours.</p>
+                </motion.div>
+                <motion.div 
+                  className="bg-white/5 border border-white/10 rounded-2xl p-8 hover:border-accent/30 transition-smooth"
+                  whileHover={{ scale: 1.02, transition: spring.gentle }}
+                >
                   <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center mb-4 mx-auto">
                     <CheckCircle2 className="w-6 h-6 text-accent" />
                   </div>
-                  <h3 className="text-xl font-semibold text-white mb-3">Feature Three</h3>
-                  <p className="text-white/60">Coming soon</p>
-                </div>
+                  <h3 className="text-xl font-semibold text-white mb-3">Verified Profiles</h3>
+                  <p className="text-white/60">Every user verified with selfie video. No catfishing, ever.</p>
+                </motion.div>
               </div>
             </div>
           </ScrollReveal>
@@ -705,44 +714,52 @@ const Index = () => {
             <h2 className="section-header text-4xl md:text-[64px] text-center mb-16 text-white">
               Frequently Asked Questions
             </h2>
-            <div className="space-y-6">
-              <div className="bg-white/5 border border-white/10 rounded-2xl p-8">
-                <h3 className="text-xl font-semibold text-white mb-3">
-                  How does Verity work?
-                </h3>
-                <p className="text-white/70 leading-relaxed">
-                  Match with someone, have a 10-minute video date, and if you both say yes, unlock chat. 
-                  No endless messaging before meeting.
-                </p>
-              </div>
-              <div className="bg-white/5 border border-white/10 rounded-2xl p-8">
-                <h3 className="text-xl font-semibold text-white mb-3">
-                  When does Verity launch?
-                </h3>
-                <p className="text-white/70 leading-relaxed">
-                  January 2026 in Canberra, Australia. Join the waitlist now to be first in line.
-                </p>
-              </div>
-              <div className="bg-white/5 border border-white/10 rounded-2xl p-8">
-                <h3 className="text-xl font-semibold text-white mb-3">
-                  Is Verity free?
-                </h3>
-                <p className="text-white/70 leading-relaxed">
-                  Free users get 5 video dates per month. Verity Plus offers unlimited dates and premium features.
-                </p>
-              </div>
-              <div className="bg-white/5 border border-white/10 rounded-2xl p-8">
-                <h3 className="text-xl font-semibold text-white mb-3">
-                  More questions?
-                </h3>
-                <p className="text-white/70 leading-relaxed">
-                  Additional FAQ content coming soon. Email us at{" "}
-                  <a href="mailto:hello@verity.au" className="text-accent hover:text-accent/80 transition-smooth">
-                    hello@verity.au
-                  </a>
-                </p>
-              </div>
-            </div>
+            <StaggerContainer className="space-y-6" staggerDelay="fast">
+              <StaggerItem>
+                <div className="bg-white/5 border border-white/10 rounded-2xl p-8">
+                  <h3 className="text-xl font-semibold text-white mb-3">
+                    How does Verity work?
+                  </h3>
+                  <p className="text-white/70 leading-relaxed">
+                    Match with someone, have a 10-minute video date, and if you both say yes, unlock chat. 
+                    No endless messaging before meeting.
+                  </p>
+                </div>
+              </StaggerItem>
+              <StaggerItem>
+                <div className="bg-white/5 border border-white/10 rounded-2xl p-8">
+                  <h3 className="text-xl font-semibold text-white mb-3">
+                    When does Verity launch?
+                  </h3>
+                  <p className="text-white/70 leading-relaxed">
+                    January 2026 in Canberra, Australia. Join the waitlist now to be first in line.
+                  </p>
+                </div>
+              </StaggerItem>
+              <StaggerItem>
+                <div className="bg-white/5 border border-white/10 rounded-2xl p-8">
+                  <h3 className="text-xl font-semibold text-white mb-3">
+                    Is Verity free?
+                  </h3>
+                  <p className="text-white/70 leading-relaxed">
+                    Free users get 5 video dates per month. Verity Plus offers unlimited dates and premium features.
+                  </p>
+                </div>
+              </StaggerItem>
+              <StaggerItem>
+                <div className="bg-white/5 border border-white/10 rounded-2xl p-8">
+                  <h3 className="text-xl font-semibold text-white mb-3">
+                    More questions?
+                  </h3>
+                  <p className="text-white/70 leading-relaxed">
+                    Additional FAQ content coming soon. Email us at{" "}
+                    <a href="mailto:hello@verity.au" className="text-accent hover:text-accent/80 transition-smooth">
+                      hello@verity.au
+                    </a>
+                  </p>
+                </div>
+              </StaggerItem>
+            </StaggerContainer>
           </ScrollReveal>
         </div>
       </section>

@@ -233,24 +233,16 @@ const Matches = () => {
             <AnimatePresence>
               {matches.map((match) => (
                 <StaggerItem key={match.id}>
-                  <motion.div
-                    layout
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, x: -100 }}
-                    transition={prefersReducedMotion ? { duration: 0.05 } : { duration: duration.normal, ease: easing.easeOut }}
-                  >
-                    <MatchCard
-                      match={match}
-                      onOpenChat={() => handleOpenChat(match)}
-                      onAcceptVerityDate={
-                        match.verity_date && !match.verity_date.scheduled_at
-                          ? () => handleAcceptVerityDate(match)
-                          : undefined
-                      }
-                      onUnmatch={() => handleUnmatchClick(match)}
-                    />
-                  </motion.div>
+                  <MatchCard
+                    match={match}
+                    onOpenChat={() => handleOpenChat(match)}
+                    onAcceptVerityDate={
+                      match.verity_date && !match.verity_date.scheduled_at
+                        ? () => handleAcceptVerityDate(match)
+                        : undefined
+                    }
+                    onUnmatch={() => handleUnmatchClick(match)}
+                  />
                 </StaggerItem>
               ))}
             </AnimatePresence>

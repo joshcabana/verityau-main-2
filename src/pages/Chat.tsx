@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -11,6 +12,9 @@ import type { RealtimeChannel } from "@supabase/supabase-js";
 import { checkRateLimit, clientSideRateLimit } from "@/utils/rateLimit";
 import { toast } from "sonner";
 import { BlockButton } from "@/components/BlockButton";
+import { FadeIn } from "@/components/motion";
+import { duration, easing, spring } from "@/lib/motion";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 interface Message {
   id: string;
@@ -39,6 +43,7 @@ export default function Chat() {
   const { id: matchId } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const prefersReducedMotion = useReducedMotion();
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [matchInfo, setMatchInfo] = useState<MatchInfo | null>(null);
@@ -261,9 +266,14 @@ export default function Chat() {
   }
 
   return (
-    <div className="flex flex-col h-screen bg-background">
+    <FadeIn className="flex flex-col h-screen bg-background">
       {/* Header */}
-      <div className="border-b border-border p-4 flex-shrink-0 bg-card">
+      <motion.div 
+        className="border-b border-border p-4 flex-shrink-0 bg-card"
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={prefersReducedMotion ? { duration: 0.05 } : { duration: duration.normal, ease: easing.easeOut }}
+      >
         <div className="flex items-center justify-between gap-3 max-w-4xl mx-auto">
           <div className="flex items-center gap-3">
             <Button
@@ -298,7 +308,7 @@ export default function Chat() {
             />
           )}
         </div>
-      </div>
+      </motion.div>
 
       {/* Messages */}
       <ScrollArea className="flex-1 p-4">
@@ -308,64 +318,109 @@ export default function Chat() {
               <p className="text-muted-foreground">No messages yet. Say hi! 👋</p>
             </div>
           ) : (
-            messages.map((msg) => {
-              const isOwnMessage = msg.sender_id === user?.id;
-              return (
-                <div
-                  key={msg.id}
-                  className={`flex ${isOwnMessage ? "justify-end" : "justify-start"}`}
-                >
-                  <div
-                    className={`max-w-[70%] rounded-2xl px-4 py-2 ${
-                      isOwnMessage
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-secondary text-secondary-foreground"
-                    }`}
+            <AnimatePresence initial={false}>
+              {messages.map((msg, index) => {
+                const isOwnMessage = msg.sender_id === user?.id;
+                return (
+                  <motion.div
+                    key={msg.id}
+                    className={`flex ${isOwnMessage ? "justify-end" : "justify-start"}`}
+                    initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, x: isOwnMessage ? 20 : -20, y: 10 }}
+                    animate={{ opacity: 1, x: 0, y: 0 }}
+                    transition={prefersReducedMotion 
+                      ? { duration: 0.05 } 
+                      : { duration: duration.normal, ease: easing.easeOut, delay: index === messages.length - 1 ? 0 : 0 }
+                    }
                   >
-                    <p className="text-sm break-words">{msg.content}</p>
-                    <p className="text-xs mt-1 opacity-70">
-                      {formatTimestamp(msg.created_at)}
-                    </p>
-                  </div>
-                </div>
-              );
-            })
+                    <motion.div
+                      className={`max-w-[70%] rounded-2xl px-4 py-2 ${
+                        isOwnMessage
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-secondary text-secondary-foreground"
+                      }`}
+                      whileHover={prefersReducedMotion ? {} : { scale: 1.02 }}
+                      transition={{ duration: duration.fast }}
+                    >
+                      <p className="text-sm break-words">{msg.content}</p>
+                      <p className="text-xs mt-1 opacity-70">
+                        {formatTimestamp(msg.created_at)}
+                      </p>
+                    </motion.div>
+                  </motion.div>
+                );
+              })}
+            </AnimatePresence>
           )}
           <div ref={messagesEndRef} />
         </div>
       </ScrollArea>
 
       {/* Typing Indicator */}
-      {typingUsers.length > 0 && (
-        <div className="px-4 py-2 text-sm text-muted-foreground italic max-w-4xl mx-auto w-full">
-          {typingUsers[0].user_name} is typing...
-        </div>
-      )}
+      <AnimatePresence>
+        {typingUsers.length > 0 && (
+          <motion.div 
+            className="px-4 py-2 text-sm text-muted-foreground italic max-w-4xl mx-auto w-full flex items-center gap-2"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={prefersReducedMotion ? { duration: 0.05 } : { duration: duration.normal, ease: easing.easeOut }}
+          >
+            <span>{typingUsers[0].user_name} is typing</span>
+            <motion.span
+              animate={prefersReducedMotion ? {} : { opacity: [0.4, 1, 0.4] }}
+              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+            >
+              ...
+            </motion.span>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Input */}
-      <div className="border-t border-border p-4 flex-shrink-0 bg-card">
+      <motion.div 
+        className="border-t border-border p-4 flex-shrink-0 bg-card"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={prefersReducedMotion ? { duration: 0.05 } : { duration: duration.normal, ease: easing.easeOut, delay: 0.1 }}
+      >
         <form onSubmit={handleSend} className="flex items-center gap-2 max-w-4xl mx-auto">
-          <Input
-            placeholder="Type a message..."
-            value={message}
-            onChange={(e) => {
-              setMessage(e.target.value);
-              handleTyping();
-            }}
-            onKeyPress={(e) => e.key === "Enter" && !e.shiftKey && handleSend()}
+          <motion.div 
             className="flex-1"
-            disabled={sending}
-          />
-          <Button
-            type="submit"
-            size="icon"
-            disabled={!message.trim() || sending}
-            className="btn-premium"
+            whileFocus={prefersReducedMotion ? {} : { scale: 1.01 }}
           >
-            <Send className="w-4 h-4" />
-          </Button>
+            <Input
+              placeholder="Type a message..."
+              value={message}
+              onChange={(e) => {
+                setMessage(e.target.value);
+                handleTyping();
+              }}
+              onKeyPress={(e) => e.key === "Enter" && !e.shiftKey && handleSend()}
+              className="flex-1 w-full"
+              disabled={sending}
+            />
+          </motion.div>
+          <motion.div
+            whileHover={prefersReducedMotion ? {} : { scale: 1.05 }}
+            whileTap={prefersReducedMotion ? {} : { scale: 0.95 }}
+            transition={spring.default}
+          >
+            <Button
+              type="submit"
+              size="icon"
+              disabled={!message.trim() || sending}
+              className="btn-premium"
+            >
+              <motion.div
+                animate={sending ? { rotate: 360 } : {}}
+                transition={{ duration: 0.5, ease: "linear", repeat: sending ? Infinity : 0 }}
+              >
+                <Send className="w-4 h-4" />
+              </motion.div>
+            </Button>
+          </motion.div>
         </form>
-      </div>
-    </div>
+      </motion.div>
+    </FadeIn>
   );
 }
