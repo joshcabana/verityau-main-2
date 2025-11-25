@@ -153,13 +153,41 @@ export async function acceptVerityDate(verityDateId: string): Promise<{ room_url
 
     if (error) {
       console.error('Error creating Daily room:', error);
-      return { error: 'Failed to create video room' };
+      
+      // Log error for monitoring
+      await supabase.from('video_call_errors').insert({
+        verity_date_id: verityDateId,
+        error_message: error.message || 'Unknown error',
+        error_code: error.code,
+        timestamp: new Date().toISOString(),
+      }).catch(logError => console.error('Failed to log video error:', logError));
+      
+      return { 
+        error: 'Video call service temporarily unavailable. Please try again in a few minutes or contact support if the issue persists.' 
+      };
+    }
+
+    if (!data?.room_url) {
+      console.error('Daily.co returned no room URL');
+      return { 
+        error: 'Failed to create video room. Please try again or contact support.' 
+      };
     }
 
     return { room_url: data.room_url };
   } catch (error) {
-    console.error('Error in acceptVerityDate:', error);
-    return { error: error instanceof Error ? error.message : 'Unknown error' };
+    console.error('Unexpected error in acceptVerityDate:', error);
+    
+    // Log critical error
+    await supabase.from('video_call_errors').insert({
+      verity_date_id: verityDateId,
+      error_message: error instanceof Error ? error.message : 'Unknown error',
+      timestamp: new Date().toISOString(),
+    }).catch(logError => console.error('Failed to log video error:', logError));
+    
+    return { 
+      error: 'An unexpected error occurred. Please refresh the page and try again.' 
+    };
   }
 }
 

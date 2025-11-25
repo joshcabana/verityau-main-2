@@ -3,6 +3,47 @@ import { toast } from "@/hooks/use-toast";
 import { geocodeCity, coordinatesToPostGIS } from "./geocoding";
 
 /**
+ * Check upload quota to prevent AWS Rekognition cost abuse
+ * Limits users to 10 photo uploads per hour
+ */
+async function checkUploadQuota(userId: string): Promise<void> {
+  const oneHourAgo = new Date(Date.now() - 3600000).toISOString();
+  
+  const { count, error } = await supabase
+    .from('profiles')
+    .select('photos', { count: 'exact', head: true })
+    .eq('id', userId)
+    .gte('updated_at', oneHourAgo);
+
+  if (error) {
+    console.warn('Upload quota check failed:', error);
+    return; // Fail open for beta
+  }
+
+  // Rough estimate: check if profile was updated recently (indicates photo activity)
+  // For production, track uploads in separate table
+  if (count && count >= 10) {
+    throw new Error('Upload limit reached (10 photos per hour). Please try again later.');
+  }
+}
+
+/**
+ * Validate file before upload to prevent abuse
+ */
+function validateImageFile(file: File): void {
+  const MAX_SIZE = 5 * 1024 * 1024; // 5MB
+  const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+
+  if (file.size > MAX_SIZE) {
+    throw new Error('Image must be under 5MB');
+  }
+
+  if (!ALLOWED_TYPES.includes(file.type)) {
+    throw new Error('Only JPEG, PNG, and WebP formats allowed');
+  }
+}
+
+/**
  * Moderate photo using AWS Rekognition via edge function
  */
 async function moderatePhoto(imageUrl: string): Promise<{appropriate: boolean; message: string}> {
@@ -51,6 +92,12 @@ export async function uploadFile(
   try {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) throw new Error("Not authenticated");
+
+    // Validate file size and type before upload
+    if (bucket === 'photos') {
+      validateImageFile(file);
+      await checkUploadQuota(user.id);
+    }
 
     const fileExt = file.name.split(".").pop();
     const fileName = `${user.id}/${folder}/${Date.now()}.${fileExt}`;

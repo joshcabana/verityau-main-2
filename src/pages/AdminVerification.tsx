@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ArrowLeft, CheckCircle, XCircle, Loader2, Shield } from "lucide-react";
 import { toast } from "sonner";
+import { logAdminAction } from "@/utils/adminAuditLog";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -116,6 +117,17 @@ export default function AdminVerification() {
       });
 
       if (error) throw error;
+
+      // Log admin action
+      await logAdminAction({
+        action: reviewAction === "approve" ? "approve_verification" : "reject_verification",
+        targetType: "profile",
+        targetId: selectedProfile.id,
+        details: {
+          profile_name: selectedProfile.name,
+          reason: reviewAction === "reject" ? rejectionReason : undefined,
+        },
+      });
 
       toast.success(
         reviewAction === "approve"
