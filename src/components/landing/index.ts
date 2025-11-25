@@ -1,0 +1,12 @@
+export { HeroSection } from './HeroSection';
+export { AuthCTASection } from './AuthCTASection';
+export { ProblemsSection } from './ProblemsSection';
+export { HowItWorksSection } from './HowItWorksSection';
+export { FeaturesSection } from './FeaturesSection';
+export { SafetySection } from './SafetySection';
+export { FAQSection } from './FAQSection';
+export { FinalCTASection } from './FinalCTASection';
+export { Footer } from './Footer';
+export { WaitlistForm } from './WaitlistForm';
+export { SocialShareButtons } from './SocialShareButtons';
+export { AnimatedCounter } from './AnimatedCounter';
