@@ -1,16 +1,13 @@
 import { motion } from "framer-motion";
 import { ScrollReveal } from "@/components/motion";
 import { spring } from "@/lib/motion";
-import { Heart, Video, CheckCircle2, MessageCircle } from "lucide-react";
-import { WaitlistForm } from "./WaitlistForm";
-import { AnimatedCounter } from "./AnimatedCounter";
+import { Heart, Video, CheckCircle2 } from "lucide-react";
 import { OptimizedImage } from "@/components/OptimizedImage";
 import conversationIllustration from "@/assets/conversation-illustration.png";
 import videoDateIllustration from "@/assets/video-date-illustration.png";
 import stepIllustration1 from "@/assets/step-illustration-1.png";
 import stepIllustration2 from "@/assets/step-illustration-2.png";
 import stepIllustration3 from "@/assets/step-illustration-3.png";
-import stepIllustration4 from "@/assets/step-illustration-4.png";
 
 export const HowItWorksSection = () => {
   return (
@@ -130,10 +127,12 @@ export const HowItWorksSection = () => {
                   <span className="text-6xl md:text-7xl font-black text-accent">3</span>
                 </div>
                 <h3 className="section-header text-3xl md:text-4xl mb-4 text-white">
-                  Mutual yes? Keep going.
+                  Decide together.
                 </h3>
                 <p className="body-large text-white/70">
                   If you both feel it, chat unlocks. Plan a proper date. Meet in person.
+                  <br />
+                  <span className="text-white/50 text-base">No spark? A clean, honest ending—no ghosting required.</span>
                 </p>
               </div>
               <div className="order-1 md:order-2">
@@ -150,53 +149,7 @@ export const HowItWorksSection = () => {
               </div>
             </div>
           </ScrollReveal>
-
-          {/* Step 4 */}
-          <ScrollReveal>
-            <div className="grid md:grid-cols-2 gap-8 md:gap-16 items-center">
-              <div className="order-2 md:order-1">
-                <div className="flex items-center gap-4 mb-6">
-                  <motion.div
-                    className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center"
-                    whileHover={{ scale: 1.1, backgroundColor: "rgba(212, 175, 55, 0.2)" }}
-                    transition={spring.gentle}
-                  >
-                    <MessageCircle className="w-6 h-6 text-accent" />
-                  </motion.div>
-                  <span className="text-6xl md:text-7xl font-black text-accent">4</span>
-                </div>
-                <h3 className="section-header text-3xl md:text-4xl mb-4 text-white">
-                  No spark? Move on gracefully.
-                </h3>
-                <p className="body-large text-white/70">
-                  No ghosting. No awkwardness. Just a clean, honest ending—and someone better waiting.
-                </p>
-              </div>
-              <div className="order-1 md:order-2">
-                <motion.div
-                  whileHover={{ scale: 1.05, rotate: -2 }}
-                  transition={spring.gentle}
-                >
-                  <OptimizedImage
-                    src={stepIllustration4}
-                    alt="Intimate moment - human warmth"
-                    className="w-full max-w-[400px] mx-auto drop-shadow-2xl"
-                  />
-                </motion.div>
-              </div>
-            </div>
-          </ScrollReveal>
         </div>
-
-        {/* Animated Counter */}
-        <ScrollReveal className="mt-24 md:mt-32 text-center">
-          <h3 className="section-header text-3xl md:text-5xl mb-8 text-white">
-            <AnimatedCounter target={18274} /> Australians already waiting.
-          </h3>
-
-          {/* Email Form */}
-          <WaitlistForm />
-        </ScrollReveal>
       </div>
     </section>
   );

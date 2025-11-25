@@ -17,7 +17,7 @@ import { SectionErrorBoundary } from "@/components/landing/ErrorBoundary";
 const ProblemsSection = lazy(() => import("@/components/landing/ProblemsSection").then(module => ({ default: module.ProblemsSection })));
 const HowItWorksSection = lazy(() => import("@/components/landing/HowItWorksSection").then(module => ({ default: module.HowItWorksSection })));
 const FeaturesSection = lazy(() => import("@/components/landing/FeaturesSection").then(module => ({ default: module.FeaturesSection })));
-const SafetySection = lazy(() => import("@/components/landing/SafetySection").then(module => ({ default: module.SafetySection })));
+const TrustSection = lazy(() => import("@/components/landing/TrustSection").then(module => ({ default: module.TrustSection })));
 const FAQSection = lazy(() => import("@/components/landing/FAQSection").then(module => ({ default: module.FAQSection })));
 const FinalCTASection = lazy(() => import("@/components/landing/FinalCTASection").then(module => ({ default: module.FinalCTASection })));
 const Footer = lazy(() => import("@/components/landing/Footer").then(module => ({ default: module.Footer })));
@@ -69,7 +69,7 @@ const Index = () => {
           <FeaturesSection />
         </SectionErrorBoundary>
         <SectionErrorBoundary>
-          <SafetySection />
+          <TrustSection />
         </SectionErrorBoundary>
         <SectionErrorBoundary>
           <FAQSection />

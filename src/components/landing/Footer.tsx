@@ -16,6 +16,10 @@ export const Footer = () => {
 
           {/* Center: Links */}
           <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6 text-primary-foreground/60 text-sm md:text-base">
+            <Link to="/safety" className="gold-underline hover:text-accent transition-smooth">
+              Safety
+            </Link>
+            <span className="text-primary-foreground/40">·</span>
             <Link to="/privacy" className="gold-underline hover:text-accent transition-smooth">
               Privacy
             </Link>
@@ -24,15 +28,11 @@ export const Footer = () => {
               Terms
             </Link>
             <span className="text-primary-foreground/40">·</span>
-            <Link to="/admin" className="gold-underline hover:text-accent transition-smooth">
-              Admin
-            </Link>
-            <span className="text-primary-foreground/40">·</span>
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="gold-underline hover:text-accent transition-smooth">
+            <a href="https://instagram.com/verityau" target="_blank" rel="noopener noreferrer" className="gold-underline hover:text-accent transition-smooth">
               Instagram
             </a>
             <span className="text-primary-foreground/40">·</span>
-            <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" className="gold-underline hover:text-accent transition-smooth">
+            <a href="https://tiktok.com/@verityau" target="_blank" rel="noopener noreferrer" className="gold-underline hover:text-accent transition-smooth">
               TikTok
             </a>
             <span className="text-primary-foreground/40">·</span>
@@ -43,7 +43,7 @@ export const Footer = () => {
 
           {/* Right: Copyright */}
           <div className="flex-shrink-0 text-primary-foreground/50 text-sm md:text-base text-center md:text-right">
-            Made with frustration and love in Canberra © 2025
+            Made with intention in Australia © 2025
           </div>
         </div>
       </div>

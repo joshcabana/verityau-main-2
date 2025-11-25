@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import { StaggerContainer, StaggerItem } from "@/components/motion";
-import { spring } from "@/lib/motion";
-import { WaitlistForm } from "./WaitlistForm";
+import { SignupCTA } from "./SignupCTA";
 import { AnimatedCounter } from "./AnimatedCounter";
 
 export const HeroSection = () => {
@@ -56,20 +55,13 @@ export const HeroSection = () => {
 
         {/* CTA */}
         <StaggerItem>
-          <div className="flex flex-col items-center gap-4 mb-8">
-            <WaitlistForm variant="hero" />
-
-            {/* Small social sharing - less prominent */}
-            <div className="flex gap-3">
-              {/* SocialShareButtons already included in WaitlistForm for hero variant */}
-            </div>
-          </div>
+          <SignupCTA variant="hero" />
         </StaggerItem>
 
-        {/* Launch info */}
+        {/* Tagline */}
         <StaggerItem>
-          <p className="text-sm text-white/50">
-            Launching January 2026 · Early members receive lifetime unlimited dates
+          <p className="text-sm text-white/50 mt-8">
+            Video-first dating · Now live in Australia
           </p>
         </StaggerItem>
       </StaggerContainer>

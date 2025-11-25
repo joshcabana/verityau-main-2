@@ -75,8 +75,8 @@ export const FeaturesSection = memo(function FeaturesSection() {
                 <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center mb-4 mx-auto">
                   <MapPin className="w-6 h-6 text-accent" />
                 </div>
-                <h3 className="text-xl font-semibold text-white mb-3">Starting in Canberra</h3>
-                <p className="text-white/60">Built for our city first. Local connections, intentional design.</p>
+                <h3 className="text-xl font-semibold text-white mb-3">Made for Australia</h3>
+                <p className="text-white/60">Designed for Australians. Local connections, intentional design.</p>
               </motion.div>
             </div>
           </div>

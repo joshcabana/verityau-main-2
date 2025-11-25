@@ -1,5 +1,6 @@
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 import { ScrollReveal } from "@/components/motion";
-import { WaitlistForm } from "./WaitlistForm";
 
 export const FinalCTASection = () => {
   return (
@@ -10,15 +11,23 @@ export const FinalCTASection = () => {
       <ScrollReveal className="relative max-w-5xl mx-auto text-center">
         {/* Massive Headline */}
         <h2 className="hero-text text-3xl sm:text-4xl md:text-5xl lg:text-[80px] text-ink mb-8 sm:mb-12 md:mb-16">
-          Be the first to date someone real.
+          Ready to date someone real?
         </h2>
 
-        {/* Email Form */}
-        <WaitlistForm variant="final-cta" />
+        {/* CTA Buttons */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <Button
+            asChild
+            size="lg"
+            className="h-16 md:h-20 px-12 md:px-16 text-base md:text-xl font-bold bg-primary hover:bg-primary/90 text-primary-foreground border-2 border-primary hover:scale-105 shadow-elegant transition-smooth rounded-full"
+          >
+            <Link to="/auth?mode=signup">Create Your Profile</Link>
+          </Button>
+        </div>
 
-        {/* Small Launch Text */}
+        {/* Small Text */}
         <p className="body-base text-ink/80 mt-8">
-          Launching January 2026 in Canberra—because this city deserves something better.
+          Free to join · Video dates included · No catfishing, ever.
         </p>
       </ScrollReveal>
     </section>
