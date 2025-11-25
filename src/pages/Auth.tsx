@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -7,6 +8,9 @@ import { Separator } from "@/components/ui/separator";
 import { useAuth } from "@/hooks/useAuth";
 import { authSchema, resetPasswordSchema } from "@/lib/validations";
 import { Heart } from "lucide-react";
+import { FadeIn, StaggerContainer, StaggerItem } from "@/components/motion";
+import { spring, duration, easing } from "@/lib/motion";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -16,6 +20,7 @@ const Auth = () => {
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
   const { signUp, signIn, signInWithGoogle, signInWithApple, resetPassword, user, loading } = useAuth();
   const navigate = useNavigate();
+  const prefersReducedMotion = useReducedMotion();
 
   // Redirect if already logged in
   useEffect(() => {
@@ -59,49 +64,76 @@ const Auth = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-background to-secondary flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      <div className="min-h-screen bg-[hsl(var(--ink))] flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-accent"></div>
       </div>
     );
   }
 
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-secondary flex items-center justify-center px-4 py-8">
-      <div className="w-full max-w-md">
-        <div className="bg-card rounded-2xl shadow-xl p-8 border border-border">
-          {/* Logo */}
-          <div className="flex justify-center mb-6">
-            <div className="flex items-center gap-2">
-              <Heart className="h-8 w-8 text-primary fill-primary" />
-              <span className="text-2xl font-bold text-foreground">Verity</span>
-            </div>
-          </div>
+  // Form transition variants
+  const formVariants = {
+    enter: { opacity: 0, x: prefersReducedMotion ? 0 : 20 },
+    center: { opacity: 1, x: 0 },
+    exit: { opacity: 0, x: prefersReducedMotion ? 0 : -20 },
+  };
 
-          {/* Title */}
-          <div className="text-center mb-8">
-            <h1 className="text-2xl font-bold text-foreground mb-2">
-              {isResetPassword ? "Reset Password" : isLogin ? "Welcome back" : "Create your account"}
-            </h1>
-            <p className="text-muted-foreground text-sm">
-              {isResetPassword 
-                ? "Enter your email to receive a reset link" 
-                : isLogin 
-                  ? "Sign in to continue to Verity" 
-                  : "Join Verity and find real connections"}
-            </p>
-          </div>
+  return (
+    <div className="min-h-screen bg-[hsl(var(--ink))] flex items-center justify-center px-4 py-8">
+      <FadeIn className="w-full max-w-md">
+        <div className="bg-white/5 rounded-2xl shadow-elegant border border-white/10 p-8 backdrop-blur-xl">
+          {/* Logo */}
+          <motion.div 
+            className="flex justify-center mb-6"
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={prefersReducedMotion ? { duration: 0.05 } : spring.bouncy}
+          >
+            <div className="flex items-center gap-2">
+              <motion.div
+                animate={prefersReducedMotion ? {} : { scale: [1, 1.1, 1] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <Heart className="h-8 w-8 text-accent fill-accent" />
+              </motion.div>
+              <span className="hero-text text-2xl text-white">Verity</span>
+            </div>
+          </motion.div>
+
+          {/* Title - Animated on mode change */}
+          <AnimatePresence mode="wait">
+            <motion.div 
+              key={isResetPassword ? "reset" : isLogin ? "login" : "signup"}
+              className="text-center mb-8"
+              variants={formVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{ duration: prefersReducedMotion ? 0.05 : duration.normal, ease: easing.easeOut }}
+            >
+              <h1 className="section-header text-2xl text-white mb-2">
+                {isResetPassword ? "Reset Password" : isLogin ? "Welcome back" : "Create your account"}
+              </h1>
+              <p className="text-white/60 text-sm">
+                {isResetPassword 
+                  ? "Enter your email to receive a reset link" 
+                  : isLogin 
+                    ? "Sign in to continue to Verity" 
+                    : "Join Verity and find real connections"}
+              </p>
+            </motion.div>
+          </AnimatePresence>
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email" className="text-white">Email</Label>
               <Input
                 id="email"
                 type="email"
                 placeholder="you@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className={errors.email ? "border-destructive" : ""}
+                className={errors.email ? "border-destructive bg-white/10 text-white placeholder:text-white/40" : "bg-white/10 text-white placeholder:text-white/40 border-white/20"}
               />
               {errors.email && (
                 <p className="text-xs text-destructive mt-1">{errors.email}</p>
@@ -110,14 +142,14 @@ const Auth = () => {
 
             {!isResetPassword && (
               <div>
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password" className="text-white">Password</Label>
                 <Input
                   id="password"
                   type="password"
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className={errors.password ? "border-destructive" : ""}
+                  className={errors.password ? "border-destructive bg-white/10 text-white placeholder:text-white/40" : "bg-white/10 text-white placeholder:text-white/40 border-white/20"}
                 />
                 {errors.password && (
                   <p className="text-xs text-destructive mt-1">{errors.password}</p>
@@ -130,7 +162,7 @@ const Auth = () => {
                 <button
                   type="button"
                   onClick={() => setIsResetPassword(true)}
-                  className="text-xs text-primary hover:underline"
+                  className="text-xs text-accent hover:text-accent/80 hover:underline transition-smooth"
                 >
                   Forgot password?
                 </button>
@@ -146,8 +178,8 @@ const Auth = () => {
             <>
               {/* Divider */}
               <div className="relative my-6">
-                <Separator />
-                <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-card px-2 text-xs text-muted-foreground">
+                <Separator className="bg-white/10" />
+                <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white/5 backdrop-blur-sm px-3 py-1 text-xs text-white/50 rounded-full border border-white/10">
                   or continue with
                 </span>
               </div>
@@ -204,7 +236,7 @@ const Auth = () => {
               <button
                 type="button"
                 onClick={() => setIsResetPassword(false)}
-                className="text-sm text-muted-foreground hover:text-foreground"
+                className="text-sm text-white/60 hover:text-white transition-smooth"
               >
                 Back to {isLogin ? "sign in" : "sign up"}
               </button>
@@ -212,17 +244,17 @@ const Auth = () => {
               <button
                 type="button"
                 onClick={() => setIsLogin(!isLogin)}
-                className="text-sm text-muted-foreground hover:text-foreground"
+                className="text-sm text-white/60 hover:text-white transition-smooth"
               >
                 {isLogin ? "Don't have an account? " : "Already have an account? "}
-                <span className="text-primary hover:underline">
+                <span className="text-accent hover:text-accent/80 hover:underline font-semibold">
                   {isLogin ? "Sign up" : "Sign in"}
                 </span>
               </button>
             )}
 
             <div>
-              <Button asChild variant="ghost" size="sm" className="text-muted-foreground">
+              <Button asChild variant="ghost" size="sm" className="text-white/60 hover:text-accent">
                 <Link to="/">Back to Home</Link>
               </Button>
             </div>
@@ -230,17 +262,22 @@ const Auth = () => {
         </div>
 
         {/* Terms */}
-        <p className="text-center text-xs text-muted-foreground mt-6">
+        <motion.p 
+          className="text-center text-xs text-white/50 mt-6"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5, duration: duration.normal }}
+        >
           By continuing, you agree to Verity's{" "}
-          <Link to="/terms" className="underline hover:text-foreground">
+          <Link to="/terms" className="text-accent underline hover:text-accent/80 transition-smooth">
             Terms of Service
           </Link>{" "}
           and{" "}
-          <Link to="/privacy" className="underline hover:text-foreground">
+          <Link to="/privacy" className="text-accent underline hover:text-accent/80 transition-smooth">
             Privacy Policy
           </Link>
-        </p>
-      </div>
+        </motion.p>
+      </FadeIn>
     </div>
   );
 };

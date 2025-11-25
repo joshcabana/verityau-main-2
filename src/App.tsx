@@ -2,9 +2,11 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { PageTransition } from "@/components/motion";
 import * as Sentry from "@sentry/react";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
@@ -34,50 +36,79 @@ import VerifyEmail from "./pages/VerifyEmail";
 
 const queryClient = new QueryClient();
 
+// Animated routes wrapper component
+function AnimatedRoutes() {
+  const location = useLocation();
+
+  return (
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        <Route path="/" element={<PageTransition><Index /></PageTransition>} />
+        <Route path="/auth" element={<PageTransition><Auth /></PageTransition>} />
+        <Route path="/verify-email" element={<ProtectedRoute><PageTransition><VerifyEmail /></PageTransition></ProtectedRoute>} />
+        <Route path="/reset-password" element={<PageTransition><ResetPassword /></PageTransition>} />
+        <Route path="/privacy" element={<PageTransition><Privacy /></PageTransition>} />
+        <Route path="/terms" element={<PageTransition><Terms /></PageTransition>} />
+        
+        {/* Protected Routes */}
+        <Route path="/onboarding" element={<ProtectedRoute><PageTransition><Onboarding /></PageTransition></ProtectedRoute>} />
+        <Route path="/main" element={<ProtectedRoute><PageTransition><Main /></PageTransition></ProtectedRoute>} />
+        <Route path="/intro-call" element={<ProtectedRoute><PageTransition><IntroCall /></PageTransition></ProtectedRoute>} />
+        <Route path="/extended-call" element={<ProtectedRoute><PageTransition><ExtendedCall /></PageTransition></ProtectedRoute>} />
+        <Route path="/match-success" element={<ProtectedRoute><PageTransition><MatchSuccess /></PageTransition></ProtectedRoute>} />
+        <Route path="/matches" element={<ProtectedRoute><PageTransition><Matches /></PageTransition></ProtectedRoute>} />
+        <Route path="/match/:matchId" element={<ProtectedRoute><PageTransition><MatchProfile /></PageTransition></ProtectedRoute>} />
+        <Route path="/chat/:id" element={<ProtectedRoute><PageTransition><Chat /></PageTransition></ProtectedRoute>} />
+        <Route path="/who-liked-you" element={<ProtectedRoute><PageTransition><WhoLikedYou /></PageTransition></ProtectedRoute>} />
+        <Route path="/upgrade" element={<ProtectedRoute><PageTransition><VerityPlus /></PageTransition></ProtectedRoute>} />
+        <Route path="/verity-plus" element={<ProtectedRoute><PageTransition><VerityPlus /></PageTransition></ProtectedRoute>} />
+        <Route path="/checkout" element={<ProtectedRoute><PageTransition><Checkout /></PageTransition></ProtectedRoute>} />
+        <Route path="/verity-date/waiting" element={<ProtectedRoute><PageTransition><VerityDateWaiting /></PageTransition></ProtectedRoute>} />
+        <Route path="/verity-date/call" element={<ProtectedRoute><PageTransition><VerityDateCall /></PageTransition></ProtectedRoute>} />
+        <Route path="/verity-date/feedback" element={<ProtectedRoute><PageTransition><VerityDateFeedback /></PageTransition></ProtectedRoute>} />
+        <Route path="/profile/edit" element={<ProtectedRoute><PageTransition><ProfileEdit /></PageTransition></ProtectedRoute>} />
+        <Route path="/profile" element={<ProtectedRoute><PageTransition><Profile /></PageTransition></ProtectedRoute>} />
+        <Route path="/admin/verification" element={<ProtectedRoute><PageTransition><AdminVerification /></PageTransition></ProtectedRoute>} />
+        <Route path="/admin" element={<ProtectedRoute><PageTransition><Admin /></PageTransition></ProtectedRoute>} />
+        
+        {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+        <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
+      </Routes>
+    </AnimatePresence>
+  );
+}
+
+// Fallback component for Sentry error boundary
+function SentryFallback() {
+  return (
+    <div className="min-h-screen bg-background flex items-center justify-center p-4">
+      <div className="text-center">
+        <h1 className="text-2xl font-bold mb-4">Something went wrong</h1>
+        <p className="text-muted-foreground mb-4">We encountered an unexpected error.</p>
+        <button 
+          onClick={() => window.location.reload()} 
+          className="px-4 py-2 bg-primary text-primary-foreground rounded-lg"
+        >
+          Reload Page
+        </button>
+      </div>
+    </div>
+  );
+}
+
 const App = () => (
-  <Sentry.ErrorBoundary fallback={<ErrorBoundary />} showDialog>
+  <Sentry.ErrorBoundary fallback={<SentryFallback />} showDialog>
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <Toaster />
         <Sonner />
         <BrowserRouter>
           <ErrorBoundary>
-            <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/auth" element={<Auth />} />
-          <Route path="/verify-email" element={<ProtectedRoute><VerifyEmail /></ProtectedRoute>} />
-          <Route path="/reset-password" element={<ResetPassword />} />
-          <Route path="/privacy" element={<Privacy />} />
-          <Route path="/terms" element={<Terms />} />
-          
-          {/* Protected Routes */}
-          <Route path="/onboarding" element={<ProtectedRoute><Onboarding /></ProtectedRoute>} />
-          <Route path="/main" element={<ProtectedRoute><Main /></ProtectedRoute>} />
-          <Route path="/intro-call" element={<ProtectedRoute><IntroCall /></ProtectedRoute>} />
-          <Route path="/extended-call" element={<ProtectedRoute><ExtendedCall /></ProtectedRoute>} />
-          <Route path="/match-success" element={<ProtectedRoute><MatchSuccess /></ProtectedRoute>} />
-          <Route path="/matches" element={<ProtectedRoute><Matches /></ProtectedRoute>} />
-          <Route path="/match/:matchId" element={<ProtectedRoute><MatchProfile /></ProtectedRoute>} />
-          <Route path="/chat/:id" element={<ProtectedRoute><Chat /></ProtectedRoute>} />
-          <Route path="/who-liked-you" element={<ProtectedRoute><WhoLikedYou /></ProtectedRoute>} />
-          <Route path="/upgrade" element={<ProtectedRoute><VerityPlus /></ProtectedRoute>} />
-          <Route path="/verity-plus" element={<ProtectedRoute><VerityPlus /></ProtectedRoute>} />
-          <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
-          <Route path="/verity-date/waiting" element={<ProtectedRoute><VerityDateWaiting /></ProtectedRoute>} />
-          <Route path="/verity-date/call" element={<ProtectedRoute><VerityDateCall /></ProtectedRoute>} />
-          <Route path="/verity-date/feedback" element={<ProtectedRoute><VerityDateFeedback /></ProtectedRoute>} />
-          <Route path="/profile/edit" element={<ProtectedRoute><ProfileEdit /></ProtectedRoute>} />
-          <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-          <Route path="/admin/verification" element={<ProtectedRoute><AdminVerification /></ProtectedRoute>} />
-          <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
-          
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-          </Routes>
-        </ErrorBoundary>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
+            <AnimatedRoutes />
+          </ErrorBoundary>
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
   </Sentry.ErrorBoundary>
 );
 

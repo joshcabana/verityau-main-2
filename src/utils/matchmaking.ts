@@ -151,7 +151,10 @@ export const fetchMatchingProfiles = async (
       maxRetries: 2,
       delayMs: 1000,
       onRetry: (attempt, error) => {
-        console.log(`Retrying profile fetch (attempt ${attempt}):`, error.message);
+        // Silent retry in production
+        if (process.env.NODE_ENV === 'development') {
+          console.log(`Retrying profile fetch (attempt ${attempt}):`, error.message);
+        }
       },
     }
   );
@@ -273,7 +276,9 @@ export const likeProfile = async (
       maxRetries: 2,
       delayMs: 1000,
       onRetry: (attempt, error) => {
-        console.log(`Retrying like operation (attempt ${attempt}):`, error.message);
+        if (process.env.NODE_ENV === 'development') {
+          console.log(`Retrying like operation (attempt ${attempt}):`, error.message);
+        }
       },
     }
   );
@@ -296,7 +301,12 @@ export const passProfile = async (
 
     if (error) throw error;
   } catch (error) {
-    console.error("Error passing profile:", error);
+    // Log error but don't crash the UI for a pass action
+    if (process.env.NODE_ENV === 'development') {
+      console.error("Error passing profile:", error);
+    }
+    // We rethrow to let the caller handle UI feedback if needed,
+    // but for 'pass' usually we just fail silently or show a generic toast
     throw error;
   }
 };
@@ -335,7 +345,9 @@ export const undoLastPass = async (
 
     return { success: true, profileId: lastPass.seen_user_id };
   } catch (error) {
-    console.error("Error undoing pass:", error);
+    if (process.env.NODE_ENV === 'development') {
+      console.error("Error undoing pass:", error);
+    }
     return { success: false };
   }
 };

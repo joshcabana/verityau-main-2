@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Heart, ArrowLeft, Sparkles } from "lucide-react";
@@ -8,6 +9,9 @@ import { Chat } from "@/components/Chat";
 import { useAuth } from "@/hooks/useAuth";
 import { useNotifications } from "@/hooks/useNotifications";
 import { useToast } from "@/hooks/use-toast";
+import { FadeIn, StaggerContainer, StaggerItem } from "@/components/motion";
+import { spring, duration, easing } from "@/lib/motion";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { 
   fetchUserMatches, 
   unmatchUser, 
@@ -29,6 +33,7 @@ const Matches = () => {
   const { user } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
+  const prefersReducedMotion = useReducedMotion();
 
   const [matches, setMatches] = useState<Match[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -194,36 +199,62 @@ const Matches = () => {
       {/* Content */}
       <div className="flex-1 max-w-2xl mx-auto w-full px-4 py-8">
         {matches.length === 0 ? (
-          <div className="text-center py-12">
-            <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center">
-              <Heart className="h-10 w-10 text-primary" />
-            </div>
+          <FadeIn className="text-center py-12">
+            <motion.div 
+              className="w-20 h-20 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={prefersReducedMotion ? { duration: 0.05 } : spring.bouncy}
+            >
+              <motion.div
+                animate={prefersReducedMotion ? {} : { scale: [1, 1.1, 1] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <Heart className="h-10 w-10 text-primary" />
+              </motion.div>
+            </motion.div>
             <h2 className="text-xl font-semibold text-foreground mb-2">
               No matches yet
             </h2>
             <p className="text-muted-foreground mb-6">
               Keep swiping to find your connection!
             </p>
-            <Button onClick={() => navigate("/main")} className="btn-premium">
-              Start Discovering
-            </Button>
-          </div>
+            <motion.div
+              whileHover={prefersReducedMotion ? {} : { scale: 1.05 }}
+              whileTap={prefersReducedMotion ? {} : { scale: 0.95 }}
+            >
+              <Button onClick={() => navigate("/main")} className="btn-premium">
+                Start Discovering
+              </Button>
+            </motion.div>
+          </FadeIn>
         ) : (
-          <div className="space-y-4">
-            {matches.map((match) => (
-              <MatchCard
-                key={match.id}
-                match={match}
-                onOpenChat={() => handleOpenChat(match)}
-                onAcceptVerityDate={
-                  match.verity_date && !match.verity_date.scheduled_at
-                    ? () => handleAcceptVerityDate(match)
-                    : undefined
-                }
-                onUnmatch={() => handleUnmatchClick(match)}
-              />
-            ))}
-          </div>
+          <StaggerContainer className="space-y-4">
+            <AnimatePresence>
+              {matches.map((match) => (
+                <StaggerItem key={match.id}>
+                  <motion.div
+                    layout
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, x: -100 }}
+                    transition={prefersReducedMotion ? { duration: 0.05 } : { duration: duration.normal, ease: easing.easeOut }}
+                  >
+                    <MatchCard
+                      match={match}
+                      onOpenChat={() => handleOpenChat(match)}
+                      onAcceptVerityDate={
+                        match.verity_date && !match.verity_date.scheduled_at
+                          ? () => handleAcceptVerityDate(match)
+                          : undefined
+                      }
+                      onUnmatch={() => handleUnmatchClick(match)}
+                    />
+                  </motion.div>
+                </StaggerItem>
+              ))}
+            </AnimatePresence>
+          </StaggerContainer>
         )}
       </div>
 

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useSwipeable } from "react-swipeable";
+import { motion, useMotionValue, useTransform, AnimatePresence } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { X, Heart, MapPin, Clock, Flag } from "lucide-react";
@@ -10,6 +11,8 @@ import { MutualConnections } from "./MutualConnections";
 import { formatDistanceToNow } from "date-fns";
 import { useAuth } from "@/hooks/useAuth";
 import { getOptimizedImageUrl } from "@/utils/imageOptimization";
+import { spring, duration, easing } from "@/lib/motion";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 interface ProfileCardProps {
   profile: {
@@ -34,6 +37,13 @@ export const ProfileCard = ({ profile, onLike, onPass }: ProfileCardProps) => {
   const [swipeOffset, setSwipeOffset] = useState({ x: 0, y: 0 });
   const [isSwiping, setIsSwiping] = useState(false);
   const [reportDialogOpen, setReportDialogOpen] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
+  
+  // Motion values for spring physics
+  const x = useMotionValue(0);
+  const rotate = useTransform(x, [-300, 0, 300], [-15, 0, 15]);
+  const likeOpacity = useTransform(x, [0, 100], [0, 1]);
+  const passOpacity = useTransform(x, [-100, 0], [1, 0]);
 
   // Format distance
   const formatDistance = (meters?: number) => {
@@ -151,7 +161,7 @@ export const ProfileCard = ({ profile, onLike, onPass }: ProfileCardProps) => {
             
             {/* Photos */}
             {profile.photos.map((photo, index) => (
-              <CarouselItem key={index}>
+              <CarouselItem key={photo}>
                 <div className="relative w-full h-full">
                   <img
                     src={getOptimizedImageUrl(photo, { width: 800, quality: 85 })}
@@ -216,31 +226,54 @@ export const ProfileCard = ({ profile, onLike, onPass }: ProfileCardProps) => {
 
       {/* Action Buttons */}
       <div className="p-6 flex items-center justify-center gap-6 bg-card">
-        <Button
-          size="sm"
-          variant="ghost"
-          onClick={() => setReportDialogOpen(true)}
-          className="text-muted-foreground hover:text-destructive"
+        <motion.div
+          whileHover={prefersReducedMotion ? {} : { scale: 1.1 }}
+          whileTap={prefersReducedMotion ? {} : { scale: 0.9 }}
+          transition={spring.default}
         >
-          <Flag className="w-4 h-4" />
-        </Button>
+          <Button
+            size="sm"
+            variant="ghost"
+            onClick={() => setReportDialogOpen(true)}
+            className="text-muted-foreground hover:text-destructive"
+          >
+            <Flag className="w-4 h-4" />
+          </Button>
+        </motion.div>
 
-        <Button
-          size="lg"
-          variant="outline"
-          onClick={onPass}
-          className="w-16 h-16 rounded-full border-2 border-muted-foreground hover:border-destructive hover:bg-destructive/10 transition-smooth"
+        <motion.div
+          whileHover={prefersReducedMotion ? {} : { scale: 1.1 }}
+          whileTap={prefersReducedMotion ? {} : { scale: 0.85 }}
+          transition={spring.default}
         >
-          <X className="w-8 h-8 text-muted-foreground hover:text-destructive" />
-        </Button>
+          <Button
+            size="lg"
+            variant="outline"
+            onClick={onPass}
+            className="w-16 h-16 rounded-full border-2 border-muted-foreground hover:border-destructive hover:bg-destructive/10 transition-smooth"
+          >
+            <X className="w-8 h-8 text-muted-foreground hover:text-destructive" />
+          </Button>
+        </motion.div>
 
-        <Button
-          size="lg"
-          onClick={onLike}
-          className="w-20 h-20 rounded-full btn-premium shadow-coral-glow hover:shadow-coral-intense"
+        <motion.div
+          whileHover={prefersReducedMotion ? {} : { scale: 1.1 }}
+          whileTap={prefersReducedMotion ? {} : { scale: 0.85 }}
+          transition={spring.bouncy}
         >
-          <Heart className="w-10 h-10" fill="currentColor" />
-        </Button>
+          <Button
+            size="lg"
+            onClick={onLike}
+            className="w-20 h-20 rounded-full btn-premium shadow-coral-glow hover:shadow-coral-intense"
+          >
+            <motion.div
+              whileTap={prefersReducedMotion ? {} : { scale: [1, 1.3, 1] }}
+              transition={{ duration: 0.3 }}
+            >
+              <Heart className="w-10 h-10" fill="currentColor" />
+            </motion.div>
+          </Button>
+        </motion.div>
       </div>
     </Card>
     

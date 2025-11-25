@@ -1,15 +1,20 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Crown, Heart, Sparkles, Zap, Users, Star, ArrowLeft, Check, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { FadeIn, ScrollReveal, StaggerContainer, StaggerItem } from "@/components/motion";
+import { spring, duration, easing } from "@/lib/motion";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 const VerityPlus = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [selectedPlan, setSelectedPlan] = useState<"monthly" | "annual">("monthly");
   const [loading, setLoading] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
 
   const handleSubscribe = async () => {
     setLoading(true);
@@ -76,70 +81,80 @@ const VerityPlus = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-primary/5 to-secondary/10">
+    <div className="min-h-screen bg-[hsl(var(--ink))]">
       {/* Header */}
-      <div className="border-b border-border bg-card/50 backdrop-blur sticky top-0 z-10">
+      <div className="border-b border-white/10 bg-[hsl(var(--ink))]/95 backdrop-blur sticky top-0 z-10">
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
           <Button
             variant="ghost"
             size="sm"
             onClick={() => navigate("/main")}
-            className="gap-2"
+            className="gap-2 text-white hover:text-accent hover:bg-white/5"
           >
             <ArrowLeft className="w-4 h-4" />
             Back
           </Button>
-          <div className="flex items-center gap-2 text-primary">
+          <div className="flex items-center gap-2 text-accent">
             <Crown className="w-5 h-5" />
-            <span className="font-semibold">Verity Plus</span>
+            <span className="hero-text">Verity Plus</span>
           </div>
           <div className="w-20" /> {/* Spacer for center alignment */}
         </div>
       </div>
 
       {/* Hero Section */}
-      <div className="max-w-6xl mx-auto px-4 py-16 text-center">
-        <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-primary to-secondary mb-6 shadow-coral-intense animate-heartbeat">
-          <Crown className="w-10 h-10 text-white" />
-        </div>
+      <FadeIn className="max-w-6xl mx-auto px-4 py-16 text-center">
+        <motion.div 
+          className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-accent/10 border-2 border-accent/30 mb-6 shadow-gold"
+          initial={{ scale: 0, rotate: -180 }}
+          animate={{ scale: 1, rotate: 0 }}
+          transition={prefersReducedMotion ? { duration: 0.05 } : spring.bouncy}
+        >
+          <motion.div
+            animate={prefersReducedMotion ? {} : { rotate: [0, 10, -10, 0] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <Crown className="w-10 h-10 text-accent" />
+          </motion.div>
+        </motion.div>
         
-        <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+        <h1 className="section-header text-4xl md:text-5xl text-white mb-4">
           Upgrade to Verity Plus
         </h1>
-        <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
+        <p className="body-large text-white/70 max-w-2xl mx-auto mb-8">
           Unlock unlimited connections and premium features to find your perfect match faster
         </p>
 
         {/* Pricing Toggle */}
-        <div className="inline-flex items-center gap-3 bg-card border border-border rounded-full p-1 mb-12">
+        <div className="inline-flex items-center gap-3 bg-white/5 border border-white/10 rounded-full p-1 mb-12">
           <Button
             variant={selectedPlan === "monthly" ? "default" : "ghost"}
             onClick={() => setSelectedPlan("monthly")}
-            className="rounded-full px-8"
+            className={selectedPlan === "monthly" ? "rounded-full px-8 bg-accent hover:bg-accent/90" : "rounded-full px-8 text-white hover:bg-white/5"}
           >
             Monthly
           </Button>
           <Button
             variant={selectedPlan === "annual" ? "default" : "ghost"}
             onClick={() => setSelectedPlan("annual")}
-            className="rounded-full px-8 relative"
+            className={selectedPlan === "annual" ? "rounded-full px-8 relative bg-accent hover:bg-accent/90" : "rounded-full px-8 relative text-white hover:bg-white/5"}
           >
             Annual
-            <span className="absolute -top-2 -right-2 bg-primary text-white text-xs px-2 py-0.5 rounded-full">
+            <span className="absolute -top-2 -right-2 bg-accent text-accent-foreground text-xs px-2 py-0.5 rounded-full font-semibold">
               Save 20%
             </span>
           </Button>
         </div>
 
         {/* Pricing Card */}
-        <div className="max-w-md mx-auto bg-gradient-to-br from-card to-secondary/30 rounded-3xl border-2 border-primary/30 p-8 shadow-premium">
+        <div className="max-w-md mx-auto bg-white/5 rounded-3xl border-2 border-accent/30 p-8 shadow-elegant backdrop-blur-xl">
           <div className="text-center mb-6">
-            <div className="text-5xl font-bold text-foreground mb-2">
+            <div className="text-5xl font-bold text-white mb-2">
               ${selectedPlan === "monthly" ? "24.99" : "19.99"}
-              <span className="text-2xl text-muted-foreground">/mo</span>
+              <span className="text-2xl text-white/60">/mo</span>
             </div>
             {selectedPlan === "annual" && (
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-white/50">
                 Billed as $239.99/year
               </p>
             )}
@@ -168,83 +183,110 @@ const VerityPlus = () => {
             Cancel anytime. No commitments.
           </p>
         </div>
-      </div>
+      </FadeIn>
 
       {/* Features Grid */}
       <div className="max-w-6xl mx-auto px-4 pb-20">
-        <h2 className="text-3xl font-bold text-foreground text-center mb-12">
-          Everything you get with Plus
-        </h2>
+        <ScrollReveal>
+          <h2 className="section-header text-3xl font-bold text-white text-center mb-12">
+            Everything you get with Plus
+          </h2>
+        </ScrollReveal>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <StaggerContainer className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {features.map((feature, index) => {
             const Icon = feature.icon;
             return (
-              <div
-                key={index}
-                className="bg-card rounded-2xl p-6 border border-border hover:border-primary/30 transition-all duration-300 hover:shadow-premium group"
-              >
-                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <Icon className="w-6 h-6 text-primary" />
-                </div>
-                <h3 className="font-semibold text-foreground mb-2">
-                  {feature.title}
-                </h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  {feature.description}
-                </p>
-                <div className="mt-4 flex items-center gap-2 text-primary text-sm font-medium">
-                  <Check className="w-4 h-4" />
-                  <span>Included</span>
-                </div>
-              </div>
+              <StaggerItem key={index}>
+                <motion.div
+                  className="bg-white/5 rounded-2xl p-6 border border-white/10 hover:border-accent/30 transition-all duration-300 hover:shadow-gold group h-full"
+                  whileHover={prefersReducedMotion ? {} : { scale: 1.02, y: -4 }}
+                  transition={spring.gentle}
+                >
+                  <motion.div 
+                    className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center mb-4"
+                    whileHover={prefersReducedMotion ? {} : { scale: 1.1, rotate: 5 }}
+                    transition={spring.default}
+                  >
+                    <Icon className="w-6 h-6 text-accent" />
+                  </motion.div>
+                  <h3 className="font-semibold text-white mb-2">
+                    {feature.title}
+                  </h3>
+                  <p className="text-sm text-white/60 leading-relaxed">
+                    {feature.description}
+                  </p>
+                  <div className="mt-4 flex items-center gap-2 text-accent text-sm font-medium">
+                    <Check className="w-4 h-4" />
+                    <span>Included</span>
+                  </div>
+                </motion.div>
+              </StaggerItem>
             );
           })}
-        </div>
+        </StaggerContainer>
 
         {/* FAQ Section */}
-        <div className="mt-20 max-w-3xl mx-auto">
-          <h2 className="text-3xl font-bold text-foreground text-center mb-12">
+        <ScrollReveal className="mt-20 max-w-3xl mx-auto">
+          <h2 className="section-header text-3xl font-bold text-white text-center mb-12">
             Frequently Asked Questions
           </h2>
 
-          <div className="space-y-6">
-            <div className="bg-card rounded-2xl p-6 border border-border">
-              <h3 className="font-semibold text-foreground mb-2">
-                Can I cancel anytime?
-              </h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                Yes! You can cancel your Verity Plus subscription at any time. You'll continue to have access to Plus features until the end of your billing period.
-              </p>
-            </div>
+          <StaggerContainer className="space-y-6">
+            <StaggerItem>
+              <motion.div 
+                className="bg-white/5 rounded-2xl p-6 border border-white/10"
+                whileHover={prefersReducedMotion ? {} : { scale: 1.01 }}
+                transition={spring.gentle}
+              >
+                <h3 className="font-semibold text-white mb-2">
+                  Can I cancel anytime?
+                </h3>
+                <p className="text-sm text-white/60 leading-relaxed">
+                  Yes! You can cancel your Verity Plus subscription at any time. You'll continue to have access to Plus features until the end of your billing period.
+                </p>
+              </motion.div>
+            </StaggerItem>
 
-            <div className="bg-card rounded-2xl p-6 border border-border">
-              <h3 className="font-semibold text-foreground mb-2">
-                What happens if I cancel?
-              </h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                If you cancel, you'll revert to the free plan. You'll be limited to 5 Verity Dates per month and standard matching priority, but you'll keep all your existing matches and conversations.
-              </p>
-            </div>
+            <StaggerItem>
+              <motion.div 
+                className="bg-white/5 rounded-2xl p-6 border border-white/10"
+                whileHover={prefersReducedMotion ? {} : { scale: 1.01 }}
+                transition={spring.gentle}
+              >
+                <h3 className="font-semibold text-white mb-2">
+                  What happens if I cancel?
+                </h3>
+                <p className="text-sm text-white/60 leading-relaxed">
+                  If you cancel, you'll revert to the free plan. You'll be limited to 5 Verity Dates per month and standard matching priority, but you'll keep all your existing matches and conversations.
+                </p>
+              </motion.div>
+            </StaggerItem>
 
-            <div className="bg-card rounded-2xl p-6 border border-border">
-              <h3 className="font-semibold text-foreground mb-2">
-                Is there a free trial?
-              </h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                We offer a 7-day free trial for new Verity Plus subscribers. You won't be charged until the trial period ends. Cancel before then and you won't pay anything.
-              </p>
-            </div>
-          </div>
-        </div>
+            <StaggerItem>
+              <motion.div 
+                className="bg-white/5 rounded-2xl p-6 border border-white/10"
+                whileHover={prefersReducedMotion ? {} : { scale: 1.01 }}
+                transition={spring.gentle}
+              >
+                <h3 className="font-semibold text-white mb-2">
+                  Is there a free trial?
+                </h3>
+                <p className="text-sm text-white/60 leading-relaxed">
+                  We offer a 7-day free trial for new Verity Plus subscribers. You won't be charged until the trial period ends. Cancel before then and you won't pay anything.
+                </p>
+              </motion.div>
+            </StaggerItem>
+          </StaggerContainer>
+        </ScrollReveal>
       </div>
 
       {/* Bottom CTA */}
-      <div className="border-t border-border bg-card/50 backdrop-blur sticky bottom-0">
+      <div className="border-t border-white/10 bg-[hsl(var(--ink))]/95 backdrop-blur sticky bottom-0">
         <div className="max-w-6xl mx-auto px-4 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="text-center sm:text-left">
-            <p className="font-semibold text-foreground">Ready to upgrade?</p>
-            <p className="text-sm text-muted-foreground">Start finding better matches today</p>
+            <p className="font-semibold text-white">Ready to upgrade?</p>
+            <p className="text-sm text-white/60">Start finding better matches today</p>
           </div>
           <Button
             onClick={handleSubscribe}

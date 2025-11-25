@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import type { RealtimeChannel } from "@supabase/supabase-js";
@@ -35,6 +36,7 @@ export function useNotifications({
   onDateRequest,
   onMessage,
 }: UseNotificationsOptions = {}) {
+  const navigate = useNavigate();
   const channelRef = useRef<RealtimeChannel | null>(null);
 
   useEffect(() => {
@@ -105,7 +107,7 @@ export function useNotifications({
   const navigateToNotification = (notification: Notification) => {
     const path = getNotificationPath(notification);
     if (path) {
-      window.location.href = path;
+      navigate(path);
     }
   };
 
@@ -127,34 +129,8 @@ export function useNotifications({
   };
 
   const sendEmailNotification = (notification: Notification) => {
-    // Email stub - logs to console for now
     // In production, this would call a Supabase Edge Function to send actual emails
-    console.log("📧 EMAIL NOTIFICATION STUB:");
-    console.log({
-      to: "user@example.com", // Would fetch from user profile
-      subject: notification.title,
-      body: notification.message,
-      type: notification.type,
-      timestamp: new Date().toISOString(),
-      metadata: {
-        userId: notification.user_id,
-        relatedId: notification.related_id,
-      },
-    });
-    console.log("---");
-
-    // In production, you would call:
-    // await supabase.functions.invoke('send-email', {
-    //   body: {
-    //     to: userEmail,
-    //     subject: notification.title,
-    //     template: notification.type,
-    //     data: {
-    //       message: notification.message,
-    //       relatedId: notification.related_id,
-    //     }
-    //   }
-    // });
+    // await supabase.functions.invoke('send-email', { ... });
   };
 
   return {

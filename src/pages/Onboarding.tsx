@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { motion, AnimatePresence } from "framer-motion";
 import StepAgeAndLegal from "@/components/onboarding/StepAgeAndLegal";
 import StepBasics from "@/components/onboarding/StepBasics";
 import StepPhotos from "@/components/onboarding/StepPhotos";
@@ -10,6 +11,9 @@ import StepPreferences from "@/components/onboarding/StepPreferences";
 import StepGuidelines from "@/components/onboarding/StepGuidelines";
 import { createProfile } from "@/utils/profileCreation";
 import { toast } from "@/hooks/use-toast";
+import { FadeIn } from "@/components/motion";
+import { duration, easing, spring } from "@/lib/motion";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 const Onboarding = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -33,8 +37,27 @@ const Onboarding = () => {
   const navigate = useNavigate();
 
   const totalSteps = 8;
+  const prefersReducedMotion = useReducedMotion();
+  const [direction, setDirection] = useState(1); // 1 = forward, -1 = backward
+
+  // Step transition variants
+  const stepVariants = {
+    enter: (direction: number) => ({
+      x: prefersReducedMotion ? 0 : direction > 0 ? 50 : -50,
+      opacity: 0,
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+    },
+    exit: (direction: number) => ({
+      x: prefersReducedMotion ? 0 : direction > 0 ? -50 : 50,
+      opacity: 0,
+    }),
+  };
 
   const handleStepComplete = async (data: Partial<typeof formData>) => {
+    setDirection(1); // Moving forward
     const updatedData = { ...formData, ...data };
     setFormData(updatedData);
     
@@ -73,7 +96,7 @@ const Onboarding = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-secondary flex items-center justify-center px-4 py-8">
-      <div className="w-full max-w-2xl">
+      <FadeIn className="w-full max-w-2xl">
         {/* Progress Indicator */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-2">
@@ -82,74 +105,112 @@ const Onboarding = () => {
             </span>
           </div>
           <div className="h-2 bg-muted rounded-full overflow-hidden">
-            <div
-              className="h-full bg-primary transition-all duration-300"
-              style={{ width: `${(currentStep / totalSteps) * 100}%` }}
+            <motion.div
+              className="h-full bg-primary"
+              initial={{ width: 0 }}
+              animate={{ width: `${(currentStep / totalSteps) * 100}%` }}
+              transition={{ 
+                duration: prefersReducedMotion ? 0 : duration.normal, 
+                ease: easing.easeOut 
+              }}
             />
           </div>
         </div>
 
         {/* Step Content */}
-        <div className="bg-card rounded-2xl shadow-lg p-8 md:p-12">
-          {currentStep === 1 && (
-            <StepAgeAndLegal
-              data={formData}
-              onComplete={handleStepComplete}
-            />
-          )}
-          {currentStep === 2 && (
-            <StepBasics
-              data={formData}
-              onComplete={handleStepComplete}
-            />
-          )}
-          {currentStep === 3 && (
-            <StepPhotos
-              data={formData}
-              onComplete={handleStepComplete}
-            />
-          )}
-          {currentStep === 4 && (
-            <StepCameraAndMic
-              data={formData}
-              onComplete={handleStepComplete}
-            />
-          )}
-          {currentStep === 5 && (
-            <StepVideos
-              data={formData}
-              onComplete={handleStepComplete}
-            />
-          )}
-          {currentStep === 6 && (
-            <StepPreferences
-              data={formData}
-              onComplete={handleStepComplete}
-            />
-          )}
-          {currentStep === 7 && (
-            <StepGuidelines
-              onComplete={handleStepComplete}
-            />
-          )}
-          {currentStep === 8 && (
-            <div className="space-y-6 text-center">
-              <h2 className="text-3xl font-bold">Complete Your Profile</h2>
-              <p className="text-muted-foreground">
-                Review your information and create your profile
-              </p>
-              <Button
-                onClick={() => handleStepComplete({})}
-                className="w-full"
-                size="lg"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? "Creating Profile..." : "Complete & Start Matching"}
-              </Button>
-            </div>
-          )}
+        <div className="bg-card rounded-2xl shadow-lg p-8 md:p-12 overflow-hidden">
+          <AnimatePresence mode="wait" custom={direction}>
+            <motion.div
+              key={currentStep}
+              custom={direction}
+              variants={stepVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{
+                duration: prefersReducedMotion ? 0.05 : duration.normal,
+                ease: easing.easeOut,
+              }}
+            >
+              {currentStep === 1 && (
+                <StepAgeAndLegal
+                  data={formData}
+                  onComplete={handleStepComplete}
+                />
+              )}
+              {currentStep === 2 && (
+                <StepBasics
+                  data={formData}
+                  onComplete={handleStepComplete}
+                />
+              )}
+              {currentStep === 3 && (
+                <StepPhotos
+                  data={formData}
+                  onComplete={handleStepComplete}
+                />
+              )}
+              {currentStep === 4 && (
+                <StepCameraAndMic
+                  data={formData}
+                  onComplete={handleStepComplete}
+                />
+              )}
+              {currentStep === 5 && (
+                <StepVideos
+                  data={formData}
+                  onComplete={handleStepComplete}
+                />
+              )}
+              {currentStep === 6 && (
+                <StepPreferences
+                  data={formData}
+                  onComplete={handleStepComplete}
+                />
+              )}
+              {currentStep === 7 && (
+                <StepGuidelines
+                  onComplete={handleStepComplete}
+                />
+              )}
+              {currentStep === 8 && (
+                <div className="space-y-6 text-center">
+                  <motion.h2 
+                    className="text-3xl font-bold"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 }}
+                  >
+                    Complete Your Profile
+                  </motion.h2>
+                  <motion.p 
+                    className="text-muted-foreground"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    Review your information and create your profile
+                  </motion.p>
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 }}
+                  >
+                    <Button
+                      onClick={() => handleStepComplete({})}
+                      className="w-full"
+                      size="lg"
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting ? "Creating Profile..." : "Complete & Start Matching"}
+                    </Button>
+                  </motion.div>
+                </div>
+              )}
+            </motion.div>
+          </AnimatePresence>
         </div>
-      </div>
+      </FadeIn>
     </div>
   );
 };

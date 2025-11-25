@@ -65,7 +65,7 @@ const StepPhotos = ({ data, onComplete }: StepProps) => {
         {/* Photo Grid */}
         <div className="grid grid-cols-3 gap-4">
           {previews.map((preview, index) => (
-            <div key={index} className="relative aspect-square">
+            <div key={preview} className="relative aspect-square">
               <img
                 src={preview}
                 alt={`Photo ${index + 1}`}

@@ -7,45 +7,46 @@ const Checkout = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-secondary">
+    <div className="min-h-screen bg-[hsl(var(--ink))]">
       {/* Header */}
-      <div className="bg-card border-b border-border sticky top-0 z-10">
+      <div className="bg-[hsl(var(--ink))]/95 border-b border-white/10 sticky top-0 z-10 backdrop-blur">
         <div className="max-w-2xl mx-auto px-4 py-4 flex items-center gap-4">
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => navigate("/upgrade")}
+            onClick={() => navigate("/verity-plus")}
+            className="text-white hover:text-accent hover:bg-white/5"
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
-          <h1 className="text-2xl font-bold text-foreground">Checkout</h1>
+          <h1 className="section-header text-2xl text-white">Checkout</h1>
         </div>
       </div>
 
       {/* Content */}
       <div className="max-w-2xl mx-auto px-4 py-12">
-        <Card className="p-8 md:p-12 space-y-8 text-center">
+        <Card className="p-8 md:p-12 space-y-8 text-center bg-white/5 border-white/10 backdrop-blur-xl">
           <div className="flex justify-center">
-            <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center">
-              <CreditCard className="h-8 w-8 text-primary" />
+            <div className="h-16 w-16 rounded-full bg-accent/10 border-2 border-accent/30 flex items-center justify-center">
+              <CreditCard className="h-8 w-8 text-accent" />
             </div>
           </div>
 
           <div className="space-y-3">
-            <h2 className="text-2xl font-bold text-foreground">
+            <h2 className="section-header text-2xl text-white">
               Checkout Page
             </h2>
-            <p className="text-muted-foreground">
+            <p className="body-base text-white/70">
               Payment integration coming soon. This is a placeholder for the checkout flow.
             </p>
           </div>
 
-          <div className="bg-muted rounded-xl p-6 space-y-3">
+          <div className="bg-white/5 border border-white/10 rounded-xl p-6 space-y-3">
             <div className="flex justify-between items-center">
-              <span className="text-foreground font-medium">Verity Plus</span>
-              <span className="text-foreground font-semibold">$19/month</span>
+              <span className="text-white font-medium">Verity Plus</span>
+              <span className="text-accent font-semibold">$19/month</span>
             </div>
-            <p className="text-sm text-muted-foreground text-left">
+            <p className="text-sm text-white/50 text-left">
               Billed monthly • Cancel anytime
             </p>
           </div>
@@ -65,7 +66,7 @@ const Checkout = () => {
             <Button
               variant="ghost"
               className="w-full"
-              onClick={() => navigate("/upgrade")}
+              onClick={() => navigate("/verity-plus")}
             >
               Back to details
             </Button>

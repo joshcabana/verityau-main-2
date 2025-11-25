@@ -39,11 +39,11 @@ const StepGuidelines = ({ onComplete }: StepProps) => {
       </div>
 
       <div className="space-y-4">
-        {guidelines.map((guideline, index) => {
+        {guidelines.map((guideline) => {
           const Icon = guideline.icon;
           return (
             <div
-              key={index}
+              key={guideline.text}
               className="flex items-start gap-4 p-4 rounded-lg bg-secondary/50"
             >
               <Icon className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
