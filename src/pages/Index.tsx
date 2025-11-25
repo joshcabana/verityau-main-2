@@ -323,8 +323,9 @@ const Index = () => {
 
             {/* Subheadline */}
             <p className="text-[22px] md:text-[32px] text-white/95 mb-10 md:mb-12 leading-relaxed max-w-4xl mx-auto font-medium drop-shadow-lg">
-              Verity forces a 10-minute video date first. No filtered photos. No endless texting. No ghosts.<br />
-              <span className="text-white/90">Just humans being humans — or fuck off.</span>
+              No more endless swiping. No more ghosting. No more catfishing.<br />
+              <span className="text-white font-semibold">On Verity, you match → jump on a 10-minute video date → then decide if you want to chat.</span><br />
+              <span className="text-white/90">Real chemistry. Real conversation. Real dates.</span>
             </p>
 
             {/* Email Input Form */}
@@ -351,7 +352,7 @@ const Index = () => {
                     size="lg"
                     className="h-16 md:h-[72px] px-12 md:px-16 text-base md:text-xl font-bold shadow-2xl hover:shadow-golden-glow transition-all golden-glow"
                   >
-                    Join Waitlist — Lifetime Unlimited
+                    Get Early Access → Lifetime Unlimited
                   </Button>
                 </div>
                 <p className="text-center text-sm text-white/90 mt-4">
@@ -363,12 +364,15 @@ const Index = () => {
 
             {/* Small text under button */}
             <p className="text-white/90 text-base md:text-lg font-medium mb-3">
-              Canberra launches January 2026. First 2,000 Australians get it free forever. We&apos;re starting here because this city deserves it first.
+              Canberra launches January 2026. First 500 get lifetime unlimited dates. We&apos;re starting here because this city deserves it first.
             </p>
             
             {/* Waitlist count */}
             <p className="text-primary text-2xl md:text-4xl font-bold drop-shadow-2xl">
-              <AnimatedCounter target={18274} /> Australians already waiting
+              <AnimatedCounter target={18274} /> Australians skipping the bullshit
+            </p>
+            <p className="text-white/60 text-sm md:text-base mt-2">
+              Only 2,000 spots for the full Australia rollout
             </p>
           </div>
         </div>
@@ -409,30 +413,43 @@ const Index = () => {
             Every other app is lying to you.
           </h2>
 
-          {/* Three Cards */}
+          {/* Three Cards - Tired Of? */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-12 md:mb-16">
             <div className="bg-card border-2 border-border rounded-[24px] p-8 md:p-10 shadow-glass hover:shadow-coral-glow transition-all duration-300 hover:scale-[1.02] animate-fade-up">
+              <div className="text-4xl mb-4">😤</div>
               <p className="text-xl md:text-2xl text-foreground leading-relaxed font-medium">
-                They&apos;re selling you filtered lies. You text for weeks only to meet someone who looks nothing like their doctored photos.
+                You match, they&apos;re hot in photos... then the video call happens.
+              </p>
+              <p className="text-primary font-semibold mt-4 text-lg">
+                → Verity: See them on video BEFORE you invest emotions
               </p>
             </div>
 
             <div className="bg-card border-2 border-border rounded-[24px] p-8 md:p-10 shadow-glass hover:shadow-coral-glow transition-all duration-300 hover:scale-[1.02] animate-fade-up" style={{ animationDelay: '0.1s' }}>
+              <div className="text-4xl mb-4">🙄</div>
               <p className="text-xl md:text-2xl text-foreground leading-relaxed font-medium">
-                You finally meet in person and there&apos;s zero fucking chemistry. Complete waste of your Saturday night.
+                Three weeks of "hey how was your day" texts, then they ghost.
+              </p>
+              <p className="text-primary font-semibold mt-4 text-lg">
+                → Verity: 10-minute date FIRST, chat only if you both felt it
               </p>
             </div>
 
             <div className="bg-card border-2 border-border rounded-[24px] p-8 md:p-10 shadow-glass hover:shadow-coral-glow transition-all duration-300 hover:scale-[1.02] animate-fade-up" style={{ animationDelay: '0.2s' }}>
+              <div className="text-4xl mb-4">🤦</div>
               <p className="text-xl md:text-2xl text-foreground leading-relaxed font-medium">
-                They ghost you after three days because they were never serious. Just swiping to feel validated.
+                You drive 40 minutes for a date, zero spark, awkward small talk.
+              </p>
+              <p className="text-primary font-semibold mt-4 text-lg">
+                → Verity: Find out in 10 minutes from your couch
               </p>
             </div>
           </div>
 
           {/* Coral Bold Text */}
           <p className="text-center text-2xl md:text-3xl font-bold text-primary leading-relaxed">
-            Both Interested → forced video date → both yes → chat → real life. Simple. Brutal. Effective.
+            Match → 10-minute video date → both say yes → unlock chat → meet IRL.<br />
+            <span className="text-white/80 text-xl font-normal">No pen pals. No "hey" messages that go nowhere. Either you connect or you don&apos;t.</span>
           </p>
         </div>
       </section>
@@ -468,10 +485,10 @@ const Index = () => {
                   <span className="text-6xl md:text-7xl font-black text-primary">1</span>
                 </div>
                 <h3 className="text-3xl md:text-4xl font-bold mb-4">
-                  See someone&apos;s profile → both say Interested
+                  Create Your Profile (No Filters, No BS)
                 </h3>
                 <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed">
-                  Browse real profiles. If you both swipe right, you&apos;re locked into a video date. No backing out.
+                  Upload 2-6 photos + record a 30-second intro video. Everyone&apos;s verified with a selfie video. What you see is what you get.
                 </p>
               </div>
               <div className="order-1 md:order-2">

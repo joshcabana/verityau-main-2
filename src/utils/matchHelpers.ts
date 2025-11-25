@@ -64,12 +64,6 @@ export const fetchUserMatches = async (userId: string): Promise<Match[]> => {
       return !blockedUserIds.includes(matchedUserId);
     });
 
-    // Filter out matches with blocked users
-    const filteredMatches = matches.filter((match) => {
-      const matchedUserId = match.user1 === userId ? match.user2 : match.user1;
-      return !blockedUserIds.includes(matchedUserId);
-    });
-
     // Fetch profile data for each match
     const enrichedMatches = await Promise.all(
       filteredMatches.map(async (match) => {
