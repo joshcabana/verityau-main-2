@@ -340,7 +340,7 @@ export default function Profile() {
           <CardContent>
             <div className="grid grid-cols-3 gap-4">
               {profileData.photos.map((photo, index) => (
-                <div key={photo} className="relative aspect-square">
+                <div key={`photo-${index}-${photo.slice(-20)}`} className="relative aspect-square">
                   <img
                     src={photo}
                     alt={`Photo ${index + 1}`}

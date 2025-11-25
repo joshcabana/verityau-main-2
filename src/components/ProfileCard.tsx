@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useSwipeable } from "react-swipeable";
-import { motion, useMotionValue, useTransform, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { X, Heart, MapPin, Clock, Flag } from "lucide-react";
@@ -38,12 +38,6 @@ export const ProfileCard = ({ profile, onLike, onPass }: ProfileCardProps) => {
   const [isSwiping, setIsSwiping] = useState(false);
   const [reportDialogOpen, setReportDialogOpen] = useState(false);
   const prefersReducedMotion = useReducedMotion();
-  
-  // Motion values for spring physics
-  const x = useMotionValue(0);
-  const rotate = useTransform(x, [-300, 0, 300], [-15, 0, 15]);
-  const likeOpacity = useTransform(x, [0, 100], [0, 1]);
-  const passOpacity = useTransform(x, [-100, 0], [1, 0]);
 
   // Format distance
   const formatDistance = (meters?: number) => {
@@ -161,7 +155,7 @@ export const ProfileCard = ({ profile, onLike, onPass }: ProfileCardProps) => {
             
             {/* Photos */}
             {profile.photos.map((photo, index) => (
-              <CarouselItem key={photo}>
+              <CarouselItem key={`photo-${index}-${photo.slice(-20)}`}>
                 <div className="relative w-full h-full">
                   <img
                     src={getOptimizedImageUrl(photo, { width: 800, quality: 85 })}

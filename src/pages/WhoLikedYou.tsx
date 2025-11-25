@@ -189,7 +189,7 @@ export default function WhoLikedYou() {
               <h3 className="text-xl font-semibold text-foreground mb-2">Unable to Load</h3>
               <p className="text-muted-foreground mb-6">{error}</p>
               <Button 
-                onClick={() => navigate(0)}
+                onClick={() => window.location.reload()}
                 variant="outline"
               >
                 Try Again

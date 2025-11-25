@@ -472,7 +472,7 @@ const Index = () => {
       </section>
 
       {/* How It Works Section */}
-      <section className="py-24 px-4 bg-[hsl(var(--grey-100))] relative">
+      <section id="how-it-works" className="py-24 px-4 bg-[hsl(var(--grey-100))] relative">
         {/* Line illustration decorations */}
         <div className="absolute top-20 left-10 w-40 h-40 opacity-15 hidden lg:block">
           <img src={conversationIllustration} alt="" className="w-full h-full" />
@@ -632,6 +632,117 @@ const Index = () => {
 
             {/* Email Form */}
             <WaitlistForm />
+          </ScrollReveal>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section id="features" className="py-24 px-4 bg-[hsl(var(--ink))] relative">
+        <div className="max-w-6xl mx-auto">
+          <ScrollReveal>
+            <h2 className="section-header text-4xl md:text-[64px] text-center mb-12 text-white">
+              Features That Matter
+            </h2>
+            <div className="text-center max-w-3xl mx-auto">
+              <p className="body-large text-white/70 mb-8">
+                Detailed features section coming soon. We're building something special.
+              </p>
+              <div className="grid md:grid-cols-3 gap-8 mt-16">
+                <div className="bg-white/5 border border-white/10 rounded-2xl p-8 hover:border-accent/30 transition-smooth">
+                  <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center mb-4 mx-auto">
+                    <Heart className="w-6 h-6 text-accent" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-white mb-3">Feature One</h3>
+                  <p className="text-white/60">Coming soon</p>
+                </div>
+                <div className="bg-white/5 border border-white/10 rounded-2xl p-8 hover:border-accent/30 transition-smooth">
+                  <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center mb-4 mx-auto">
+                    <Video className="w-6 h-6 text-accent" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-white mb-3">Feature Two</h3>
+                  <p className="text-white/60">Coming soon</p>
+                </div>
+                <div className="bg-white/5 border border-white/10 rounded-2xl p-8 hover:border-accent/30 transition-smooth">
+                  <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center mb-4 mx-auto">
+                    <CheckCircle2 className="w-6 h-6 text-accent" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-white mb-3">Feature Three</h3>
+                  <p className="text-white/60">Coming soon</p>
+                </div>
+              </div>
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      {/* Safety Section */}
+      <section id="safety" className="py-24 px-4 bg-[hsl(var(--grey-100))] relative">
+        <div className="max-w-6xl mx-auto">
+          <ScrollReveal>
+            <h2 className="section-header text-4xl md:text-[64px] text-center mb-12 text-white">
+              Your Safety, Our Priority
+            </h2>
+            <div className="text-center max-w-3xl mx-auto">
+              <p className="body-large text-white/70 mb-8">
+                Comprehensive safety features and guidelines coming soon.
+              </p>
+              <div className="bg-white/5 border border-white/10 rounded-2xl p-12 backdrop-blur-xl">
+                <p className="text-white/80 text-lg leading-relaxed">
+                  We're implementing industry-leading safety measures including photo verification, 
+                  AI-powered moderation, real-time reporting, and more to ensure Verity is the 
+                  safest place to meet someone real.
+                </p>
+              </div>
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section id="faq" className="py-24 px-4 bg-[hsl(var(--ink))] relative">
+        <div className="max-w-4xl mx-auto">
+          <ScrollReveal>
+            <h2 className="section-header text-4xl md:text-[64px] text-center mb-16 text-white">
+              Frequently Asked Questions
+            </h2>
+            <div className="space-y-6">
+              <div className="bg-white/5 border border-white/10 rounded-2xl p-8">
+                <h3 className="text-xl font-semibold text-white mb-3">
+                  How does Verity work?
+                </h3>
+                <p className="text-white/70 leading-relaxed">
+                  Match with someone, have a 10-minute video date, and if you both say yes, unlock chat. 
+                  No endless messaging before meeting.
+                </p>
+              </div>
+              <div className="bg-white/5 border border-white/10 rounded-2xl p-8">
+                <h3 className="text-xl font-semibold text-white mb-3">
+                  When does Verity launch?
+                </h3>
+                <p className="text-white/70 leading-relaxed">
+                  January 2026 in Canberra, Australia. Join the waitlist now to be first in line.
+                </p>
+              </div>
+              <div className="bg-white/5 border border-white/10 rounded-2xl p-8">
+                <h3 className="text-xl font-semibold text-white mb-3">
+                  Is Verity free?
+                </h3>
+                <p className="text-white/70 leading-relaxed">
+                  Free users get 5 video dates per month. Verity Plus offers unlimited dates and premium features.
+                </p>
+              </div>
+              <div className="bg-white/5 border border-white/10 rounded-2xl p-8">
+                <h3 className="text-xl font-semibold text-white mb-3">
+                  More questions?
+                </h3>
+                <p className="text-white/70 leading-relaxed">
+                  Additional FAQ content coming soon. Email us at{" "}
+                  <a href="mailto:hello@verity.au" className="text-accent hover:text-accent/80 transition-smooth">
+                    hello@verity.au
+                  </a>
+                </p>
+              </div>
+            </div>
           </ScrollReveal>
         </div>
       </section>
