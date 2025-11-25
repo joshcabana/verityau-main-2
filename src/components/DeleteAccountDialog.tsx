@@ -79,7 +79,7 @@ export function DeleteAccountDialog({ open, onOpenChange }: DeleteAccountDialogP
   };
 
   return (
-    <Dialog open={open} onOpenChange={handleClose}>
+    <Dialog open={open} onOpenChange={(newOpen) => !newOpen && handleClose()}>
       <DialogContent className="sm:max-w-md bg-card border-destructive/20">
         <AnimatePresence mode="wait">
           {step === "warning" ? (

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback, memo, useMemo } from "react";
 import { useSwipeable } from "react-swipeable";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
@@ -11,8 +11,9 @@ import { MutualConnections } from "./MutualConnections";
 import { formatDistanceToNow } from "date-fns";
 import { useAuth } from "@/hooks/useAuth";
 import { getOptimizedImageUrl } from "@/utils/imageOptimization";
-import { spring, duration, easing } from "@/lib/motion";
+import { spring } from "@/lib/motion";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { hapticFeedback } from "@/utils/haptics";
 
 interface ProfileCardProps {
   profile: {
@@ -31,7 +32,7 @@ interface ProfileCardProps {
   onPass: () => void;
 }
 
-export const ProfileCard = ({ profile, onLike, onPass }: ProfileCardProps) => {
+export const ProfileCard = memo(function ProfileCard({ profile, onLike, onPass }: ProfileCardProps) {
   const { user } = useAuth();
   const [videoError, setVideoError] = useState(false);
   const [swipeOffset, setSwipeOffset] = useState({ x: 0, y: 0 });
@@ -39,17 +40,16 @@ export const ProfileCard = ({ profile, onLike, onPass }: ProfileCardProps) => {
   const [reportDialogOpen, setReportDialogOpen] = useState(false);
   const prefersReducedMotion = useReducedMotion();
 
-  // Format distance
-  const formatDistance = (meters?: number) => {
-    if (!meters) return null;
-    const km = Math.round(meters / 1000);
+  // Memoized format functions
+  const formattedDistance = useMemo(() => {
+    if (!profile.distance_meters) return null;
+    const km = Math.round(profile.distance_meters / 1000);
     return km < 1 ? "< 1 km away" : `${km} km away`;
-  };
+  }, [profile.distance_meters]);
 
-  // Format last active
-  const formatLastActive = (lastActive?: string) => {
-    if (!lastActive) return null;
-    const date = new Date(lastActive);
+  const formattedLastActive = useMemo(() => {
+    if (!profile.last_active) return null;
+    const date = new Date(profile.last_active);
     const minutesAgo = Math.floor((Date.now() - date.getTime()) / 60000);
     
     if (minutesAgo < 5) return "Active now";
@@ -57,7 +57,22 @@ export const ProfileCard = ({ profile, onLike, onPass }: ProfileCardProps) => {
     const hoursAgo = Math.floor(minutesAgo / 60);
     if (hoursAgo < 24) return `Active ${hoursAgo}h ago`;
     return `Active ${formatDistanceToNow(date, { addSuffix: true })}`;
-  };
+  }, [profile.last_active]);
+
+  // Memoized callbacks
+  const handleVideoError = useCallback(() => setVideoError(true), []);
+  const openReportDialog = useCallback(() => setReportDialogOpen(true), []);
+  const closeReportDialog = useCallback(() => setReportDialogOpen(false), []);
+
+  const handleLikeClick = useCallback(() => {
+    hapticFeedback('success');
+    onLike();
+  }, [onLike]);
+
+  const handlePassClick = useCallback(() => {
+    hapticFeedback('light');
+    onPass();
+  }, [onPass]);
 
   const handlers = useSwipeable({
     onSwiping: (eventData) => {
@@ -65,6 +80,7 @@ export const ProfileCard = ({ profile, onLike, onPass }: ProfileCardProps) => {
       setSwipeOffset({ x: eventData.deltaX, y: eventData.deltaY });
     },
     onSwipedLeft: () => {
+      hapticFeedback('light');
       setSwipeOffset({ x: -500, y: 0 });
       setTimeout(() => {
         onPass();
@@ -73,6 +89,7 @@ export const ProfileCard = ({ profile, onLike, onPass }: ProfileCardProps) => {
       }, 300);
     },
     onSwipedRight: () => {
+      hapticFeedback('success');
       setSwipeOffset({ x: 500, y: 0 });
       setTimeout(() => {
         onLike();
@@ -144,7 +161,7 @@ export const ProfileCard = ({ profile, onLike, onPass }: ProfileCardProps) => {
                     muted
                     playsInline
                     className="w-full h-full object-cover"
-                    onError={() => setVideoError(true)}
+                    onError={handleVideoError}
                   />
                   <div className="absolute top-4 left-4 bg-primary/90 text-primary-foreground px-3 py-1 rounded-full text-xs font-semibold">
                     Intro Video
@@ -176,16 +193,16 @@ export const ProfileCard = ({ profile, onLike, onPass }: ProfileCardProps) => {
                     {/* Distance, Last Active, and Mutual Connections */}
                     <div className="space-y-2">
                       <div className="flex items-center gap-3">
-                        {formatDistance(profile.distance_meters) && (
+                        {formattedDistance && (
                           <div className="flex items-center gap-1 text-xs text-primary-foreground/90">
                             <MapPin className="w-3 h-3" />
-                            {formatDistance(profile.distance_meters)}
+                            {formattedDistance}
                           </div>
                         )}
-                        {formatLastActive(profile.last_active) && (
+                        {formattedLastActive && (
                           <div className="flex items-center gap-1 text-xs text-primary-foreground/90">
                             <Clock className="w-3 h-3" />
-                            {formatLastActive(profile.last_active)}
+                            {formattedLastActive}
                           </div>
                         )}
                       </div>
@@ -228,7 +245,7 @@ export const ProfileCard = ({ profile, onLike, onPass }: ProfileCardProps) => {
           <Button
             size="sm"
             variant="ghost"
-            onClick={() => setReportDialogOpen(true)}
+            onClick={openReportDialog}
             className="text-muted-foreground hover:text-destructive"
           >
             <Flag className="w-4 h-4" />
@@ -243,7 +260,7 @@ export const ProfileCard = ({ profile, onLike, onPass }: ProfileCardProps) => {
           <Button
             size="lg"
             variant="outline"
-            onClick={onPass}
+            onClick={handlePassClick}
             className="w-16 h-16 rounded-full border-2 border-muted-foreground hover:border-destructive hover:bg-destructive/10 transition-smooth"
           >
             <X className="w-8 h-8 text-muted-foreground hover:text-destructive" />
@@ -257,7 +274,7 @@ export const ProfileCard = ({ profile, onLike, onPass }: ProfileCardProps) => {
         >
           <Button
             size="lg"
-            onClick={onLike}
+            onClick={handleLikeClick}
             className="w-20 h-20 rounded-full btn-premium shadow-coral-glow hover:shadow-coral-intense"
           >
             <motion.div
@@ -275,13 +292,11 @@ export const ProfileCard = ({ profile, onLike, onPass }: ProfileCardProps) => {
     <ReportDialog
       open={reportDialogOpen}
       onOpenChange={setReportDialogOpen}
-      onSubmit={() => {
-        setReportDialogOpen(false);
-      }}
+      onSubmit={closeReportDialog}
       userName={profile.name}
       reportedUserId={profile.user_id}
       context="profile"
     />
     </div>
   );
-};
+});

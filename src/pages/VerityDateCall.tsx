@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { Heart, Clock, AlertCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { ReportDialog } from "@/components/ReportDialog";
+import { duration, easing, spring } from "@/lib/motion";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 const ICEBREAKER_PROMPTS = [
   "What's the best adventure you've been on recently?",
@@ -33,6 +36,7 @@ const VerityDateCall = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const prefersReducedMotion = useReducedMotion();
   const verityDateId = searchParams.get("id");
   const [roomUrl, setRoomUrl] = useState<string>("");
   const [timeRemaining, setTimeRemaining] = useState<number>(600); // 10 minutes
@@ -41,6 +45,10 @@ const VerityDateCall = () => {
   const [reportOpen, setReportOpen] = useState(false);
   const [partnerName, setPartnerName] = useState<string>("this user");
   const [partnerId, setPartnerId] = useState<string>("");
+  
+  // Timer urgency thresholds
+  const isUrgent = timeRemaining <= 120; // Last 2 minutes
+  const isCritical = timeRemaining <= 30; // Last 30 seconds
 
   useEffect(() => {
     if (!verityDateId) {
@@ -160,26 +168,61 @@ const VerityDateCall = () => {
 
   return (
     <div className="relative w-full h-screen bg-background">
-      {/* Timer overlay */}
-      <div className="absolute top-4 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 bg-card/80 backdrop-blur-md border border-primary/20 rounded-full px-6 py-3 shadow-lg">
-        <Clock className="w-5 h-5 text-primary" />
-        <span className="font-mono text-lg font-semibold text-foreground">{formatTime(timeRemaining)}</span>
-      </div>
-
-      {/* Icebreaker prompt overlay with fade transitions */}
-      <div 
-        className={`absolute top-20 sm:top-20 left-4 right-4 sm:left-1/2 sm:right-auto sm:-translate-x-1/2 z-50 max-w-md sm:w-full bg-gradient-to-br from-primary/90 to-secondary/90 backdrop-blur-md border border-primary/30 rounded-2xl p-4 sm:p-6 shadow-2xl transition-all duration-500 ${
-          icebreakerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'
+      {/* Timer overlay with urgency animation */}
+      <motion.div 
+        className={`absolute top-4 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 backdrop-blur-md border rounded-full px-6 py-3 shadow-lg ${
+          isCritical 
+            ? 'bg-destructive/80 border-destructive/50' 
+            : isUrgent 
+              ? 'bg-orange-500/80 border-orange-500/50' 
+              : 'bg-card/80 border-primary/20'
         }`}
+        animate={prefersReducedMotion ? {} : (isCritical ? { scale: [1, 1.05, 1] } : {})}
+        transition={{ duration: 0.5, repeat: isCritical ? Infinity : 0, ease: "easeInOut" }}
       >
-        <div className="flex items-start gap-3">
-          <Heart className="w-6 h-6 text-white flex-shrink-0 mt-1" fill="white" />
-          <div>
-            <h3 className="text-white font-semibold mb-2">Conversation Starter</h3>
-            <p className="text-white/90 text-sm leading-relaxed">{currentIcebreaker}</p>
-          </div>
-        </div>
-      </div>
+        <motion.div
+          animate={prefersReducedMotion ? {} : (isUrgent ? { rotate: [0, -10, 10, 0] } : {})}
+          transition={{ duration: 0.5, repeat: isUrgent ? Infinity : 0 }}
+        >
+          <Clock className={`w-5 h-5 ${isCritical ? 'text-white' : isUrgent ? 'text-white' : 'text-primary'}`} />
+        </motion.div>
+        <motion.span 
+          className={`font-mono text-lg font-semibold ${isCritical ? 'text-white' : isUrgent ? 'text-white' : 'text-foreground'}`}
+          key={timeRemaining}
+          initial={prefersReducedMotion ? {} : { scale: 1.2 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 0.2 }}
+        >
+          {formatTime(timeRemaining)}
+        </motion.span>
+      </motion.div>
+
+      {/* Icebreaker prompt overlay with Framer Motion */}
+      <AnimatePresence mode="wait">
+        {icebreakerVisible && (
+          <motion.div 
+            key={currentIcebreakerIndex}
+            className="absolute top-20 sm:top-20 left-4 right-4 sm:left-1/2 sm:right-auto sm:-translate-x-1/2 z-50 max-w-md sm:w-full bg-gradient-to-br from-primary/90 to-secondary/90 backdrop-blur-md border border-primary/30 rounded-2xl p-4 sm:p-6 shadow-2xl"
+            initial={{ opacity: 0, y: -20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -20, scale: 0.95 }}
+            transition={prefersReducedMotion ? { duration: 0.1 } : { duration: 0.4, ease: easing.easeOut }}
+          >
+            <div className="flex items-start gap-3">
+              <motion.div
+                animate={prefersReducedMotion ? {} : { scale: [1, 1.2, 1] }}
+                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <Heart className="w-6 h-6 text-white flex-shrink-0 mt-1" fill="white" />
+              </motion.div>
+              <div>
+                <h3 className="text-white font-semibold mb-2">Conversation Starter</h3>
+                <p className="text-white/90 text-sm leading-relaxed">{currentIcebreaker}</p>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Report button */}
       <div className="absolute top-4 right-4 z-50">

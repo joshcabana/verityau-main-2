@@ -1,3 +1,4 @@
+import { Suspense, lazy } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -8,33 +9,57 @@ import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { PageTransition } from "@/components/motion";
 import * as Sentry from "@sentry/react";
+
+// Critical path pages - loaded immediately
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
-import ResetPassword from "./pages/ResetPassword";
-import Onboarding from "./pages/Onboarding";
-import Main from "./pages/Main";
-import IntroCall from "./pages/IntroCall";
-import ExtendedCall from "./pages/ExtendedCall";
-import MatchSuccess from "./pages/MatchSuccess";
-import Matches from "./pages/Matches";
-import MatchProfile from "./pages/MatchProfile";
-import WhoLikedYou from "./pages/WhoLikedYou";
-import VerityPlus from "./pages/VerityPlus";
-import Checkout from "./pages/Checkout";
-import Privacy from "./pages/Privacy";
-import Terms from "./pages/Terms";
-import NotFound from "./pages/NotFound";
-import ProfileEdit from "./pages/ProfileEdit";
-import Profile from "./pages/Profile";
-import VerityDateWaiting from "./pages/VerityDateWaiting";
-import VerityDateCall from "./pages/VerityDateCall";
-import VerityDateFeedback from "./pages/VerityDateFeedback";
-import AdminVerification from "./pages/AdminVerification";
-import Admin from "./pages/Admin";
-import Chat from "./pages/Chat";
-import VerifyEmail from "./pages/VerifyEmail";
 
-const queryClient = new QueryClient();
+// Lazy load all other pages for better initial bundle size
+const ResetPassword = lazy(() => import("./pages/ResetPassword"));
+const Onboarding = lazy(() => import("./pages/Onboarding"));
+const Main = lazy(() => import("./pages/Main"));
+const IntroCall = lazy(() => import("./pages/IntroCall"));
+const ExtendedCall = lazy(() => import("./pages/ExtendedCall"));
+const MatchSuccess = lazy(() => import("./pages/MatchSuccess"));
+const Matches = lazy(() => import("./pages/Matches"));
+const MatchProfile = lazy(() => import("./pages/MatchProfile"));
+const WhoLikedYou = lazy(() => import("./pages/WhoLikedYou"));
+const VerityPlus = lazy(() => import("./pages/VerityPlus"));
+const Checkout = lazy(() => import("./pages/Checkout"));
+const Privacy = lazy(() => import("./pages/Privacy"));
+const Terms = lazy(() => import("./pages/Terms"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const ProfileEdit = lazy(() => import("./pages/ProfileEdit"));
+const Profile = lazy(() => import("./pages/Profile"));
+const VerityDateWaiting = lazy(() => import("./pages/VerityDateWaiting"));
+const VerityDateCall = lazy(() => import("./pages/VerityDateCall"));
+const VerityDateFeedback = lazy(() => import("./pages/VerityDateFeedback"));
+const AdminVerification = lazy(() => import("./pages/AdminVerification"));
+const Admin = lazy(() => import("./pages/Admin"));
+const Chat = lazy(() => import("./pages/Chat"));
+const VerifyEmail = lazy(() => import("./pages/VerifyEmail"));
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5, // 5 minutes
+      gcTime: 1000 * 60 * 30, // 30 minutes (formerly cacheTime)
+      refetchOnWindowFocus: false,
+    },
+  },
+});
+
+// Loading fallback component
+function PageLoader() {
+  return (
+    <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="flex flex-col items-center gap-4">
+        <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+        <p className="text-muted-foreground text-sm">Loading...</p>
+      </div>
+    </div>
+  );
+}
 
 // Animated routes wrapper component
 function AnimatedRoutes() {
@@ -42,38 +67,40 @@ function AnimatedRoutes() {
 
   return (
     <AnimatePresence mode="wait">
-      <Routes location={location}>
-        <Route path="/" element={<PageTransition><Index /></PageTransition>} />
-        <Route path="/auth" element={<PageTransition><Auth /></PageTransition>} />
-        <Route path="/verify-email" element={<ProtectedRoute><PageTransition><VerifyEmail /></PageTransition></ProtectedRoute>} />
-        <Route path="/reset-password" element={<PageTransition><ResetPassword /></PageTransition>} />
-        <Route path="/privacy" element={<PageTransition><Privacy /></PageTransition>} />
-        <Route path="/terms" element={<PageTransition><Terms /></PageTransition>} />
-        
-        {/* Protected Routes */}
-        <Route path="/onboarding" element={<ProtectedRoute><PageTransition><Onboarding /></PageTransition></ProtectedRoute>} />
-        <Route path="/main" element={<ProtectedRoute><PageTransition><Main /></PageTransition></ProtectedRoute>} />
-        <Route path="/intro-call" element={<ProtectedRoute><PageTransition><IntroCall /></PageTransition></ProtectedRoute>} />
-        <Route path="/extended-call" element={<ProtectedRoute><PageTransition><ExtendedCall /></PageTransition></ProtectedRoute>} />
-        <Route path="/match-success" element={<ProtectedRoute><PageTransition><MatchSuccess /></PageTransition></ProtectedRoute>} />
-        <Route path="/matches" element={<ProtectedRoute><PageTransition><Matches /></PageTransition></ProtectedRoute>} />
-        <Route path="/match/:matchId" element={<ProtectedRoute><PageTransition><MatchProfile /></PageTransition></ProtectedRoute>} />
-        <Route path="/chat/:id" element={<ProtectedRoute><PageTransition><Chat /></PageTransition></ProtectedRoute>} />
-        <Route path="/who-liked-you" element={<ProtectedRoute><PageTransition><WhoLikedYou /></PageTransition></ProtectedRoute>} />
-        <Route path="/upgrade" element={<ProtectedRoute><PageTransition><VerityPlus /></PageTransition></ProtectedRoute>} />
-        <Route path="/verity-plus" element={<ProtectedRoute><PageTransition><VerityPlus /></PageTransition></ProtectedRoute>} />
-        <Route path="/checkout" element={<ProtectedRoute><PageTransition><Checkout /></PageTransition></ProtectedRoute>} />
-        <Route path="/verity-date/waiting" element={<ProtectedRoute><PageTransition><VerityDateWaiting /></PageTransition></ProtectedRoute>} />
-        <Route path="/verity-date/call" element={<ProtectedRoute><PageTransition><VerityDateCall /></PageTransition></ProtectedRoute>} />
-        <Route path="/verity-date/feedback" element={<ProtectedRoute><PageTransition><VerityDateFeedback /></PageTransition></ProtectedRoute>} />
-        <Route path="/profile/edit" element={<ProtectedRoute><PageTransition><ProfileEdit /></PageTransition></ProtectedRoute>} />
-        <Route path="/profile" element={<ProtectedRoute><PageTransition><Profile /></PageTransition></ProtectedRoute>} />
-        <Route path="/admin/verification" element={<ProtectedRoute><PageTransition><AdminVerification /></PageTransition></ProtectedRoute>} />
-        <Route path="/admin" element={<ProtectedRoute><PageTransition><Admin /></PageTransition></ProtectedRoute>} />
-        
-        {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-        <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
-      </Routes>
+      <Suspense fallback={<PageLoader />}>
+        <Routes location={location}>
+          <Route path="/" element={<PageTransition><Index /></PageTransition>} />
+          <Route path="/auth" element={<PageTransition><Auth /></PageTransition>} />
+          <Route path="/verify-email" element={<ProtectedRoute><PageTransition><VerifyEmail /></PageTransition></ProtectedRoute>} />
+          <Route path="/reset-password" element={<PageTransition><ResetPassword /></PageTransition>} />
+          <Route path="/privacy" element={<PageTransition><Privacy /></PageTransition>} />
+          <Route path="/terms" element={<PageTransition><Terms /></PageTransition>} />
+          
+          {/* Protected Routes */}
+          <Route path="/onboarding" element={<ProtectedRoute><PageTransition><Onboarding /></PageTransition></ProtectedRoute>} />
+          <Route path="/main" element={<ProtectedRoute><PageTransition><Main /></PageTransition></ProtectedRoute>} />
+          <Route path="/intro-call" element={<ProtectedRoute><PageTransition><IntroCall /></PageTransition></ProtectedRoute>} />
+          <Route path="/extended-call" element={<ProtectedRoute><PageTransition><ExtendedCall /></PageTransition></ProtectedRoute>} />
+          <Route path="/match-success" element={<ProtectedRoute><PageTransition><MatchSuccess /></PageTransition></ProtectedRoute>} />
+          <Route path="/matches" element={<ProtectedRoute><PageTransition><Matches /></PageTransition></ProtectedRoute>} />
+          <Route path="/match/:matchId" element={<ProtectedRoute><PageTransition><MatchProfile /></PageTransition></ProtectedRoute>} />
+          <Route path="/chat/:id" element={<ProtectedRoute><PageTransition><Chat /></PageTransition></ProtectedRoute>} />
+          <Route path="/who-liked-you" element={<ProtectedRoute><PageTransition><WhoLikedYou /></PageTransition></ProtectedRoute>} />
+          <Route path="/upgrade" element={<ProtectedRoute><PageTransition><VerityPlus /></PageTransition></ProtectedRoute>} />
+          <Route path="/verity-plus" element={<ProtectedRoute><PageTransition><VerityPlus /></PageTransition></ProtectedRoute>} />
+          <Route path="/checkout" element={<ProtectedRoute><PageTransition><Checkout /></PageTransition></ProtectedRoute>} />
+          <Route path="/verity-date/waiting" element={<ProtectedRoute><PageTransition><VerityDateWaiting /></PageTransition></ProtectedRoute>} />
+          <Route path="/verity-date/call" element={<ProtectedRoute><PageTransition><VerityDateCall /></PageTransition></ProtectedRoute>} />
+          <Route path="/verity-date/feedback" element={<ProtectedRoute><PageTransition><VerityDateFeedback /></PageTransition></ProtectedRoute>} />
+          <Route path="/profile/edit" element={<ProtectedRoute><PageTransition><ProfileEdit /></PageTransition></ProtectedRoute>} />
+          <Route path="/profile" element={<ProtectedRoute><PageTransition><Profile /></PageTransition></ProtectedRoute>} />
+          <Route path="/admin/verification" element={<ProtectedRoute><PageTransition><AdminVerification /></PageTransition></ProtectedRoute>} />
+          <Route path="/admin" element={<ProtectedRoute><PageTransition><Admin /></PageTransition></ProtectedRoute>} />
+          
+          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
+        </Routes>
+      </Suspense>
     </AnimatePresence>
   );
 }

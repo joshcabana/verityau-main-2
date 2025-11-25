@@ -212,81 +212,143 @@ const VerityDateFeedback = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-secondary/10 flex items-center justify-center p-4">
-      <div className="max-w-2xl w-full space-y-8 animate-in fade-in duration-500">
-        <div className="text-center space-y-4">
-          <div className="relative inline-block">
-            <Sparkles className="w-16 h-16 mx-auto text-primary animate-pulse" />
-            <div className="absolute inset-0 blur-2xl bg-primary/30 rounded-full" />
+    <FadeIn className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-secondary/10 flex items-center justify-center p-4">
+      <StaggerContainer className="max-w-2xl w-full space-y-8" staggerDelay="normal" initialDelay={0.1}>
+        {/* Header with animated sparkles */}
+        <StaggerItem>
+          <div className="text-center space-y-4">
+            <motion.div 
+              className="relative inline-block"
+              animate={prefersReducedMotion ? {} : { rotate: [0, 5, -5, 0] }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+            >
+              <motion.div
+                animate={prefersReducedMotion ? {} : { scale: [1, 1.2, 1], opacity: [0.3, 0.6, 0.3] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute inset-0 blur-2xl bg-primary/30 rounded-full"
+              />
+              <Sparkles className="w-16 h-16 mx-auto text-primary relative" />
+            </motion.div>
+            
+            <motion.h1 
+              className="text-4xl font-bold text-foreground"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              How did it go?
+            </motion.h1>
+            <motion.p 
+              className="text-xl text-muted-foreground"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+            >
+              Did you feel a connection with <span className="text-primary font-semibold">{partnerName}</span>?
+            </motion.p>
           </div>
-          
-          <h1 className="text-4xl font-bold text-foreground">
-            How did it go?
-          </h1>
-          <p className="text-xl text-muted-foreground">
-            Did you feel a connection with <span className="text-primary font-semibold">{partnerName}</span>?
-          </p>
-        </div>
+        </StaggerItem>
 
-        <div className="grid gap-4 max-w-md mx-auto">
-          <Button
-            size="lg"
-            onClick={() => handleFeedback("yes")}
-            disabled={submitting}
-            className="h-auto py-6 px-8 bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-all duration-300 shadow-lg hover:shadow-xl group"
+        {/* Feedback buttons */}
+        <StaggerItem>
+          <div className="grid gap-4 max-w-md mx-auto">
+            <motion.div
+              whileHover={prefersReducedMotion ? {} : { scale: 1.02, y: -2 }}
+              whileTap={prefersReducedMotion ? {} : { scale: 0.98 }}
+              transition={spring.gentle}
+            >
+              <Button
+                size="lg"
+                onClick={() => handleFeedback("yes")}
+                disabled={submitting}
+                className="w-full h-auto py-6 px-8 bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-all duration-300 shadow-lg hover:shadow-xl group"
+              >
+                <motion.div
+                  animate={prefersReducedMotion ? {} : { scale: [1, 1.2, 1] }}
+                  transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  <Heart className="w-6 h-6 mr-3" fill="currentColor" />
+                </motion.div>
+                <div className="text-left">
+                  <div className="font-semibold text-lg">Yes! 💕</div>
+                  <div className="text-sm opacity-90">I felt a real connection</div>
+                </div>
+              </Button>
+            </motion.div>
+
+            <motion.div
+              whileHover={prefersReducedMotion ? {} : { scale: 1.02, y: -2 }}
+              whileTap={prefersReducedMotion ? {} : { scale: 0.98 }}
+              transition={spring.gentle}
+            >
+              <Button
+                size="lg"
+                variant="outline"
+                onClick={() => handleFeedback("maybe")}
+                disabled={submitting}
+                className="w-full h-auto py-6 px-8 border-2 hover:bg-muted/50 transition-all duration-300 group"
+              >
+                <Meh className="w-6 h-6 mr-3 group-hover:scale-110 transition-transform" />
+                <div className="text-left">
+                  <div className="font-semibold text-lg">Maybe later</div>
+                  <div className="text-sm text-muted-foreground">Not sure yet, want to think about it</div>
+                </div>
+              </Button>
+            </motion.div>
+
+            <motion.div
+              whileHover={prefersReducedMotion ? {} : { scale: 1.02, y: -2 }}
+              whileTap={prefersReducedMotion ? {} : { scale: 0.98 }}
+              transition={spring.gentle}
+            >
+              <Button
+                size="lg"
+                variant="outline"
+                onClick={() => handleFeedback("no")}
+                disabled={submitting}
+                className="w-full h-auto py-6 px-8 border-2 hover:bg-muted/50 transition-all duration-300 group"
+              >
+                <X className="w-6 h-6 mr-3 group-hover:scale-110 transition-transform" />
+                <div className="text-left">
+                  <div className="font-semibold text-lg">No connection</div>
+                  <div className="text-sm text-muted-foreground">Didn't feel the spark</div>
+                </div>
+              </Button>
+            </motion.div>
+          </div>
+        </StaggerItem>
+
+        {/* Info card */}
+        <StaggerItem>
+          <motion.div 
+            className="text-center text-sm text-muted-foreground bg-card/50 backdrop-blur-sm border border-border rounded-xl p-4 max-w-md mx-auto"
+            whileHover={prefersReducedMotion ? {} : { scale: 1.02 }}
+            transition={spring.gentle}
           >
-            <Heart className="w-6 h-6 mr-3 group-hover:scale-110 transition-transform" fill="currentColor" />
-            <div className="text-left">
-              <div className="font-semibold text-lg">Yes! 💕</div>
-              <div className="text-sm opacity-90">I felt a real connection</div>
-            </div>
-          </Button>
+            <p>Your honest feedback helps create meaningful connections. If you both say yes, chat will be unlocked! 💬</p>
+          </motion.div>
+        </StaggerItem>
 
-          <Button
-            size="lg"
-            variant="outline"
-            onClick={() => handleFeedback("maybe")}
-            disabled={submitting}
-            className="h-auto py-6 px-8 border-2 hover:bg-muted/50 transition-all duration-300 group"
-          >
-            <Meh className="w-6 h-6 mr-3 group-hover:scale-110 transition-transform" />
-            <div className="text-left">
-              <div className="font-semibold text-lg">Maybe later</div>
-              <div className="text-sm text-muted-foreground">Not sure yet, want to think about it</div>
-            </div>
-          </Button>
-
-          <Button
-            size="lg"
-            variant="outline"
-            onClick={() => handleFeedback("no")}
-            disabled={submitting}
-            className="h-auto py-6 px-8 border-2 hover:bg-muted/50 transition-all duration-300 group"
-          >
-            <X className="w-6 h-6 mr-3 group-hover:scale-110 transition-transform" />
-            <div className="text-left">
-              <div className="font-semibold text-lg">No connection</div>
-              <div className="text-sm text-muted-foreground">Didn't feel the spark</div>
-            </div>
-          </Button>
-        </div>
-
-        <div className="text-center text-sm text-muted-foreground bg-card/50 backdrop-blur-sm border border-border rounded-xl p-4 max-w-md mx-auto">
-          <p>Your honest feedback helps create meaningful connections. If you both say yes, chat will be unlocked! 💬</p>
-        </div>
-
-        <div className="text-center">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setReportOpen(true)}
-            className="text-muted-foreground hover:text-destructive transition-colors"
-          >
-            <AlertCircle className="w-4 h-4 mr-2" />
-            Report {partnerName}
-          </Button>
-        </div>
-      </div>
+        {/* Report button */}
+        <StaggerItem>
+          <div className="text-center">
+            <motion.div
+              whileHover={prefersReducedMotion ? {} : { scale: 1.05 }}
+              whileTap={prefersReducedMotion ? {} : { scale: 0.95 }}
+            >
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setReportOpen(true)}
+                className="text-muted-foreground hover:text-destructive transition-colors"
+              >
+                <AlertCircle className="w-4 h-4 mr-2" />
+                Report {partnerName}
+              </Button>
+            </motion.div>
+          </div>
+        </StaggerItem>
+      </StaggerContainer>
 
       <ReportDialog
         open={reportOpen}
@@ -296,7 +358,7 @@ const VerityDateFeedback = () => {
         reportedUserId={partnerId}
         context="verity_date_feedback"
       />
-    </div>
+    </FadeIn>
   );
 };
 
