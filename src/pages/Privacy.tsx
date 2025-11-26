@@ -209,6 +209,16 @@ const Privacy = () => {
           </section>
         </article>
       </div>
+
+      {/* Footer */}
+      <footer className="py-8 px-6 border-t border-white/10 bg-[hsl(var(--ink))]">
+        <div className="max-w-4xl mx-auto flex items-center justify-between text-sm text-white/40">
+          <Link to="/" className="hover:text-accent transition-colors">
+            ← Back to home
+          </Link>
+          <span>Verity © 2025</span>
+        </div>
+      </footer>
     </div>
   );
 };

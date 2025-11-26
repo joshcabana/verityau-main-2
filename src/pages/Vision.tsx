@@ -157,7 +157,6 @@ const Vision = () => {
         </div>
       </section>
 
-
       {/* Join the Movement */}
       <section className="py-32 md:py-40 px-6 bg-[hsl(var(--ink))]">
         <div className="max-w-5xl mx-auto">
