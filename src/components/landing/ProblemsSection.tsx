@@ -4,7 +4,7 @@ import { spring } from "@/lib/motion";
 
 export const ProblemsSection = () => {
   return (
-    <section className="py-24 md:py-32 px-4 relative bg-[hsl(var(--grey-100))]">
+    <section className="py-24 md:py-32 px-4 bg-[hsl(var(--grey-100))]">
       <div className="max-w-6xl mx-auto">
         {/* Headline */}
         <ScrollReveal>
@@ -19,7 +19,6 @@ export const ProblemsSection = () => {
             <motion.div
               className="bg-white/5 border border-white/10 rounded-lg p-10 shadow-elegant hover:border-accent/30 hover:shadow-gold transition-smooth h-full"
               whileHover={{ scale: 1.02, transition: spring.gentle }}
-              whileTap={{ scale: 0.98 }}
             >
               <p className="body-large text-white">
                 Filtered photos. Curated personas.
@@ -36,7 +35,6 @@ export const ProblemsSection = () => {
             <motion.div
               className="bg-white/5 border border-white/10 rounded-lg p-10 shadow-elegant hover:border-accent/30 hover:shadow-gold transition-smooth h-full"
               whileHover={{ scale: 1.02, transition: spring.gentle }}
-              whileTap={{ scale: 0.98 }}
             >
               <p className="body-large text-white">
                 Weeks of small talk. Momentum lost.
@@ -53,7 +51,6 @@ export const ProblemsSection = () => {
             <motion.div
               className="bg-white/5 border border-white/10 rounded-lg p-10 shadow-elegant hover:border-accent/30 hover:shadow-gold transition-smooth h-full"
               whileHover={{ scale: 1.02, transition: spring.gentle }}
-              whileTap={{ scale: 0.98 }}
             >
               <p className="body-large text-white">
                 You drive across town. No spark. Awkward goodbye.

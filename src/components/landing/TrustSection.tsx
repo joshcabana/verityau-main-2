@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 
 export const TrustSection = memo(function TrustSection() {
   return (
-    <section id="trust" className="py-24 md:py-32 px-4 bg-[hsl(var(--grey-100))] relative">
+    <section id="trust" className="py-24 md:py-32 px-4 bg-[hsl(var(--grey-100))]">
       <div className="max-w-4xl mx-auto">
         <ScrollReveal>
           <div className="text-center mb-12">
