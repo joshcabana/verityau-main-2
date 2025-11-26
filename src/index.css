@@ -158,13 +158,15 @@ All colors MUST be HSL.
     -moz-osx-font-smoothing: grayscale;
     color: hsl(var(--foreground));
     font-feature-settings: "rlig" 1, "calt" 1;
+    font-display: swap;
   }
-  
+
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Playfair Display', serif;
     font-weight: 600;
     letter-spacing: -0.02em;
     color: hsl(var(--foreground));
+    font-display: swap;
   }
   
   p {

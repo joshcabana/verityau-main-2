@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
+import { visualizer } from "rollup-plugin-visualizer";
 
 // https://vitejs.dev/config/
 export default defineConfig(() => ({
@@ -8,7 +9,16 @@ export default defineConfig(() => ({
     host: "::",
     port: 8080,
   },
-  plugins: [react()],
+  plugins: [
+    react(),
+    // Bundle analyzer - generates stats.html when building
+    visualizer({
+      filename: 'dist/stats.html',
+      open: false,
+      gzipSize: true,
+      brotliSize: true,
+    }),
+  ],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
@@ -18,12 +28,35 @@ export default defineConfig(() => ({
     // Enable code splitting
     rollupOptions: {
       output: {
-        manualChunks: {
-          // Vendor chunks for better caching
-          "react-vendor": ["react", "react-dom", "react-router-dom"],
-          "ui-vendor": ["framer-motion", "@radix-ui/react-dialog", "@radix-ui/react-slot"],
-          "query-vendor": ["@tanstack/react-query"],
-          "supabase-vendor": ["@supabase/supabase-js"],
+        manualChunks: (id) => {
+          // React ecosystem
+          if (id.includes("react") || id.includes("react-dom") || id.includes("react-router")) {
+            return "react-vendor";
+          }
+          // UI libraries
+          if (id.includes("@radix-ui") || id.includes("framer-motion") || id.includes("lucide-react")) {
+            return "ui-vendor";
+          }
+          // Data fetching
+          if (id.includes("@tanstack/react-query") || id.includes("@supabase")) {
+            return "data-vendor";
+          }
+          // Form libraries
+          if (id.includes("react-hook-form") || id.includes("zod") || id.includes("@hookform")) {
+            return "form-vendor";
+          }
+          // Date/calendar libraries
+          if (id.includes("date-fns") || id.includes("react-day-picker")) {
+            return "date-vendor";
+          }
+          // Charts and visualization
+          if (id.includes("recharts") || id.includes("canvas-confetti")) {
+            return "chart-vendor";
+          }
+          // Large utility libraries
+          if (id.includes("cmdk") || id.includes("embla-carousel")) {
+            return "utils-vendor";
+          }
         },
       },
     },
@@ -33,6 +66,10 @@ export default defineConfig(() => ({
     minify: "esbuild",
     // Configure esbuild for production
     target: "es2020",
+    // Enable source maps for production debugging
+    sourcemap: false,
+    // Optimize CSS
+    cssCodeSplit: true,
   },
   // Optimize dependencies
   optimizeDeps: {

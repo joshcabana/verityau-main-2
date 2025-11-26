@@ -46,9 +46,28 @@ const VerifyEmail = lazy(() => import("./pages/VerifyEmail"));
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 1000 * 60 * 5, // 5 minutes
-      gcTime: 1000 * 60 * 30, // 30 minutes (formerly cacheTime)
-      refetchOnWindowFocus: false,
+      staleTime: 1000 * 60 * 5, // 5 minutes - data considered fresh
+      gcTime: 1000 * 60 * 30, // 30 minutes - keep in cache
+      refetchOnWindowFocus: false, // Prevent unnecessary refetches
+      refetchOnReconnect: true, // Refetch on network reconnect
+      retry: (failureCount, error) => {
+        // Don't retry on 4xx errors (client errors)
+        if (error instanceof Error && 'status' in error && typeof error.status === 'number') {
+          if (error.status >= 400 && error.status < 500) {
+            return false;
+          }
+        }
+        // Retry up to 3 times for other errors
+        return failureCount < 3;
+      },
+      retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000), // Exponential backoff
+    },
+    mutations: {
+      retry: 1, // Only retry mutations once
+      onError: (error) => {
+        // Global error handling for mutations
+        console.error('Mutation error:', error);
+      },
     },
   },
 });

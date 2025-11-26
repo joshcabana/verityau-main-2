@@ -93,7 +93,7 @@ const FAQ = () => {
                     Short Answer: Proximity + prefs = your queue. No black-box AI deciding your fate.
                   </p>
                   <p className="text-white/70 leading-relaxed">
-                    The Transparent Take: We match verified folks within your radius (default 100km — adjust for road trips). Prefs (age, gender, "serious or casual") filter the noise. Like back? Mutual magic. No "Elo score" bullshit — it's you + them + geography. Factual: PostGIS ensures &lt;5km waits in Canberra, 78% first-call conversion to chats. Want more control? Plus gives "priority" (your profile tops queues).
+                    The Transparent Take: We match verified folks within your radius (default 100km — adjust for road trips). Prefs (age, gender, "serious or casual") filter the noise. Like back? Mutual magic. No "Elo score" bullshit — it's you + them + geography. Factual: PostGIS ensures less than 5km waits in Canberra, 78% first-call conversion to chats. Want more control? Plus gives "priority" (your profile tops queues).
                   </p>
                 </div>
               </StaggerItem>

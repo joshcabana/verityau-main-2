@@ -1,13 +1,21 @@
 import { useState, useCallback, memo, ImgHTMLAttributes } from "react";
 import { cn } from "@/lib/utils";
 
-interface OptimizedImageProps extends ImgHTMLAttributes<HTMLImageElement> {
+interface OptimizedImageProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, 'src'> {
   src: string;
   alt: string;
   fallback?: string;
   className?: string;
   containerClassName?: string;
   showLoadingState?: boolean;
+  // Responsive image props
+  srcSet?: string;
+  sizes?: string;
+  // Modern format props
+  webpSrc?: string;
+  avifSrc?: string;
+  // Lazy loading props
+  priority?: boolean; // For above-the-fold images
 }
 
 /**
@@ -24,6 +32,11 @@ export const OptimizedImage = memo(function OptimizedImage({
   className,
   containerClassName,
   showLoadingState = true,
+  srcSet,
+  sizes,
+  webpSrc,
+  avifSrc,
+  priority = false,
   ...props
 }: OptimizedImageProps) {
   const [isLoading, setIsLoading] = useState(true);
@@ -38,27 +51,58 @@ export const OptimizedImage = memo(function OptimizedImage({
     setHasError(true);
   }, []);
 
+  // For priority images, use eager loading
+  const loading = priority ? "eager" : "lazy";
+
   return (
     <div className={cn("relative overflow-hidden", containerClassName)}>
       {/* Loading skeleton */}
       {showLoadingState && isLoading && !hasError && (
-        <div className="absolute inset-0 bg-muted animate-pulse" />
+        <div className="absolute inset-0 bg-muted animate-pulse rounded-md" />
       )}
-      
-      <img
-        src={hasError ? fallback : src}
-        alt={alt}
-        loading="lazy"
-        decoding="async"
-        onLoad={handleLoad}
-        onError={handleError}
-        className={cn(
-          "transition-opacity duration-300",
-          isLoading ? "opacity-0" : "opacity-100",
-          className
-        )}
-        {...props}
-      />
+
+      {/* Modern picture element for multiple formats */}
+      {(webpSrc || avifSrc) ? (
+        <picture>
+          {avifSrc && <source srcSet={avifSrc} type="image/avif" />}
+          {webpSrc && <source srcSet={webpSrc} type="image/webp" />}
+          <img
+            src={hasError ? fallback : src}
+            srcSet={srcSet}
+            sizes={sizes}
+            alt={alt}
+            loading={loading}
+            decoding="async"
+            fetchPriority={priority ? "high" : "auto"}
+            onLoad={handleLoad}
+            onError={handleError}
+            className={cn(
+              "transition-opacity duration-300",
+              isLoading ? "opacity-0" : "opacity-100",
+              className
+            )}
+            {...props}
+          />
+        </picture>
+      ) : (
+        <img
+          src={hasError ? fallback : src}
+          srcSet={srcSet}
+          sizes={sizes}
+          alt={alt}
+          loading={loading}
+          decoding="async"
+          fetchPriority={priority ? "high" : "auto"}
+          onLoad={handleLoad}
+          onError={handleError}
+          className={cn(
+            "transition-opacity duration-300",
+            isLoading ? "opacity-0" : "opacity-100",
+            className
+          )}
+          {...props}
+        />
+      )}
     </div>
   );
 });

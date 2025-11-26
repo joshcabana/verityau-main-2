@@ -1,13 +1,3 @@
+// Only export components that are statically imported to avoid bundle warnings
 export { HeroSection } from './HeroSection';
-export { AuthCTASection } from './AuthCTASection';
-export { ProblemsSection } from './ProblemsSection';
-export { HowItWorksSection } from './HowItWorksSection';
-export { FeaturesSection } from './FeaturesSection';
-export { SafetySection } from './SafetySection';
-export { TrustSection } from './TrustSection';
-export { FAQSection } from './FAQSection';
-export { FinalCTASection } from './FinalCTASection';
-export { Footer } from './Footer';
-export { SignupCTA } from './SignupCTA';
-export { SocialShareButtons } from './SocialShareButtons';
-export { AnimatedCounter } from './AnimatedCounter';
+export { SectionErrorBoundary } from './ErrorBoundary';
