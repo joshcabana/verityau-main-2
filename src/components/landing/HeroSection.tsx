@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import { StaggerContainer, StaggerItem } from "@/components/motion";
-import { SignupCTA } from "./SignupCTA";
 
 export const HeroSection = () => {
   return (
@@ -16,7 +15,7 @@ export const HeroSection = () => {
         {/* Headline */}
         <StaggerItem>
           <h1 className="hero-text text-7xl md:text-9xl mb-6 text-white">
-            Real People.
+            No Swiping,
             <br />
             <motion.span
               className="bg-gradient-to-r from-[hsl(var(--gold-light))] to-[hsl(var(--gold))] bg-clip-text text-transparent inline-block"
@@ -24,22 +23,23 @@ export const HeroSection = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.6, ease: "easeOut" }}
             >
-              Real Time.
+              Dates Only
             </motion.span>
           </h1>
         </StaggerItem>
 
         {/* Subtext */}
         <StaggerItem>
-          <p className="body-large text-white/70 mb-12 max-w-3xl mx-auto">
-            A dating experience built on presence, not profiles.
-          </p>
+          <motion.p
+            className="text-xl md:text-2xl text-white/80 mb-16 max-w-4xl mx-auto italic font-light leading-relaxed"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6, duration: 0.8, ease: "easeOut" }}
+          >
+            Verified faces, a 30-second intro video, and your first real conversation on a 10-minute date. No filters. No ghosts. Just you, them, and the truth — unlock chat only if the chemistry hits.
+          </motion.p>
         </StaggerItem>
 
-        {/* CTA */}
-        <StaggerItem>
-          <SignupCTA variant="hero" />
-        </StaggerItem>
 
         {/* Tagline */}
         <StaggerItem>

@@ -4,7 +4,12 @@ import { Link } from "react-router-dom";
 import { Heart, Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const Navigation = () => {
+interface NavigationProps {
+  customTitle?: string;
+  customSubtitle?: string;
+}
+
+const Navigation = ({ customTitle, customSubtitle }: NavigationProps = {}) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -17,20 +22,6 @@ const Navigation = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const scrollToSection = (id: string) => {
-    setIsMobileMenuOpen(false);
-    const element = document.getElementById(id);
-    if (element) {
-      const offset = 80;
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - offset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth"
-      });
-    }
-  };
 
   return (
     <header
@@ -45,38 +36,47 @@ const Navigation = () => {
         <div className="flex items-center justify-between h-16 sm:h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center transition-smooth group-hover:bg-accent/20 group-hover:border-accent/40">
-              <Heart className="h-6 w-6 text-accent fill-accent" />
-            </div>
-            <span className="hero-text text-xl text-white">Verity</span>
+            {!customTitle ? (
+              <>
+                <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center transition-smooth group-hover:bg-accent/20 group-hover:border-accent/40">
+                  <Heart className="h-6 w-6 text-accent fill-accent" />
+                </div>
+                <span className="hero-text text-xl text-white">Verity</span>
+              </>
+            ) : (
+              <div>
+                <h1 className="text-lg font-semibold text-white">{customTitle}</h1>
+                {customSubtitle && <p className="text-sm text-white/50">{customSubtitle}</p>}
+              </div>
+            )}
           </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
-            <button
-              onClick={() => scrollToSection("how-it-works")}
+            <Link
+              to="/how-it-works"
               className="text-sm font-medium text-white/70 hover:text-accent transition-smooth"
             >
               How It Works
-            </button>
-            <button
-              onClick={() => scrollToSection("features")}
+            </Link>
+            <Link
+              to="/"
               className="text-sm font-medium text-white/70 hover:text-accent transition-smooth"
             >
               Features
-            </button>
-            <button
-              onClick={() => scrollToSection("safety")}
+            </Link>
+            <Link
+              to="/safety"
               className="text-sm font-medium text-white/70 hover:text-accent transition-smooth"
             >
               Safety
-            </button>
-            <button
-              onClick={() => scrollToSection("faq")}
+            </Link>
+            <Link
+              to="/faq"
               className="text-sm font-medium text-white/70 hover:text-accent transition-smooth"
             >
               FAQ
-            </button>
+            </Link>
           </div>
 
           {/* Desktop CTA Button */}
@@ -98,30 +98,34 @@ const Navigation = () => {
         {isMobileMenuOpen && (
           <div className="md:hidden absolute top-full left-0 right-0 bg-[hsl(var(--ink))]/95 backdrop-blur-xl border-b border-white/10 shadow-elegant">
             <div className="px-4 py-6 space-y-4">
-              <button
-                onClick={() => scrollToSection("how-it-works")}
+              <Link
+                to="/how-it-works"
+                onClick={() => setIsMobileMenuOpen(false)}
                 className="block w-full text-left py-3 px-4 text-base font-medium text-white hover:bg-white/5 hover:text-accent rounded-lg transition-smooth"
               >
                 How It Works
-              </button>
-              <button
-                onClick={() => scrollToSection("features")}
+              </Link>
+              <Link
+                to="/"
+                onClick={() => setIsMobileMenuOpen(false)}
                 className="block w-full text-left py-3 px-4 text-base font-medium text-white hover:bg-white/5 hover:text-accent rounded-lg transition-smooth"
               >
                 Features
-              </button>
-              <button
-                onClick={() => scrollToSection("safety")}
+              </Link>
+              <Link
+                to="/safety"
+                onClick={() => setIsMobileMenuOpen(false)}
                 className="block w-full text-left py-3 px-4 text-base font-medium text-white hover:bg-white/5 hover:text-accent rounded-lg transition-smooth"
               >
                 Safety
-              </button>
-              <button
-                onClick={() => scrollToSection("faq")}
+              </Link>
+              <Link
+                to="/faq"
+                onClick={() => setIsMobileMenuOpen(false)}
                 className="block w-full text-left py-3 px-4 text-base font-medium text-white hover:bg-white/5 hover:text-accent rounded-lg transition-smooth"
               >
                 FAQ
-              </button>
+              </Link>
               <Button asChild size="lg" className="w-full bg-accent hover:bg-accent/90 text-accent-foreground rounded-full mt-4 transition-smooth">
                 <Link to="/auth">Get Started</Link>
               </Button>

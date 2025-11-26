@@ -30,6 +30,8 @@ const Privacy = lazy(() => import("./pages/Privacy"));
 const Terms = lazy(() => import("./pages/Terms"));
 const Safety = lazy(() => import("./pages/Safety"));
 const Vision = lazy(() => import("./pages/Vision"));
+const FAQ = lazy(() => import("./pages/FAQ"));
+const HowItWorks = lazy(() => import("./pages/HowItWorks"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const ProfileEdit = lazy(() => import("./pages/ProfileEdit"));
 const Profile = lazy(() => import("./pages/Profile"));
@@ -79,6 +81,8 @@ function AnimatedRoutes() {
           <Route path="/terms" element={<PageTransition><Terms /></PageTransition>} />
           <Route path="/safety" element={<PageTransition><Safety /></PageTransition>} />
           <Route path="/vision" element={<PageTransition><Vision /></PageTransition>} />
+          <Route path="/how-it-works" element={<PageTransition><HowItWorks /></PageTransition>} />
+          <Route path="/faq" element={<PageTransition><FAQ /></PageTransition>} />
           
           {/* Protected Routes */}
           <Route path="/onboarding" element={<ProtectedRoute><PageTransition><Onboarding /></PageTransition></ProtectedRoute>} />

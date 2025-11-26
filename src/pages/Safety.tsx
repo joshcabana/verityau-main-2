@@ -1,45 +1,37 @@
+import Navigation from "@/components/Navigation";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Shield, CheckCircle2, Eye, Lock, Users, AlertTriangle, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { FadeIn, ScrollReveal, StaggerContainer, StaggerItem } from "@/components/motion";
+import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/motion";
 
 const Safety = () => {
   return (
-    <FadeIn className="min-h-screen bg-[hsl(var(--ink))] text-white">
-      {/* Header */}
-      <header className="border-b border-white/10 bg-[hsl(var(--ink))]/50 backdrop-blur sticky top-0 z-50">
-        <div className="max-w-4xl mx-auto px-4 py-4 flex items-center gap-4">
-          <Button variant="ghost" size="icon" asChild className="text-white/70 hover:text-white hover:bg-white/10">
-            <Link to="/">
-              <ArrowLeft className="h-5 w-5" />
-            </Link>
-          </Button>
-          <h1 className="text-xl font-semibold text-white">Safety at Verity</h1>
-        </div>
-      </header>
+    <div className="min-h-screen bg-[hsl(var(--ink))]">
+      <Navigation />
 
-      {/* Hero */}
-      <section className="py-16 md:py-24 px-4 bg-[hsl(var(--grey-100))] border-y border-white/5">
-        <div className="max-w-4xl mx-auto text-center">
+      <div className="max-w-4xl mx-auto px-4 py-20 sm:py-24 md:py-32">
+            <Link to="/">
+          <Button variant="ghost" size="sm" className="mb-8 -ml-2 text-white hover:text-accent hover:bg-white/5 transition-smooth">
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back to Home
+          </Button>
+        </Link>
+
           <ScrollReveal>
             <div className="w-20 h-20 mx-auto mb-8 rounded-2xl bg-accent/10 flex items-center justify-center">
               <Shield className="w-10 h-10 text-accent" />
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
+          <h1 className="section-header text-4xl md:text-5xl mb-6 text-white text-center">
               Safety isn&apos;t a feature.
               <br />
               <span className="text-accent">It&apos;s the foundation.</span>
-            </h2>
-            <p className="text-xl text-white/70 max-w-2xl mx-auto">
+          </h1>
+          <p className="text-xl text-white/70 max-w-2xl mx-auto mb-16 text-center">
               We verify every user and protect every interaction—so you can relax, be yourself, and focus on finding real connection.
             </p>
           </ScrollReveal>
-        </div>
-      </section>
 
-      {/* Main Content */}
-      <section className="py-16 px-4 bg-[hsl(var(--ink))]">
-        <div className="max-w-4xl mx-auto">
+        <div className="space-y-16">
           <StaggerContainer className="grid md:grid-cols-2 gap-8 mb-16">
             {/* Verification */}
             <StaggerItem>
@@ -180,22 +172,22 @@ const Safety = () => {
           </ScrollReveal>
 
           {/* Report Section */}
-          <ScrollReveal className="mt-16">
+          <ScrollReveal>
             <div className="bg-destructive/10 border border-destructive/20 rounded-2xl p-8 md:p-12">
               <div className="flex items-start gap-6">
                 <div className="w-12 h-12 rounded-xl bg-destructive/20 flex items-center justify-center flex-shrink-0">
                   <AlertTriangle className="w-6 h-6 text-destructive" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold mb-2">Need to Report Something?</h3>
-                  <p className="text-muted-foreground mb-4">
+                  <h3 className="text-xl font-semibold mb-2 text-white">Need to Report Something?</h3>
+                  <p className="text-white/70 mb-4">
                     If you&apos;ve experienced harassment, inappropriate behaviour, or feel unsafe, we want to know immediately. Your report will be reviewed by a real person within minutes.
                   </p>
                   <div className="flex flex-wrap gap-4">
                     <Button variant="destructive" asChild>
                       <a href="mailto:safety@verity.au">Email safety@verity.au</a>
                     </Button>
-                    <Button variant="outline" asChild>
+                    <Button variant="outline" asChild className="border-white/20 text-white hover:bg-white/5">
                       <Link to="/auth">Report in App</Link>
                     </Button>
                   </div>
@@ -203,22 +195,22 @@ const Safety = () => {
               </div>
             </div>
           </ScrollReveal>
-        </div>
-      </section>
 
       {/* Footer CTA */}
-      <section className="py-16 px-4 bg-card border-t border-border">
-        <div className="max-w-4xl mx-auto text-center">
-          <h3 className="text-2xl font-semibold mb-4">Ready to date with confidence?</h3>
-          <p className="text-muted-foreground mb-8">
+          <ScrollReveal>
+            <div className="text-center mt-16">
+              <h3 className="text-2xl font-semibold mb-4 text-white">Ready to date with confidence?</h3>
+              <p className="text-white/70 mb-8">
             Join thousands of Australians who are tired of the games.
           </p>
           <Button asChild size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground rounded-full px-8">
             <Link to="/auth?mode=signup">Get Started</Link>
           </Button>
         </div>
-      </section>
-    </FadeIn>
+          </ScrollReveal>
+        </div>
+      </div>
+    </div>
   );
 };
 
