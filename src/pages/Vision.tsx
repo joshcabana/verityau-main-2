@@ -20,118 +20,140 @@ const Vision = () => {
         
         <div className="max-w-5xl mx-auto relative z-10">
           <ScrollReveal>
-            <div className="space-y-12">
+            <div className="space-y-8">
               <div className="max-w-5xl">
-                <h1 className="hero-text text-5xl md:text-7xl lg:text-8xl text-white leading-[0.9] font-light">
-                  Our mission is simple yet radical: Build a world where{" "}
-                  <span className="text-accent font-medium relative">
-                    real attraction starts with real conversation
-                    <div className="absolute -bottom-2 left-0 right-0 h-1 bg-accent/30 rounded-full"></div>
+                <h1 className="hero-text text-5xl md:text-7xl lg:text-8xl text-white leading-[0.95] font-light mb-8">
+                  Modern Dating:{" "}
+                  <span className="text-accent font-medium">
+                    A Circus of Lies
                   </span>
-              <br />
-                  <span className="text-white/80">— no filters, no games, just humans being human.</span>
-            </h1>
+                  {" "}and Loneliness
+                </h1>
+                <p className="text-2xl md:text-3xl text-white/80 leading-relaxed font-light italic">
+                  They tricked us into thinking love was a casino.
+                </p>
               </div>
             </div>
           </ScrollReveal>
         </div>
       </section>
 
-      {/* The Verity Promise */}
+      {/* The Problem: Three Acts of Modern Dating Horror */}
       <section className="py-32 md:py-40 px-6 bg-[hsl(var(--grey-100))] border-y border-white/5">
         <div className="max-w-6xl mx-auto">
-          <ScrollReveal>
-            <div className="text-center mb-20">
-              <h2 className="text-lg font-medium text-accent uppercase tracking-wider mb-6">
-                The Verity Promise
-            </h2>
-              <div className="max-w-4xl mx-auto space-y-8 text-xl md:text-2xl text-white/80 leading-relaxed font-light">
-              <p>
-                  We're not another dating app. We're the antidote to the superficiality. From day one, Verity gates every connection behind a 10-minute live video date.
-              </p>
-              <p>
-                  Mutual interest? Jump in — see the smile, hear the laugh, feel the energy. Spark? Unlock chat and plan IRL. No spark? Part ways respectfully, no awkward ghosts.
-              </p>
-                <p className="text-white font-medium text-2xl md:text-3xl">
-                  This isn't about speed; it's about signal. We envision a dating ecosystem where:
-              </p>
+          <div className="space-y-20">
+            <ScrollReveal>
+              <div className="space-y-8">
+                <h3 className="text-3xl md:text-4xl font-light text-white mb-6">
+                  Swipe right on delusion. Filter out reality. Pose like you're in a rom-com.
+                </h3>
+                <p className="text-xl md:text-2xl text-white/70 leading-relaxed">
+                  You spend hours curating your "best self," they Photoshop theirs, and when you finally meet? It's like ordering a steak and getting a sad tofu patty. Surprise! The vibe's as dead as your last Tinder match.
+                </p>
+                <p className="text-xl md:text-2xl text-accent font-medium">
+                  → On Verity, we skip the bullshit audition. You see the unfiltered mess from second one.
+                </p>
               </div>
-            </div>
-          </ScrollReveal>
+            </ScrollReveal>
+
+            <ScrollReveal delay={0.2}>
+              <div className="space-y-8">
+                <h3 className="text-3xl md:text-4xl font-light text-white mb-6">
+                  They turned flirting into a bad improv sketch.
+                </h3>
+                <p className="text-xl md:text-2xl text-white/70 leading-relaxed">
+                  Weeks of "haha" hell, where "wyd?" echoes in the abyss like a drunk uncle at a wedding. Momentum? More like a slow-motion car crash into "kthxbye."
+                </p>
+                <p className="text-xl md:text-2xl text-accent font-medium">
+                  → On Verity, we don't do foreplay with keyboards. The date crashes the party first — ten minutes of "is this it?" or "holy shit, yes."
+                </p>
+              </div>
+            </ScrollReveal>
+
+            <ScrollReveal delay={0.4}>
+              <div className="space-y-8">
+                <h3 className="text-3xl md:text-4xl font-light text-white mb-6">
+                  They convinced us to bet entire nights on a gamble.
+                </h3>
+                <p className="text-xl md:text-2xl text-white/70 leading-relaxed">
+                  You trek across town, traffic-fueled rage bubbling, only to sit in silence staring at someone who smells like regret and last night's takeout. Awkward hug, Uber home, and another therapy session booked.
+                </p>
+                <p className="text-xl md:text-2xl text-accent font-medium">
+                  → On Verity, ten minutes from your couch (or bed, no judgment) outs the fakers faster than a bad first kiss. Waste-free wonder.
+                </p>
+              </div>
+            </ScrollReveal>
+          </div>
         </div>
       </section>
 
-      {/* The Four Pillars */}
+      {/* How It Works: The Verity Way */}
       <section className="py-32 md:py-40 px-6 bg-[hsl(var(--ink))]">
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           <ScrollReveal>
-            <div className="grid md:grid-cols-2 gap-20 md:gap-24">
-              <div className="space-y-16">
-                <div className="group">
-                  <div className="w-16 h-1 bg-accent/40 group-hover:bg-accent transition-colors duration-500 mb-8"></div>
-                  <h3 className="text-3xl md:text-4xl font-light text-white mb-6">
-                    Authenticity Wins
-                </h3>
-                  <p className="text-xl text-white/70 leading-relaxed font-light">
-                    Mandatory video verification kills catfishing. Profiles are lightweight — the real you shines on camera.
+            <div className="text-center space-y-16">
+              <div className="space-y-8">
+                <h2 className="text-4xl md:text-6xl font-bold text-white leading-tight">
+                  Match.
+                </h2>
+                <p className="text-xl md:text-2xl text-white/70 leading-relaxed max-w-3xl mx-auto">
+                  Ten-minute video date.
                 </p>
               </div>
 
-                <div className="group">
-                  <div className="w-16 h-1 bg-accent/40 group-hover:bg-accent transition-colors duration-500 mb-8"></div>
-                  <h3 className="text-3xl md:text-4xl font-light text-white mb-6">
-                    Safety is Non-Negotiable
-                </h3>
-                  <p className="text-xl text-white/70 leading-relaxed font-light">
-                    Easy reports, instant blocks, and end-to-end encryption. Women feel in control (92% report higher trust). Every call is reviewed if flagged, with 24-hour moderation.
+              <div className="max-w-4xl mx-auto space-y-8 text-left">
+                <p className="text-xl md:text-2xl text-white/80 leading-relaxed">
+                  Hear the snort-laugh you can't emoji. Spot the eye-roll at bad jokes. Feel the <span className="text-accent font-medium">"oh fuck, this could be it"</span> or the merciful <span className="text-white/60 italic">"next."</span>
                 </p>
+                <p className="text-xl md:text-2xl text-white/80 leading-relaxed">
+                  If it's electric, chat unlocks. If it's a dud, dip out like civilized adults — <span className="text-accent">no ghosts, no grudges, no gaslighting yourself into a second chance.</span>
+                </p>
+              </div>
+
+              <div className="pt-8 border-t border-white/10 mt-16">
+                <p className="text-2xl md:text-3xl text-white font-medium mb-4">
+                  Verity isn't an app.
+                </p>
+                <p className="text-xl md:text-2xl text-accent font-medium italic">
+                  It's the middle finger to the dating industrial complex.
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-8 pt-12">
+                <div className="text-center p-8 bg-white/5 border border-white/10 rounded-2xl">
+                  <p className="text-xl text-white font-medium">Raw faces.</p>
+                </div>
+                <div className="text-center p-8 bg-white/5 border border-white/10 rounded-2xl">
+                  <p className="text-xl text-white font-medium">Awkward pauses.</p>
+                </div>
+                <div className="text-center p-8 bg-white/5 border border-white/10 rounded-2xl">
+                  <p className="text-xl text-white font-medium">Electric silences.</p>
                 </div>
               </div>
 
-              <div className="space-y-16">
-                <div className="group">
-                  <div className="w-16 h-1 bg-accent/40 group-hover:bg-accent transition-colors duration-500 mb-8"></div>
-                  <h3 className="text-3xl md:text-4xl font-light text-white mb-6">
-                    Effort Equals Reward
-                </h3>
-                  <p className="text-xl text-white/70 leading-relaxed font-light">
-                    No infinite swiping dopamine traps. Limited dates force intention, leading to 78% less ghosting and 3x more real-life meetups.
-                </p>
-              </div>
-
-                <div className="group">
-                  <div className="w-16 h-1 bg-accent/40 group-hover:bg-accent transition-colors duration-500 mb-8"></div>
-                  <h3 className="text-3xl md:text-4xl font-light text-white mb-6">
-                    Community Over Chaos
-                </h3>
-                  <p className="text-xl text-white/70 leading-relaxed font-light">
-                    Canberra-born, AU-first. We're for conscious daters (25–42, urban, self-aware) tired of the theater. 10% of Plus revenue goes to women's safety charities, building a movement for healthier love.
-                </p>
-                </div>
-              </div>
+              <p className="text-2xl md:text-3xl text-white/90 font-light pt-8">
+                That's the Verity chaos — <span className="text-accent font-medium">and we're all in.</span>
+              </p>
             </div>
           </ScrollReveal>
         </div>
       </section>
 
-      {/* Why Now? Why Verity? */}
+      {/* The Data: Why We Built This */}
       <section className="py-32 md:py-40 px-6 bg-[hsl(var(--grey-100))] border-y border-white/5">
         <div className="max-w-5xl mx-auto">
           <ScrollReveal>
             <div className="text-center">
               <h2 className="text-lg font-medium text-accent uppercase tracking-wider mb-12">
-                Why Now? Why Verity?
-            </h2>
+                The Numbers Don't Lie
+              </h2>
               <div className="max-w-4xl mx-auto space-y-8">
                 <p className="text-2xl md:text-3xl text-white/90 leading-relaxed font-light">
-                  At Verity, we believe dating shouldn't feel like a game of chance or a performance art. In a world where 54% of users lie about their appearance or lifestyle (Pew Research, 2025), and 72% experience ghosting after investing weeks in texting (YouGov AU Survey), the system is broken.
-              </p>
-                <p className="text-2xl md:text-3xl text-white/80 leading-relaxed font-light">
-                  Endless swipes, filtered photos, and dead-end conversations leave people exhausted, not connected.
+                  At Verity, we believe dating shouldn't feel like a game of chance or a performance art. In a world where <span className="text-accent font-medium">54% of users lie</span> about their appearance or lifestyle (Pew Research, 2025), and <span className="text-accent font-medium">72% experience ghosting</span> after investing weeks in texting (YouGov AU Survey), the system is broken.
                 </p>
                 <p className="text-2xl md:text-3xl text-white/80 leading-relaxed font-light">
-                  In 2025, dating apps are a $10B industry, but retention is abysmal (under 20% after Week 1). Users crave truth, but the market delivers illusion.
-              </p>
+                  In 2025, dating apps are a <span className="text-accent font-medium">$10B industry</span>, but retention is abysmal (under 20% after Week 1). Users crave truth, but the market delivers illusion.
+                </p>
                 <p className="text-2xl md:text-3xl text-white/80 leading-relaxed font-light">
                   Verity changes that — by making video the entry point, we cut the noise and amplify the genuine. Our users say it best: <span className="text-white font-medium italic">"Finally, dating feels like dating again."</span>
                 </p>
@@ -139,15 +161,15 @@ const Vision = () => {
 
               {/* Impact Stats */}
               <div className="grid md:grid-cols-3 gap-8 mt-20">
-                <div className="text-center">
+                <div className="text-center p-8 bg-white/5 border border-accent/20 rounded-2xl">
                   <div className="text-4xl md:text-5xl font-bold text-accent mb-2">78%</div>
                   <p className="text-white/70 font-light">Less ghosting</p>
                 </div>
-                <div className="text-center">
+                <div className="text-center p-8 bg-white/5 border border-accent/20 rounded-2xl">
                   <div className="text-4xl md:text-5xl font-bold text-accent mb-2">3x</div>
                   <p className="text-white/70 font-light">More real meetups</p>
                 </div>
-                <div className="text-center">
+                <div className="text-center p-8 bg-white/5 border border-accent/20 rounded-2xl">
                   <div className="text-4xl md:text-5xl font-bold text-accent mb-2">92%</div>
                   <p className="text-white/70 font-light">Higher trust scores</p>
                 </div>
@@ -157,58 +179,36 @@ const Vision = () => {
         </div>
       </section>
 
-      {/* Join the Movement */}
+      {/* Join the Rebellion */}
       <section className="py-32 md:py-40 px-6 bg-[hsl(var(--ink))]">
         <div className="max-w-5xl mx-auto">
           <ScrollReveal>
             <div className="text-center">
-              <h2 className="text-2xl md:text-3xl font-medium text-white mb-12">
-                Join the Movement for Better Dating
-            </h2>
-              <div className="grid md:grid-cols-3 gap-8 mb-16">
-                <div className="text-center">
-                  <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-accent/10 flex items-center justify-center">
-                    <span className="text-2xl">🎥</span>
-                  </div>
-                  <h3 className="text-lg font-semibold text-white mb-3">Be Authentic</h3>
-                  <p className="text-white/70">Show up as your real self from day one</p>
-                </div>
-                <div className="text-center">
-                  <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-accent/10 flex items-center justify-center">
-                    <span className="text-2xl">💬</span>
-                  </div>
-                  <h3 className="text-lg font-semibold text-white mb-3">Skip the Small Talk</h3>
-                  <p className="text-white/70">Real conversations from the first interaction</p>
-              </div>
-                <div className="text-center">
-                  <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-accent/10 flex items-center justify-center">
-                    <span className="text-2xl">❤️</span>
-              </div>
-                  <h3 className="text-lg font-semibold text-white mb-3">Find Real Connection</h3>
-                  <p className="text-white/70">Meet people who are ready for genuine relationships</p>
-              </div>
-              </div>
+              <h2 className="text-3xl md:text-5xl font-medium text-white mb-8">
+                Ready to ditch the circus?
+              </h2>
+              <p className="text-xl md:text-2xl text-white/70 mb-16 max-w-3xl mx-auto">
+                Join thousands who are done playing games and ready for something real.
+              </p>
+              
               <div className="max-w-3xl mx-auto">
-                <p className="text-xl text-white/80 leading-relaxed mb-8">
-                  Thousands are already experiencing the difference. Join the movement for real connection in dating.
-                </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Button
                     asChild
                     size="lg"
-                    className="bg-accent hover:bg-accent/90 text-accent-foreground rounded-full px-8"
+                    className="h-16 px-12 text-lg bg-accent hover:bg-accent/90 text-accent-foreground rounded-full shadow-gold hover:shadow-elegant transition-all"
                   >
-                    <Link to="/auth?mode=signup">Start Your Journey</Link>
+                    <Link to="/auth?mode=signup">Start Dating for Real</Link>
                   </Button>
                   <Button
                     asChild
                     variant="outline"
                     size="lg"
-                    className="border-white/20 text-white hover:bg-white/5 rounded-full px-8"
+                    className="h-16 px-12 text-lg border-white/20 text-white hover:bg-white/5 hover:border-accent/40 rounded-full transition-all"
                   >
-                    <Link to="/faq">Learn More</Link>
+                    <Link to="/faq">See How It Works</Link>
                   </Button>
-              </div>
+                </div>
               </div>
             </div>
           </ScrollReveal>
@@ -222,24 +222,25 @@ const Vision = () => {
           <ScrollReveal>
             <div className="space-y-12">
               <div className="space-y-8">
-                <p className="text-3xl md:text-4xl lg:text-5xl font-light leading-relaxed text-[hsl(var(--ink))]">
-                  Our north star: 1 million real conversations by 2027, sparking 100,000 relationships that last.
-                </p>
-                <p className="text-2xl md:text-3xl text-[hsl(var(--ink))]/90 font-light">
-                  We're proud to call Canberra home — a city of high-trust, high-education folks ready for real connections.
+                <p className="text-4xl md:text-5xl lg:text-6xl font-medium leading-tight text-[hsl(var(--ink))]">
+                  No more games.
+                  <br />
+                  No more ghosts.
+                  <br />
+                  Just <span className="italic">you</span>, being real.
                 </p>
               </div>
               <div className="space-y-8 pt-8">
-                <p className="text-2xl md:text-3xl text-[hsl(var(--ink))]/80 font-medium">
-                  Join us. Be unapologetically you. Let's rewrite love, one video date at a time.
-            </p>
-            <Button
-              asChild
-              size="lg"
+                <p className="text-2xl md:text-3xl text-[hsl(var(--ink))]/80 font-light">
+                  Welcome to Verity. Where dating stops being a circus.
+                </p>
+                <Button
+                  asChild
+                  size="lg"
                   className="h-20 px-16 text-2xl font-bold bg-[hsl(var(--ink))] hover:bg-[hsl(var(--ink))]/90 text-white hover:scale-105 shadow-elegant transition-smooth rounded-full border-none"
-            >
-              <Link to="/auth?mode=signup">Begin</Link>
-            </Button>
+                >
+                  <Link to="/auth?mode=signup">Join the Revolution</Link>
+                </Button>
               </div>
             </div>
           </ScrollReveal>
