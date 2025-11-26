@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { Heart, Menu, X } from "lucide-react";
+import { Heart, Menu, X, ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface NavigationProps {
@@ -35,21 +35,27 @@ const Navigation = ({ customTitle, customSubtitle }: NavigationProps = {}) => {
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 group">
-            {!customTitle ? (
-              <>
-                <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center transition-smooth group-hover:bg-accent/20 group-hover:border-accent/40">
-                  <Heart className="h-6 w-6 text-accent fill-accent" />
-                </div>
-                <span className="hero-text text-xl text-white">Verity</span>
-              </>
-            ) : (
+          {customTitle ? (
+            <div className="flex items-center gap-3">
+              <Link 
+                to="/" 
+                className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center transition-smooth hover:bg-white/10 hover:border-white/20"
+              >
+                <ArrowLeft className="h-5 w-5 text-white/70" />
+              </Link>
               <div>
                 <h1 className="text-lg font-semibold text-white">{customTitle}</h1>
                 {customSubtitle && <p className="text-sm text-white/50">{customSubtitle}</p>}
               </div>
-            )}
-          </Link>
+            </div>
+          ) : (
+            <Link to="/" className="flex items-center gap-2 group">
+              <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center transition-smooth group-hover:bg-accent/20 group-hover:border-accent/40">
+                <Heart className="h-6 w-6 text-accent fill-accent" />
+              </div>
+              <span className="hero-text text-xl text-white">Verity</span>
+            </Link>
+          )}
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
