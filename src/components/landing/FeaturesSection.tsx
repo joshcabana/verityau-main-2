@@ -6,7 +6,7 @@ import { Heart, Video, CheckCircle2, MessageCircle, Shield, MapPin } from "lucid
 
 export const FeaturesSection = memo(function FeaturesSection() {
   return (
-    <section id="features" className="py-24 px-4 bg-[hsl(var(--ink))] relative">
+    <section id="features" className="py-24 md:py-32 px-4 bg-[hsl(var(--ink))] relative">
       <div className="max-w-6xl mx-auto">
         <ScrollReveal>
           <h2 className="section-header text-4xl md:text-[64px] text-center mb-12 text-white">

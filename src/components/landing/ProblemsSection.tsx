@@ -1,22 +1,10 @@
 import { motion } from "framer-motion";
 import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/motion";
 import { spring } from "@/lib/motion";
-import { OptimizedImage } from "@/components/OptimizedImage";
-import heartVideoIcon from "@/assets/heart-video-icon.png";
 
 export const ProblemsSection = () => {
   return (
-    <section className="py-24 px-4 relative bg-[hsl(var(--grey-100))]">
-      {/* Line illustration decoration */}
-      <div className="absolute top-10 right-10 w-32 h-32 opacity-10 hidden lg:block">
-        <OptimizedImage
-          src={heartVideoIcon}
-          alt=""
-          className="w-full h-full"
-          showLoadingState={false}
-        />
-      </div>
-
+    <section className="py-24 md:py-32 px-4 relative bg-[hsl(var(--grey-100))]">
       <div className="max-w-6xl mx-auto">
         {/* Headline */}
         <ScrollReveal>
