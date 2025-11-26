@@ -66,10 +66,10 @@ const Navigation = ({ customTitle, customSubtitle }: NavigationProps = {}) => {
               How It Works
             </Link>
             <Link
-              to="/#features"
+              to="/vision"
               className="text-sm font-medium text-white/70 hover:text-accent transition-smooth"
             >
-              Features
+              The Verity Vision
             </Link>
             <Link
               to="/safety"
@@ -112,11 +112,11 @@ const Navigation = ({ customTitle, customSubtitle }: NavigationProps = {}) => {
                 How It Works
               </Link>
               <Link
-                to="/#features"
+                to="/vision"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="block w-full text-left py-3 px-4 text-base font-medium text-white hover:bg-white/5 hover:text-accent rounded-lg transition-smooth"
               >
-                Features
+                The Verity Vision
               </Link>
               <Link
                 to="/safety"
