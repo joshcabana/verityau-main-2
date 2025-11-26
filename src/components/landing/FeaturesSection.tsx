@@ -14,14 +14,14 @@ export const FeaturesSection = memo(function FeaturesSection() {
           </h2>
           <p className="text-center text-xl text-white/60 mb-16 italic">
             Because if 10 minutes can&apos;t sell it, nothing can. Sorry, not sorry.
-          </p>
+            </p>
           
           <div className="space-y-12">
             {/* Step 1 */}
-            <motion.div
+              <motion.div
               className="flex gap-6 items-start bg-white/5 border border-white/10 rounded-2xl p-8 hover:border-accent/30 transition-smooth"
               whileHover={{ scale: 1.01, transition: spring.gentle }}
-            >
+              >
               <div className="flex-shrink-0">
                 <div className="w-16 h-16 rounded-2xl bg-accent/10 flex items-center justify-center">
                   <UserCheck className="w-8 h-8 text-accent" />
@@ -36,13 +36,13 @@ export const FeaturesSection = memo(function FeaturesSection() {
                   Verified photos, a quick bio, and your 30-second intro video. No AI headshots. No gym mirror selfies from 2018. Just you, raw and ridiculous.
                 </p>
               </div>
-            </motion.div>
+              </motion.div>
 
             {/* Step 2 */}
-            <motion.div
+              <motion.div
               className="flex gap-6 items-start bg-white/5 border border-white/10 rounded-2xl p-8 hover:border-accent/30 transition-smooth"
               whileHover={{ scale: 1.01, transition: spring.gentle }}
-            >
+              >
               <div className="flex-shrink-0">
                 <div className="w-16 h-16 rounded-2xl bg-accent/10 flex items-center justify-center">
                   <Heart className="w-8 h-8 text-accent" fill="currentColor" />
@@ -57,13 +57,13 @@ export const FeaturesSection = memo(function FeaturesSection() {
                   Browse nearby (100km default, because who drives to Wollongong for a maybe?). Like back? Boom — mutual. No algorithm roulette.
                 </p>
               </div>
-            </motion.div>
+              </motion.div>
 
             {/* Step 3 */}
-            <motion.div
+              <motion.div
               className="flex gap-6 items-start bg-white/5 border border-white/10 rounded-2xl p-8 hover:border-accent/30 transition-smooth"
               whileHover={{ scale: 1.01, transition: spring.gentle }}
-            >
+              >
               <div className="flex-shrink-0">
                 <div className="w-16 h-16 rounded-2xl bg-accent/10 flex items-center justify-center">
                   <Video className="w-8 h-8 text-accent" />
@@ -78,13 +78,13 @@ export const FeaturesSection = memo(function FeaturesSection() {
                   Jump into a video date. Timer ticks, icebreakers prompt ("What&apos;s your worst date story?"), report button ready. Laugh? Eye-roll? You know in 600 seconds.
                 </p>
               </div>
-            </motion.div>
+              </motion.div>
 
             {/* Step 4 */}
-            <motion.div
+              <motion.div
               className="flex gap-6 items-start bg-white/5 border border-white/10 rounded-2xl p-8 hover:border-accent/30 transition-smooth"
               whileHover={{ scale: 1.01, transition: spring.gentle }}
-            >
+              >
               <div className="flex-shrink-0">
                 <div className="w-16 h-16 rounded-2xl bg-accent/10 flex items-center justify-center">
                   <Key className="w-8 h-8 text-accent" />
@@ -99,7 +99,7 @@ export const FeaturesSection = memo(function FeaturesSection() {
                   Both feel it? Chat opens — plan the real deal. No? Part ways with a "better luck" toast. No grudges. No "one more message" lies.
                 </p>
               </div>
-            </motion.div>
+              </motion.div>
           </div>
         </ScrollReveal>
       </div>

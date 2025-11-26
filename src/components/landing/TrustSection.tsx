@@ -10,7 +10,7 @@ export const TrustSection = memo(function TrustSection() {
         <ScrollReveal>
           <h2 className="section-header text-4xl md:text-6xl text-center mb-20 text-white">
             Why It Works
-          </h2>
+            </h2>
 
           {/* Stats Grid */}
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">

@@ -10,26 +10,26 @@ const Safety = () => {
       <Navigation />
 
       <div className="max-w-4xl mx-auto px-4 py-20 sm:py-24 md:py-32">
-        <Link to="/">
+            <Link to="/">
           <Button variant="ghost" size="sm" className="mb-8 -ml-2 text-white hover:text-accent hover:bg-white/5 transition-smooth">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Home
           </Button>
         </Link>
 
-        <ScrollReveal>
-          <div className="w-20 h-20 mx-auto mb-8 rounded-2xl bg-accent/10 flex items-center justify-center">
-            <Shield className="w-10 h-10 text-accent" />
-          </div>
+          <ScrollReveal>
+            <div className="w-20 h-20 mx-auto mb-8 rounded-2xl bg-accent/10 flex items-center justify-center">
+              <Shield className="w-10 h-10 text-accent" />
+            </div>
           <h1 className="section-header text-4xl md:text-5xl mb-6 text-white text-center">
-            Safety isn&apos;t a feature.
-            <br />
-            <span className="text-accent">It&apos;s the foundation.</span>
+              Safety isn&apos;t a feature.
+              <br />
+              <span className="text-accent">It&apos;s the foundation.</span>
           </h1>
           <p className="text-xl text-white/70 max-w-2xl mx-auto mb-16 text-center">
-            We verify every user and protect every interaction—so you can relax, be yourself, and focus on finding real connection.
-          </p>
-        </ScrollReveal>
+              We verify every user and protect every interaction—so you can relax, be yourself, and focus on finding real connection.
+            </p>
+          </ScrollReveal>
 
         <div className="space-y-16">
           <StaggerContainer className="grid md:grid-cols-2 gap-8 mb-16">
@@ -196,17 +196,17 @@ const Safety = () => {
             </div>
           </ScrollReveal>
 
-          {/* Footer CTA */}
+      {/* Footer CTA */}
           <ScrollReveal>
             <div className="text-center mt-16">
               <h3 className="text-2xl font-semibold mb-4 text-white">Ready to date with confidence?</h3>
               <p className="text-white/70 mb-8">
-                Join thousands of Australians who are tired of the games.
-              </p>
-              <Button asChild size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground rounded-full px-8">
-                <Link to="/auth?mode=signup">Get Started</Link>
-              </Button>
-            </div>
+            Join thousands of Australians who are tired of the games.
+          </p>
+          <Button asChild size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground rounded-full px-8">
+            <Link to="/auth?mode=signup">Get Started</Link>
+          </Button>
+        </div>
           </ScrollReveal>
         </div>
       </div>

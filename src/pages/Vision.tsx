@@ -28,11 +28,11 @@ const Vision = () => {
                     A Circus of Lies
                   </span>
                   {" "}and Loneliness
-                </h1>
+            </h1>
                 <p className="text-2xl md:text-3xl text-white/80 leading-relaxed font-light italic">
                   They tricked us into thinking love was a casino.
                 </p>
-              </div>
+        </div>
             </div>
           </ScrollReveal>
         </div>
@@ -42,8 +42,8 @@ const Vision = () => {
       <section className="py-32 md:py-40 px-6 bg-[hsl(var(--grey-100))] border-y border-white/5">
         <div className="max-w-6xl mx-auto">
           <div className="space-y-20">
-            <ScrollReveal>
-              <div className="space-y-8">
+          <ScrollReveal>
+            <div className="space-y-8">
                 <h3 className="text-3xl md:text-4xl font-light text-white mb-6">
                   Swipe right on delusion. Filter out reality. Pose like you're in a rom-com.
                 </h3>
@@ -83,7 +83,7 @@ const Vision = () => {
                 </p>
               </div>
             </ScrollReveal>
-          </div>
+            </div>
         </div>
       </section>
 
@@ -95,7 +95,7 @@ const Vision = () => {
               <div className="space-y-8">
                 <h2 className="text-4xl md:text-6xl font-bold text-white leading-tight">
                   Match.
-                </h2>
+            </h2>
                 <p className="text-xl md:text-2xl text-white/70 leading-relaxed max-w-3xl mx-auto">
                   Ten-minute video date.
                 </p>
@@ -146,7 +146,7 @@ const Vision = () => {
             <div className="text-center">
               <h2 className="text-lg font-medium text-accent uppercase tracking-wider mb-12">
                 The Numbers Don't Lie
-              </h2>
+            </h2>
               <div className="max-w-4xl mx-auto space-y-8">
                 <p className="text-2xl md:text-3xl text-white/90 leading-relaxed font-light">
                   At Verity, we believe dating shouldn't feel like a game of chance or a performance art. In a world where <span className="text-accent font-medium">54% of users lie</span> about their appearance or lifestyle (Pew Research, 2025), and <span className="text-accent font-medium">72% experience ghosting</span> after investing weeks in texting (YouGov AU Survey), the system is broken.
@@ -208,7 +208,7 @@ const Vision = () => {
                   >
                     <Link to="/faq">See How It Works</Link>
                   </Button>
-                </div>
+              </div>
               </div>
             </div>
           </ScrollReveal>
@@ -233,14 +233,14 @@ const Vision = () => {
               <div className="space-y-8 pt-8">
                 <p className="text-2xl md:text-3xl text-[hsl(var(--ink))]/80 font-light">
                   Welcome to Verity. Where dating stops being a circus.
-                </p>
-                <Button
-                  asChild
-                  size="lg"
+            </p>
+            <Button
+              asChild
+              size="lg"
                   className="h-20 px-16 text-2xl font-bold bg-[hsl(var(--ink))] hover:bg-[hsl(var(--ink))]/90 text-white hover:scale-105 shadow-elegant transition-smooth rounded-full border-none"
-                >
+            >
                   <Link to="/auth?mode=signup">Join the Revolution</Link>
-                </Button>
+            </Button>
               </div>
             </div>
           </ScrollReveal>

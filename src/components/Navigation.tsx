@@ -49,12 +49,12 @@ const Navigation = ({ customTitle, customSubtitle }: NavigationProps = {}) => {
               </div>
             </div>
           ) : (
-            <Link to="/" className="flex items-center gap-2 group">
-              <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center transition-smooth group-hover:bg-accent/20 group-hover:border-accent/40">
-                <Heart className="h-6 w-6 text-accent fill-accent" />
-              </div>
-              <span className="hero-text text-xl text-white">Verity</span>
-            </Link>
+          <Link to="/" className="flex items-center gap-2 group">
+            <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center transition-smooth group-hover:bg-accent/20 group-hover:border-accent/40">
+              <Heart className="h-6 w-6 text-accent fill-accent" />
+            </div>
+            <span className="hero-text text-xl text-white">Verity</span>
+          </Link>
           )}
 
           {/* Desktop Navigation */}

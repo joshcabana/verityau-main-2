@@ -44,7 +44,7 @@ export const HeroSection = () => {
             </p>
             <p className="text-lg md:text-xl text-white/70 italic">
               On Verity, we skip the clown show: Verified faces, a 30-second intro video, and a 10-minute date that outs the fakers before you waste a single emoji.
-            </p>
+          </p>
           </motion.div>
         </StaggerItem>
 
