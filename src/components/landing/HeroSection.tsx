@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
 import { StaggerContainer, StaggerItem } from "@/components/motion";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 export const HeroSection = () => {
   return (
@@ -31,7 +33,7 @@ export const HeroSection = () => {
         {/* Subtext */}
         <StaggerItem>
           <motion.p
-            className="text-xl md:text-2xl text-white/80 mb-16 max-w-4xl mx-auto italic font-light leading-relaxed"
+            className="text-xl md:text-2xl text-white/80 mb-12 max-w-4xl mx-auto italic font-light leading-relaxed"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6, duration: 0.8, ease: "easeOut" }}
@@ -40,10 +42,28 @@ export const HeroSection = () => {
           </motion.p>
         </StaggerItem>
 
+        {/* CTA */}
+        <StaggerItem>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8, duration: 0.6, ease: "easeOut" }}
+            className="mb-12"
+          >
+            <Button
+              asChild
+              size="lg"
+              className="h-16 px-12 text-xl font-bold bg-accent hover:bg-accent/90 text-accent-foreground rounded-full shadow-elegant transition-smooth"
+            >
+              <Link to="/auth?mode=signup">Join Now</Link>
+            </Button>
+          </motion.div>
+        </StaggerItem>
+
 
         {/* Tagline */}
         <StaggerItem>
-          <p className="text-sm text-white/50 mt-8">
+          <p className="text-sm text-white/50">
             Video-first dating · Now live in Australia
           </p>
         </StaggerItem>
