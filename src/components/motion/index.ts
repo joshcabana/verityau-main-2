@@ -10,3 +10,14 @@ export { PageTransition } from "./PageTransition";
 export { ScrollReveal } from "./ScrollReveal";
 export { MotionButtonWrapper } from "./MotionButton";
 
+// Apple.com-inspired animations (primary animation system)
+export {
+  AppleHover,
+  AppleCard,
+  AppleButton,
+  AppleParallax,
+  AppleFadeIn,
+  AppleStagger,
+  AppleStaggerItem,
+} from "./AppleInspired";
+

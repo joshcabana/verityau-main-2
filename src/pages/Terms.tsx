@@ -1,20 +1,11 @@
-import Navigation from "@/components/Navigation";
-import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { PageLayout } from "@/components/PageLayout";
 
 const Terms = () => {
   return (
-    <div className="min-h-screen bg-[hsl(var(--ink))]">
-      <Navigation />
-      
-      <div className="max-w-4xl mx-auto px-4 py-20 sm:py-24 md:py-32">
-        <Link to="/">
-          <Button variant="ghost" size="sm" className="mb-8 -ml-2 text-white hover:text-accent hover:bg-white/5 transition-smooth">
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Home
-          </Button>
-        </Link>
+    <PageLayout
+      contentMaxWidth="max-w-4xl"
+      contentPadding="py-32 md:py-40"
+    >
 
         <article className="prose prose-invert max-w-none">
           <h1 className="section-header text-4xl sm:text-5xl mb-6 text-white">Terms of Service</h1>
@@ -219,18 +210,7 @@ const Terms = () => {
             </div>
           </section>
         </article>
-      </div>
-
-      {/* Footer */}
-      <footer className="py-8 px-6 border-t border-white/10 bg-[hsl(var(--ink))]">
-        <div className="max-w-4xl mx-auto flex items-center justify-between text-sm text-white/40">
-          <Link to="/" className="hover:text-accent transition-colors">
-            ← Back to home
-          </Link>
-          <span>Verity © 2025</span>
-        </div>
-      </footer>
-    </div>
+      </PageLayout>
   );
 };
 

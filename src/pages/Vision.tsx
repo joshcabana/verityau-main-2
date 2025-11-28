@@ -11,8 +11,10 @@ const Vision = () => {
         customSubtitle="Building the future of authentic dating"
       />
 
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
       {/* Hero */}
-      <section className="py-32 md:py-40 px-6 hero-gradient-base relative overflow-hidden">
+      <section className="py-32 md:py-40 relative overflow-hidden">
         {/* Gold vignette overlay */}
         <div className="absolute inset-0 hero-gold-vignette pointer-events-none" />
         {/* Film grain texture */}
@@ -39,7 +41,7 @@ const Vision = () => {
       </section>
 
       {/* The Problem: Three Acts of Modern Dating Horror */}
-      <section className="py-32 md:py-40 px-6 bg-[hsl(var(--grey-100))] border-y border-white/5">
+      <section className="py-32 md:py-40 bg-[hsl(var(--grey-100))] border-y border-white/5">
         <div className="max-w-6xl mx-auto">
           <div className="space-y-20">
           <ScrollReveal>
@@ -88,7 +90,7 @@ const Vision = () => {
       </section>
 
       {/* How It Works: The Verity Way */}
-      <section className="py-32 md:py-40 px-6 bg-[hsl(var(--ink))]">
+      <section className="py-32 md:py-40 bg-[hsl(var(--ink))]">
         <div className="max-w-5xl mx-auto">
           <ScrollReveal>
             <div className="text-center space-y-16">
@@ -140,7 +142,7 @@ const Vision = () => {
       </section>
 
       {/* The Data: Why We Built This */}
-      <section className="py-32 md:py-40 px-6 bg-[hsl(var(--grey-100))] border-y border-white/5">
+      <section className="py-32 md:py-40 bg-[hsl(var(--grey-100))] border-y border-white/5">
         <div className="max-w-5xl mx-auto">
           <ScrollReveal>
             <div className="text-center">
@@ -180,7 +182,7 @@ const Vision = () => {
       </section>
 
       {/* Join the Rebellion */}
-      <section className="py-32 md:py-40 px-6 bg-[hsl(var(--ink))]">
+      <section className="py-32 md:py-40 bg-[hsl(var(--ink))]">
         <div className="max-w-5xl mx-auto">
           <ScrollReveal>
             <div className="text-center">
@@ -216,7 +218,7 @@ const Vision = () => {
       </section>
 
       {/* Closing */}
-      <section className="py-40 md:py-48 px-6 bg-accent relative overflow-hidden">
+      <section className="py-40 md:py-48 bg-accent relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-[hsl(var(--gold))] via-[hsl(var(--gold-light))] to-[hsl(var(--gold))]" />
         <div className="max-w-6xl mx-auto text-center relative z-10">
           <ScrollReveal>
@@ -248,14 +250,15 @@ const Vision = () => {
       </section>
 
       {/* Footer */}
-      <footer className="py-8 px-6 border-t border-white/10 bg-[hsl(var(--ink))]">
-        <div className="max-w-3xl mx-auto flex items-center justify-between text-sm text-white/40">
+      <footer className="py-8 px-4 sm:px-6 lg:px-8 border-t border-white/10 bg-[hsl(var(--ink))]">
+        <div className="max-w-6xl mx-auto flex items-center justify-between text-sm text-white/40">
           <Link to="/" className="hover:text-accent transition-colors">
             ← Back to home
           </Link>
           <span>Verity © 2025</span>
         </div>
       </footer>
+    </div>
     </div>
   );
 };
